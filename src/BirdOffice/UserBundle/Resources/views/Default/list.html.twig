@@ -1,0 +1,30 @@
+
+    {# total items count #}
+
+
+    <table class="table table-striped table-bordered text-center">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th class="text-center">Id</th>
+            <th class="text-center">Username</th>
+            <th class="text-center">Email</th>
+            <th class="text-center" width="100">Actions</th>
+
+        </tr>
+
+        {# table body #}
+        {% for user in users %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td class="text-center">{{ user.id }}</td>
+                <td class="text-center">{{ user.username }}</td>
+                <td class="text-center">{{ user.email }}</td>
+                <td class="actions text-center">
+                    <a class="text-danger" href=""><i class="fa fa-trash-o"></i></a>
+                    <a class="text-default" href=""><i class="fa fa-edit"></i></a>
+                    <a class="text-default" href=""><i class="fa fa-search"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+

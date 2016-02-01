@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+
+
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6 admin-title">
+            <h1 class="text-center">Liste des collaborateurs</h1>
+            <p class="text-center">Responsable :
+                <select name="manager" id="manager">
+                    <option selected></option>
+                    {% for manager in managers %}
+                        <option value="{{ manager.id }}">{{ manager.username }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-default" >
+        Ajouter un Collaborateur
+    </button>
+ <div id="searchContainer">
+
+ </div>
+
+    <script>
+        console.log($('#manager').val());
+        $(function (){
+            $('#manager').change(function(){
+                ajaxCall();
+            });
+            ajaxCall();
+        });
+
+        var urlpost = "{{  path('list') }}";
+
+        function ajaxCall(){
+
+            $.ajax({
+                type: "POST",
+                url: urlpost,
+                data: {
+                    associate: $('#manager').val()
+                },
+                success: function (msg) {
+                    console.log(msg);
+                    $('#searchContainer').html(msg);
+                }
+            });
+
+        }
+
+    </script>
+{% endblock %}
+

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html class="ie8"> <![endif]-->
+<!--[if IE 9]>
+<html class="ie9 gt-ie8"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="gt-ie8 gt-ie9 not-ie"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% block title %}Bird Office{% endblock %}</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- Open Sans font from Google CDN -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&amp;subset=latin"
+          rel="stylesheet" type="text/css">
+
+    {% block stylesheets %}
+        <link href="{{ asset('bundles/user/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('bundles/user/css/styles.css') }}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('bundles/user/js/jquery.js') }}"></script>
+        <script src="{{ asset('bundles/user/js/bootstrap.min.js') }}"></script>
+    {% endblock %}
+
+</head>
+<body>
+<div id="content-wrapper">
+    <div class="page-header">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1">
+            {% block navbar %}
+                <nav class="navbar navbar-inverse">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#">Bird Office - Gestion interne du personnel</a>
+                        </div>
+                        <div>
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            {% endblock %}
+        </div>
+    </div>
+
+    <div class="col-md-10 col-md-offset-1" role="main">
+        {% block body %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

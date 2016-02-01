@@ -1,0 +1,48 @@
+.header-text-left{
+    display: block;
+    float: left;
+    font-size: 3em;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.header-text-right{
+    display: block;
+    float: right;
+}
+
+.price-detail{
+    display: block;
+    float: left;
+    font-size: 2em;
+}
+
+a.btn-success.addcart{
+    display: block;
+    float: right;
+}
+
+.detail-elements{
+    margin-top:75px;
+}
+
+.cart-list{
+border: 1px solid lightgray;}
+
+.social-icon-fb{
+display: block;
+    float:left;
+}
+
+.social-icon-twitter{
+    display: block;
+}
+
+.count{
+    margin-bottom: 15px;
+}
+
+.admin-title{
+    border-radius: 15px;
+    border: 1px solid lightgray;
+    padding : 20px;
+}
