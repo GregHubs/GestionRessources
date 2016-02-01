@@ -15,7 +15,9 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&amp;subset=latin"
           rel="stylesheet" type="text/css">
 
-    {% stylesheets '@UserBundle/Resources/less/styles.less' %}
+    {% stylesheets  output="css/style.css"
+        '@UserBundle/Resources/less/class.less'
+    %}
     <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
 
