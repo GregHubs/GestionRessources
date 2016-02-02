@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Imdb Application{% endblock %}
+
+{% block body %}
+    <body>
+    <div>
+
+    </div>
+
+    <div>
+        <div class="tools actu-body index-action">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1">
+                    <!-- Primary table -->
+                    <div class="table-primary">
+                        {% for type, messages in app.session.flashbag.all() %}
+                            {% for message in messages %}
+                                <div class="flash-{{ type }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% block fos_user_content %}
+                        {% endblock fos_user_content %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+{% endblock %}
