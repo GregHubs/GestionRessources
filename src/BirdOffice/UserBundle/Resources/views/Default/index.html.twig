@@ -67,6 +67,49 @@
         }
 
 
+        var addPartnerAjax = "{{  path('addPartnerAjax') }}";
+
+        var civility = $('#fos_user_registration_form_civility').val();
+        var name = $('#fos_user_registration_form_name').val();
+        var username = $('#fos_user_registration_form_username').val();
+        var email = $('#fos_user_registration_form_email').val();
+        var plainPassword = $('#fos_user_registration_form_plainPassword').val();
+        var managedBy = $('#fos_user_registration_form_managedBy').val();
+
+        $('#add-partner').click(function (){
+           // console.log(plainPassword);
+            ajax_add_partner(
+                    civility,
+                    name,
+                    username,
+                    email,
+                    plainPassword,
+                    managedBy
+            );
+            alert('yo');
+            e.stopPropagation();
+        });
+
+
+        function ajax_add_partner(){
+            $.ajax({
+                type: "POST",
+                url: addPartnerAjax,
+                data: {
+                    civility:civility,
+                    name:name,
+                    username:username,
+                    email:email,
+                    plainPassword:plainPassword,
+                    managedBy:managedBy
+                },
+            success: function(data) {
+                    jQuery('#myModal').addClass('modal-success');
+                }
+            });
+        }
+
+
 
     </script>
 {% endblock %}

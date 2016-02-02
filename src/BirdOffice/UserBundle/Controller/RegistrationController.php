@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Validator\Constraints\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 
 class RegistrationController extends BaseController
 {
@@ -48,5 +50,15 @@ class RegistrationController extends BaseController
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.twig', array(
             'form' => $form->createView()
         ));
+    }
+
+
+    /**
+     * @Route("/ajaxCall", name="addPartnerAjax", options={"expose"=true} )
+     *
+     */
+    public function AddPartnerAjaxAction()
+    {
+die('ok');
     }
 }

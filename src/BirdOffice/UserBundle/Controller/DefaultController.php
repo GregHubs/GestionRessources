@@ -27,7 +27,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/prout", name="list")
+     * @Route("/list", name="list")
      */
     public function listAction(Request $request)
     {
