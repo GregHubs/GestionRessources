@@ -40,9 +40,3 @@ display: block;
 .count{
     margin-bottom: 15px;
 }
-
-.admin-title{
-    border-radius: 15px;
-    border: 1px solid lightgray;
-    padding : 20px;
-}
