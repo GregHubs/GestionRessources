@@ -19,6 +19,7 @@ class FormLoginTest extends WebTestCase
     public function testFormLogin($config)
     {
         $client = $this->createClient(array('test_case' => 'StandardFormLogin', 'root_config' => $config));
+        $client->insulate();
 
         $form = $client->request('GET', '/login')->selectButton('login')->form();
         $form['_username'] = 'johannes';
@@ -38,6 +39,7 @@ class FormLoginTest extends WebTestCase
     public function testFormLogout($config)
     {
         $client = $this->createClient(array('test_case' => 'StandardFormLogin', 'root_config' => $config));
+        $client->insulate();
 
         $form = $client->request('GET', '/login')->selectButton('login')->form();
         $form['_username'] = 'johannes';
@@ -71,6 +73,7 @@ class FormLoginTest extends WebTestCase
     public function testFormLoginWithCustomTargetPath($config)
     {
         $client = $this->createClient(array('test_case' => 'StandardFormLogin', 'root_config' => $config));
+        $client->insulate();
 
         $form = $client->request('GET', '/login')->selectButton('login')->form();
         $form['_username'] = 'johannes';
@@ -91,6 +94,7 @@ class FormLoginTest extends WebTestCase
     public function testFormLoginRedirectsToProtectedResourceAfterLogin($config)
     {
         $client = $this->createClient(array('test_case' => 'StandardFormLogin', 'root_config' => $config));
+        $client->insulate();
 
         $client->request('GET', '/protected_resource');
         $this->assertRedirect($client->getResponse(), '/login');
@@ -114,13 +118,17 @@ class FormLoginTest extends WebTestCase
         );
     }
 
-    public static function setUpBeforeClass()
+    protected function setUp()
     {
-        parent::deleteTmpDir('StandardFormLogin');
+        parent::setUp();
+
+        $this->deleteTmpDir('StandardFormLogin');
     }
 
-    public static function tearDownAfterClass()
+    protected function tearDown()
     {
-        parent::deleteTmpDir('StandardFormLogin');
+        parent::tearDown();
+
+        $this->deleteTmpDir('StandardFormLogin');
     }
 }

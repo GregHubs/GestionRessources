@@ -12,17 +12,15 @@ class RegistrationType extends AbstractType
         $builder->add('name');
     }
 
+    // La méthode getParent permet de récupérer le formulaire initial de FOSUserBundle
     public function getParent()
     {
         return 'FOS\UserBundle\Form\Type\RegistrationFormType';
-
-        // Or for Symfony < 2.8
-        // return 'fos_user_registration';
     }
 
     public function getBlockPrefix()
     {
-        return 'app_user_registration';
+        return 'bird_user_registration';
     }
 
     // For Symfony 2.x

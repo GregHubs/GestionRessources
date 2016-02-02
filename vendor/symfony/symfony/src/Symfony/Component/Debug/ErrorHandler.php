@@ -95,12 +95,13 @@ class ErrorHandler
 
     private $loggedTraces = array();
     private $isRecursive = 0;
-    private $isRoot = false;
     private $exceptionHandler;
+    private $bootstrappingLogger;
 
     private static $reservedMemory;
     private static $stackedErrors = array();
     private static $stackedErrorLevels = array();
+    private static $toStringException = null;
 
     /**
      * Same init value as thrownErrors.
@@ -135,12 +136,7 @@ class ErrorHandler
             $handler = new static();
         }
 
-        if (null === $prev = set_error_handler(array($handler, 'handleError'))) {
-            restore_error_handler();
-            // Specifying the error types earlier would expose us to https://bugs.php.net/63206
-            set_error_handler(array($handler, 'handleError'), $handler->thrownErrors | $handler->loggedErrors);
-            $handler->isRoot = true;
-        }
+        $prev = set_error_handler(array($handler, 'handleError'), $handler->thrownErrors | $handler->loggedErrors);
 
         if ($handlerIsNew && is_array($prev) && $prev[0] instanceof self) {
             $handler = $prev[0];
@@ -157,6 +153,14 @@ class ErrorHandler
         return $handler;
     }
 
+    public function __construct(BufferingLogger $bootstrappingLogger = null)
+    {
+        if ($bootstrappingLogger) {
+            $this->bootstrappingLogger = $bootstrappingLogger;
+            $this->setDefaultLogger($bootstrappingLogger);
+        }
+    }
+
     /**
      * Sets a logger to non assigned errors levels.
      *
@@ -170,7 +174,7 @@ class ErrorHandler
 
         if (is_array($levels)) {
             foreach ($levels as $type => $logLevel) {
-                if (empty($this->loggers[$type][0]) || $replace) {
+                if (empty($this->loggers[$type][0]) || $replace || $this->loggers[$type][0] === $this->bootstrappingLogger) {
                     $loggers[$type] = array($logger, $logLevel);
                 }
             }
@@ -179,7 +183,7 @@ class ErrorHandler
                 $levels = E_ALL | E_STRICT;
             }
             foreach ($this->loggers as $type => $log) {
-                if (($type & $levels) && (empty($log[0]) || $replace)) {
+                if (($type & $levels) && (empty($log[0]) || $replace || $log[0] === $this->bootstrappingLogger)) {
                     $log[0] = $logger;
                     $loggers[$type] = $log;
                 }
@@ -202,6 +206,7 @@ class ErrorHandler
     {
         $prevLogged = $this->loggedErrors;
         $prev = $this->loggers;
+        $flush = array();
 
         foreach ($loggers as $type => $log) {
             if (!isset($prev[$type])) {
@@ -220,8 +225,23 @@ class ErrorHandler
                 throw new \InvalidArgumentException('Invalid logger provided');
             }
             $this->loggers[$type] = $log + $prev[$type];
+
+            if ($this->bootstrappingLogger && $prev[$type][0] === $this->bootstrappingLogger) {
+                $flush[$type] = $type;
+            }
         }
         $this->reRegister($prevLogged | $this->thrownErrors);
+
+        if ($flush) {
+            foreach ($this->bootstrappingLogger->cleanLogs() as $log) {
+                $type = $log[2]['type'];
+                if (!isset($flush[$type])) {
+                    $this->bootstrappingLogger->log($log[0], $log[1], $log[2]);
+                } elseif ($this->loggers[$type][0]) {
+                    $this->loggers[$type][0]->log($this->loggers[$type][1], $log[1], $log[2]);
+                }
+            }
+        }
 
         return $prev;
     }
@@ -332,16 +352,12 @@ class ErrorHandler
     private function reRegister($prev)
     {
         if ($prev !== $this->thrownErrors | $this->loggedErrors) {
-            $handler = set_error_handler('var_dump');
+            $handler = set_error_handler('var_dump', 0);
             $handler = is_array($handler) ? $handler[0] : null;
             restore_error_handler();
             if ($handler === $this) {
                 restore_error_handler();
-                if ($this->isRoot) {
-                    set_error_handler(array($this, 'handleError'), $this->thrownErrors | $this->loggedErrors);
-                } else {
-                    set_error_handler(array($this, 'handleError'));
-                }
+                set_error_handler(array($this, 'handleError'), $this->thrownErrors | $this->loggedErrors);
             }
         }
     }
@@ -387,7 +403,10 @@ class ErrorHandler
         }
 
         if ($throw) {
-            if (($this->scopedErrors & $type) && class_exists('Symfony\Component\Debug\Exception\ContextErrorException')) {
+            if (null !== self::$toStringException) {
+                $throw = self::$toStringException;
+                self::$toStringException = null;
+            } elseif (($this->scopedErrors & $type) && class_exists('Symfony\Component\Debug\Exception\ContextErrorException')) {
                 // Checking for class existence is a work around for https://bugs.php.net/42098
                 $throw = new ContextErrorException($this->levels[$type].': '.$message, 0, $type, $file, $line, $context);
             } else {
@@ -400,6 +419,47 @@ class ErrorHandler
                 // We temporarily re-enable display_errors to prevent any blank page related to this bug.
 
                 $throw->errorHandlerCanary = new ErrorHandlerCanary();
+            }
+
+            if (E_USER_ERROR & $type) {
+                $backtrace = $backtrace ?: $throw->getTrace();
+
+                for ($i = 1; isset($backtrace[$i]); ++$i) {
+                    if (isset($backtrace[$i]['function'], $backtrace[$i]['type'], $backtrace[$i - 1]['function'])
+                        && '__toString' === $backtrace[$i]['function']
+                        && '->' === $backtrace[$i]['type']
+                        && !isset($backtrace[$i - 1]['class'])
+                        && ('trigger_error' === $backtrace[$i - 1]['function'] || 'user_error' === $backtrace[$i - 1]['function'])
+                    ) {
+                        // Here, we know trigger_error() has been called from __toString().
+                        // HHVM is fine with throwing from __toString() but PHP triggers a fatal error instead.
+                        // A small convention allows working around the limitation:
+                        // given a caught $e exception in __toString(), quitting the method with
+                        // `return trigger_error($e, E_USER_ERROR);` allows this error handler
+                        // to make $e get through the __toString() barrier.
+
+                        foreach ($context as $e) {
+                            if (($e instanceof \Exception || $e instanceof \Throwable) && $e->__toString() === $message) {
+                                if (1 === $i) {
+                                    // On HHVM
+                                    $throw = $e;
+                                    break;
+                                }
+                                self::$toStringException = $e;
+
+                                return true;
+                            }
+                        }
+
+                        if (1 < $i) {
+                            // On PHP (not on HHVM), display the original error message instead of the default one.
+                            $this->handleException($throw);
+
+                            // Stop the process by giving back the error to the native handler.
+                            return false;
+                        }
+                    }
+                }
             }
 
             throw $throw;
@@ -537,7 +597,7 @@ class ErrorHandler
 
         self::$reservedMemory = null;
 
-        $handler = set_error_handler('var_dump');
+        $handler = set_error_handler('var_dump', 0);
         $handler = is_array($handler) ? $handler[0] : null;
         restore_error_handler();
 
@@ -682,7 +742,7 @@ class ErrorHandler
     {
         @trigger_error('The '.__METHOD__.' static method is deprecated since version 2.6 and will be removed in 3.0. Use the setLoggers() or setDefaultLogger() methods instead.', E_USER_DEPRECATED);
 
-        $handler = set_error_handler('var_dump');
+        $handler = set_error_handler('var_dump', 0);
         $handler = is_array($handler) ? $handler[0] : null;
         restore_error_handler();
         if (!$handler instanceof self) {

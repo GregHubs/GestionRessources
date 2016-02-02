@@ -480,6 +480,22 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($headers, $client->getRequest()->getServer());
     }
 
+    public function testIsFollowingRedirects()
+    {
+        $client = new TestClient();
+        $this->assertTrue($client->isFollowingRedirects(), '->getFollowRedirects() returns default value');
+        $client->followRedirects(false);
+        $this->assertFalse($client->isFollowingRedirects(), '->getFollowRedirects() returns assigned value');
+    }
+
+    public function testGetMaxRedirects()
+    {
+        $client = new TestClient();
+        $this->assertEquals(-1, $client->getMaxRedirects(), '->getMaxRedirects() returns default value');
+        $client->setMaxRedirects(3);
+        $this->assertEquals(3, $client->getMaxRedirects(), '->getMaxRedirects() returns assigned value');
+    }
+
     public function testBack()
     {
         $client = new TestClient();
@@ -623,25 +639,5 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('HTTPS', $server);
         $this->assertFalse($server['HTTPS']);
-    }
-
-    public function testInternalRequest()
-    {
-        $client = new TestClient();
-
-        $client->request('GET', 'https://www.example.com/https/www.example.com', array(), array(), array(
-            'HTTP_HOST' => 'testhost',
-            'HTTP_USER_AGENT' => 'testua',
-            'HTTPS' => false,
-            'NEW_SERVER_KEY' => 'new-server-key-value',
-        ));
-
-        $this->assertInstanceOf('Symfony\Component\BrowserKit\Request', $client->getInternalRequest());
-    }
-
-    public function testInternalRequestNull()
-    {
-        $client = new TestClient();
-        $this->assertNull($client->getInternalRequest());
     }
 }

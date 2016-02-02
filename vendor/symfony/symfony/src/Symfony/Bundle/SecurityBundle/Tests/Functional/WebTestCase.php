@@ -23,7 +23,7 @@ class WebTestCase extends BaseWebTestCase
         self::assertEquals('http://localhost'.$location, $response->headers->get('Location'));
     }
 
-    protected static function deleteTmpDir($testCase)
+    protected function deleteTmpDir($testCase)
     {
         if (!file_exists($dir = sys_get_temp_dir().'/'.Kernel::VERSION.'/'.$testCase)) {
             return;

@@ -95,14 +95,13 @@ class AssetsHelper extends Helper
         if ($version) {
             $package = $this->packages->getPackage($packageName);
 
-            $v = new \ReflectionProperty('Symfony\Component\Asset\Package', 'versionStrategy');
+            $v = new \ReflectionProperty($package, 'versionStrategy');
             $v->setAccessible(true);
 
             $currentVersionStrategy = $v->getValue($package);
 
             $f = new \ReflectionProperty($currentVersionStrategy, 'format');
             $f->setAccessible(true);
-
             $format = $f->getValue($currentVersionStrategy);
 
             $v->setValue($package, new StaticVersionStrategy($version, $format));

@@ -142,7 +142,6 @@ class PropertyPathBuilder
             $this->elements[$offset + $i] = $path->getElement($pathOffset + $i);
             $this->isIndex[$offset + $i] = $path->isIndex($pathOffset + $i);
         }
-        ksort($this->elements);
     }
 
     /**

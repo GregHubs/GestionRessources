@@ -27,17 +27,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class EntityUserProvider implements UserProviderInterface
 {
-    private $registry;
-    private $managerName;
-    private $classOrAlias;
     private $class;
+    private $repository;
     private $property;
+    private $metadata;
 
-    public function __construct(ManagerRegistry $registry, $classOrAlias, $property = null, $managerName = null)
+    public function __construct(ManagerRegistry $registry, $class, $property = null, $managerName = null)
     {
-        $this->registry = $registry;
-        $this->managerName = $managerName;
-        $this->classOrAlias = $classOrAlias;
+        $em = $registry->getManager($managerName);
+        $this->class = $class;
+        $this->metadata = $em->getClassMetadata($class);
+
+        if (false !== strpos($this->class, ':')) {
+            $this->class = $this->metadata->getName();
+        }
+
+        $this->repository = $em->getRepository($class);
         $this->property = $property;
     }
 
@@ -46,15 +51,18 @@ class EntityUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $repository = $this->getRepository();
         if (null !== $this->property) {
-            $user = $repository->findOneBy(array($this->property => $username));
+            $user = $this->repository->findOneBy(array($this->property => $username));
         } else {
-            if (!$repository instanceof UserProviderInterface) {
-                throw new \InvalidArgumentException(sprintf('The Doctrine repository "%s" must implement UserProviderInterface.', get_class($repository)));
+            if (!$this->repository instanceof UserLoaderInterface) {
+                if (!$this->repository instanceof UserProviderInterface) {
+                    throw new \InvalidArgumentException(sprintf('The Doctrine repository "%s" must implement Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface.', get_class($this->repository)));
+                }
+
+                @trigger_error('Implementing loadUserByUsername from Symfony\Component\Security\Core\User\UserProviderInterface is deprecated since version 2.8 and will be removed in 3.0. Implement the Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface instead.', E_USER_DEPRECATED);
             }
 
-            $user = $repository->loadUserByUsername($username);
+            $user = $this->repository->loadUserByUsername($username);
         }
 
         if (null === $user) {
@@ -69,20 +77,18 @@ class EntityUserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        $class = $this->getClass();
-        if (!$user instanceof $class) {
+        if (!$user instanceof $this->class) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
-        $repository = $this->getRepository();
-        if ($repository instanceof UserProviderInterface) {
-            $refreshedUser = $repository->refreshUser($user);
+        if ($this->repository instanceof UserProviderInterface) {
+            $refreshedUser = $this->repository->refreshUser($user);
         } else {
             // The user must be reloaded via the primary key as all other data
             // might have changed without proper persistence in the database.
             // That's the case when the user has been changed by a form with
             // validation errors.
-            if (!$id = $this->getClassMetadata()->getIdentifierValues($user)) {
+            if (!$id = $this->metadata->getIdentifierValues($user)) {
                 throw new \InvalidArgumentException('You cannot refresh a user '.
                     'from the EntityUserProvider that does not contain an identifier. '.
                     'The user object has to be serialized with its own identifier '.
@@ -90,7 +96,7 @@ class EntityUserProvider implements UserProviderInterface
                 );
             }
 
-            $refreshedUser = $repository->find($id);
+            $refreshedUser = $this->repository->find($id);
             if (null === $refreshedUser) {
                 throw new UsernameNotFoundException(sprintf('User with id %s not found', json_encode($id)));
             }
@@ -104,36 +110,6 @@ class EntityUserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return $class === $this->getClass() || is_subclass_of($class, $this->getClass());
-    }
-
-    private function getObjectManager()
-    {
-        return $this->registry->getManager($this->managerName);
-    }
-
-    private function getRepository()
-    {
-        return $this->getObjectManager()->getRepository($this->classOrAlias);
-    }
-
-    private function getClass()
-    {
-        if (null === $this->class) {
-            $class = $this->classOrAlias;
-
-            if (false !== strpos($class, ':')) {
-                $class = $this->getClassMetadata()->getName();
-            }
-
-            $this->class = $class;
-        }
-
-        return $this->class;
-    }
-
-    private function getClassMetadata()
-    {
-        return $this->getObjectManager()->getClassMetadata($this->classOrAlias);
+        return $class === $this->class || is_subclass_of($class, $this->class);
     }
 }

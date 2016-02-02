@@ -94,4 +94,8 @@ fos_user:
     user_class: BirdOffice\UserBundle\Entity\User
     registration:
         form:
-            type: UserBundle\Form\RegistrationType
+            type: BirdOffice\UserBundle\Form\RegistrationType
+
+services:
+    fos_user.doctrine_registry:
+        alias: doctrine

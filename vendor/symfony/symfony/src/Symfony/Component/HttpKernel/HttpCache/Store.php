@@ -38,8 +38,10 @@ class Store implements StoreInterface
     public function __construct($root)
     {
         $this->root = $root;
-        if (!is_dir($this->root) && !@mkdir($this->root, 0777, true) && !is_dir($this->root)) {
-            throw new \RuntimeException(sprintf('Unable to create the store directory (%s).', $this->root));
+        if (!is_dir($this->root)) {
+            if (false === @mkdir($this->root, 0777, true) && !is_dir($this->root)) {
+                throw new \RuntimeException(sprintf('Unable to create the store directory (%s).', $this->root));
+            }
         }
         $this->keyCache = new \SplObjectStorage();
         $this->locks = array();
@@ -247,8 +249,10 @@ class Store implements StoreInterface
             }
         }
 
-        if ($modified && false === $this->save($key, serialize($entries))) {
-            throw new \RuntimeException('Unable to store the metadata.');
+        if ($modified) {
+            if (false === $this->save($key, serialize($entries))) {
+                throw new \RuntimeException('Unable to store the metadata.');
+            }
         }
     }
 
@@ -269,7 +273,7 @@ class Store implements StoreInterface
         }
 
         foreach (preg_split('/[\s,]+/', $vary) as $header) {
-            $key = str_replace('_', '-', strtolower($header));
+            $key = strtr(strtolower($header), '_', '-');
             $v1 = isset($env1[$key]) ? $env1[$key] : null;
             $v2 = isset($env2[$key]) ? $env2[$key] : null;
             if ($v1 !== $v2) {

@@ -67,15 +67,13 @@ class BCryptPasswordEncoderTest extends \PHPUnit_Framework_TestCase
     {
         $encoder = new BCryptPasswordEncoder(self::VALID_COST);
 
-        $encoder->encodePassword(str_repeat('a', 73), 'salt');
+        $encoder->encodePassword(str_repeat('a', 5000), 'salt');
     }
 
     public function testCheckPasswordLength()
     {
         $encoder = new BCryptPasswordEncoder(self::VALID_COST);
-        $result = $encoder->encodePassword(str_repeat('a', 72), null);
 
-        $this->assertFalse($encoder->isPasswordValid($result, str_repeat('a', 73), 'salt'));
-        $this->assertTrue($encoder->isPasswordValid($result, str_repeat('a', 72), 'salt'));
+        $this->assertFalse($encoder->isPasswordValid('encoded', str_repeat('a', 5000), 'salt'));
     }
 }

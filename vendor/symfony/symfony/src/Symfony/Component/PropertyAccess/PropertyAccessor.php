@@ -24,74 +24,19 @@ use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
  */
 class PropertyAccessor implements PropertyAccessorInterface
 {
-    /**
-     * @internal
-     */
     const VALUE = 0;
-
-    /**
-     * @internal
-     */
     const IS_REF = 1;
-
-    /**
-     * @internal
-     */
     const IS_REF_CHAINED = 2;
-
-    /**
-     * @internal
-     */
     const ACCESS_HAS_PROPERTY = 0;
-
-    /**
-     * @internal
-     */
     const ACCESS_TYPE = 1;
-
-    /**
-     * @internal
-     */
     const ACCESS_NAME = 2;
-
-    /**
-     * @internal
-     */
     const ACCESS_REF = 3;
-
-    /**
-     * @internal
-     */
     const ACCESS_ADDER = 4;
-
-    /**
-     * @internal
-     */
     const ACCESS_REMOVER = 5;
-
-    /**
-     * @internal
-     */
     const ACCESS_TYPE_METHOD = 0;
-
-    /**
-     * @internal
-     */
     const ACCESS_TYPE_PROPERTY = 1;
-
-    /**
-     * @internal
-     */
     const ACCESS_TYPE_MAGIC = 2;
-
-    /**
-     * @internal
-     */
     const ACCESS_TYPE_ADDER_AND_REMOVER = 3;
-
-    /**
-     * @internal
-     */
     const ACCESS_TYPE_NOT_FOUND = 4;
 
     /**
@@ -117,9 +62,6 @@ class PropertyAccessor implements PropertyAccessorInterface
     /**
      * Should not be used by application code. Use
      * {@link PropertyAccess::createPropertyAccessor()} instead.
-     *
-     * @param bool $magicCall
-     * @param bool $throwExceptionOnInvalidIndex
      */
     public function __construct($magicCall = false, $throwExceptionOnInvalidIndex = false)
     {
@@ -423,7 +365,7 @@ class PropertyAccessor implements PropertyAccessorInterface
             }
         } elseif (!$access[self::ACCESS_HAS_PROPERTY] && property_exists($object, $property)) {
             // Needed to support \stdClass instances. We need to explicitly
-            // exclude $access[self::ACCESS_HAS_PROPERTY], otherwise if
+            // exclude $classHasProperty, otherwise if in the previous clause
             // a *protected* property was found on the class, property_exists()
             // returns true, consequently the following line will result in a
             // fatal error.
@@ -469,6 +411,7 @@ class PropertyAccessor implements PropertyAccessorInterface
             $getsetter = lcfirst($camelProp); // jQuery style, e.g. read: last(), write: last($item)
             $isser = 'is'.$camelProp;
             $hasser = 'has'.$camelProp;
+            $classHasProperty = $reflClass->hasProperty($property);
 
             if ($reflClass->hasMethod($getter) && $reflClass->getMethod($getter)->isPublic()) {
                 $access[self::ACCESS_TYPE] = self::ACCESS_TYPE_METHOD;
@@ -486,10 +429,13 @@ class PropertyAccessor implements PropertyAccessorInterface
                 $access[self::ACCESS_TYPE] = self::ACCESS_TYPE_PROPERTY;
                 $access[self::ACCESS_NAME] = $property;
                 $access[self::ACCESS_REF] = false;
-            } elseif ($access[self::ACCESS_HAS_PROPERTY] && $reflClass->getProperty($property)->isPublic()) {
+            } elseif ($classHasProperty && $reflClass->getProperty($property)->isPublic()) {
                 $access[self::ACCESS_TYPE] = self::ACCESS_TYPE_PROPERTY;
                 $access[self::ACCESS_NAME] = $property;
                 $access[self::ACCESS_REF] = true;
+
+                $result[self::VALUE] = &$object->$property;
+                $result[self::IS_REF] = true;
             } elseif ($this->magicCall && $reflClass->hasMethod('__call') && $reflClass->getMethod('__call')->isPublic()) {
                 // we call the getter and hope the __call do the job
                 $access[self::ACCESS_TYPE] = self::ACCESS_TYPE_MAGIC;
@@ -560,7 +506,7 @@ class PropertyAccessor implements PropertyAccessorInterface
             $this->writeCollection($object, $property, $value, $access[self::ACCESS_ADDER], $access[self::ACCESS_REMOVER]);
         } elseif (!$access[self::ACCESS_HAS_PROPERTY] && property_exists($object, $property)) {
             // Needed to support \stdClass instances. We need to explicitly
-            // exclude $access[self::ACCESS_HAS_PROPERTY], otherwise if
+            // exclude $classHasProperty, otherwise if in the previous clause
             // a *protected* property was found on the class, property_exists()
             // returns true, consequently the following line will result in a
             // fatal error.
@@ -633,6 +579,7 @@ class PropertyAccessor implements PropertyAccessorInterface
     private function getWriteAccessInfo($object, $property, $value)
     {
         $key = get_class($object).'::'.$property;
+        $guessedAdders = '';
 
         if (isset($this->writePropertyCache[$key])) {
             $access = $this->writePropertyCache[$key];
@@ -647,7 +594,13 @@ class PropertyAccessor implements PropertyAccessorInterface
             if (is_array($value) || $value instanceof \Traversable) {
                 $methods = $this->findAdderAndRemover($reflClass, $singulars);
 
-                if (null !== $methods) {
+                if (null === $methods) {
+                    // It is sufficient to include only the adders in the error
+                    // message. If the user implements the adder but not the remover,
+                    // an exception will be thrown in findAdderAndRemover() that
+                    // the remover has to be implemented as well.
+                    $guessedAdders = '"add'.implode('()", "add', $singulars).'()", ';
+                } else {
                     $access[self::ACCESS_TYPE] = self::ACCESS_TYPE_ADDER_AND_REMOVER;
                     $access[self::ACCESS_ADDER] = $methods[0];
                     $access[self::ACCESS_REMOVER] = $methods[1];
@@ -655,8 +608,10 @@ class PropertyAccessor implements PropertyAccessorInterface
             }
 
             if (!isset($access[self::ACCESS_TYPE])) {
-                $setter = 'set'.$camelized;
+                $setter = 'set'.$this->camelize($property);
                 $getsetter = lcfirst($camelized); // jQuery style, e.g. read: last(), write: last($item)
+
+                $classHasProperty = $reflClass->hasProperty($property);
 
                 if ($this->isMethodAccessible($reflClass, $setter, 1)) {
                     $access[self::ACCESS_TYPE] = self::ACCESS_TYPE_METHOD;
@@ -667,7 +622,7 @@ class PropertyAccessor implements PropertyAccessorInterface
                 } elseif ($this->isMethodAccessible($reflClass, '__set', 2)) {
                     $access[self::ACCESS_TYPE] = self::ACCESS_TYPE_PROPERTY;
                     $access[self::ACCESS_NAME] = $property;
-                } elseif ($access[self::ACCESS_HAS_PROPERTY] && $reflClass->getProperty($property)->isPublic()) {
+                } elseif ($classHasProperty && $reflClass->getProperty($property)->isPublic()) {
                     $access[self::ACCESS_TYPE] = self::ACCESS_TYPE_PROPERTY;
                     $access[self::ACCESS_NAME] = $property;
                 } elseif ($this->magicCall && $this->isMethodAccessible($reflClass, '__call', 2)) {

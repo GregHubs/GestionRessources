@@ -19,6 +19,7 @@ class CsrfFormLoginTest extends WebTestCase
     public function testFormLoginAndLogoutWithCsrfTokens($config)
     {
         $client = $this->createClient(array('test_case' => 'CsrfFormLogin', 'root_config' => $config));
+        $client->insulate();
 
         $form = $client->request('GET', '/login')->selectButton('login')->form();
         $form['user_login[username]'] = 'johannes';
@@ -49,6 +50,7 @@ class CsrfFormLoginTest extends WebTestCase
     public function testFormLoginWithInvalidCsrfToken($config)
     {
         $client = $this->createClient(array('test_case' => 'CsrfFormLogin', 'root_config' => $config));
+        $client->insulate();
 
         $form = $client->request('GET', '/login')->selectButton('login')->form();
         $form['user_login[_token]'] = '';
@@ -66,6 +68,7 @@ class CsrfFormLoginTest extends WebTestCase
     public function testFormLoginWithCustomTargetPath($config)
     {
         $client = $this->createClient(array('test_case' => 'CsrfFormLogin', 'root_config' => $config));
+        $client->insulate();
 
         $form = $client->request('GET', '/login')->selectButton('login')->form();
         $form['user_login[username]'] = 'johannes';
@@ -86,6 +89,7 @@ class CsrfFormLoginTest extends WebTestCase
     public function testFormLoginRedirectsToProtectedResourceAfterLogin($config)
     {
         $client = $this->createClient(array('test_case' => 'CsrfFormLogin', 'root_config' => $config));
+        $client->insulate();
 
         $client->request('GET', '/protected-resource');
         $this->assertRedirect($client->getResponse(), '/login');
@@ -109,13 +113,17 @@ class CsrfFormLoginTest extends WebTestCase
         );
     }
 
-    public static function setUpBeforeClass()
+    protected function setUp()
     {
-        parent::deleteTmpDir('CsrfFormLogin');
+        parent::setUp();
+
+        $this->deleteTmpDir('CsrfFormLogin');
     }
 
-    public static function tearDownAfterClass()
+    protected function tearDown()
     {
-        parent::deleteTmpDir('CsrfFormLogin');
+        parent::tearDown();
+
+        $this->deleteTmpDir('CsrfFormLogin');
     }
 }
