@@ -1,30 +1,34 @@
 <?php
 
-namespace Imdb\UserBundle\Form;
+namespace BirdOffice\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class RegistrationType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // On étend ici le formulaire d'inscription de FOSUserBundle
-        $builder
-            ->add('username', 'text', array('label' => 'Nom d\'utilisateur'))
-            ->add('managedBy', 'entity', array('label' => 'Manager', 'class' => 'UserBundle:User', 'property' => 'manager'))
-            ->getForm();
+        $builder->add('name');
     }
 
-    // La méthode getParent permet de récupérer le formulaire initial de FOSUserBundle
     public function getParent()
     {
-        return 'fos_user_registration';
+        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+
+        // Or for Symfony < 2.8
+        // return 'fos_user_registration';
     }
 
+    public function getBlockPrefix()
+    {
+        return 'app_user_registration';
+    }
+
+    // For Symfony 2.x
     public function getName()
     {
-        return 'bird_user_registration';
+        return $this->getBlockPrefix();
     }
+
 }

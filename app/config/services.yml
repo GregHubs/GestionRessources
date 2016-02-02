@@ -11,4 +11,4 @@ services:
     app.form.registration:
         class: UserBundle\Form\RegistrationType
         tags:
-            - { name: form.type, alias: bird_user_registration }
+            - { name: form.type, alias: app_user_registration }
