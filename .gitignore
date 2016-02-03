@@ -10,3 +10,5 @@
 /composer.phar
 /.idea/
 /web/app.php
+/vendor/
+*.DS_Store

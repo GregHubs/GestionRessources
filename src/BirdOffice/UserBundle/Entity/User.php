@@ -25,6 +25,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $civility;
+
+    /**
      * @ORM\ManyToMany(targetEntity="BirdOffice\UserBundle\Entity\User")
      **/
     private $managedBy;
