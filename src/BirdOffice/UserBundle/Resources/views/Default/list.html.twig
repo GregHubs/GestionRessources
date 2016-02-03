@@ -9,7 +9,6 @@
             <th class="text-center">Username</th>
             <th class="text-center">Email</th>
             <th class="text-center" width="100">Actions</th>
-
         </tr>
 
         {# table body #}
@@ -19,7 +18,7 @@
                 <td class="text-center">{{ user.username }}</td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="actions text-center">
-                    <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
+                    <a class="text-danger" href="{{ path('delete_user', { 'id':user.id }) }}"><i class="fa fa-trash-o icon-size"></i></a>
                     <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>
                     <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
                 </td>
