@@ -18,23 +18,23 @@ h2.form-signin-heading {
     display: block;
 }
 .wrapper {
-    padding: @padding15;
-    box-shadow: @shadow;
-    background: @grey-nav;
+    padding: @padding15; box-shadow: @shadow; background: @grey-nav;
 }
 .page-header {
     margin: 0 auto ;
 }
+.close {opacity: 1; color: @white}
 .margin15 {
     margin-bottom: 15px!important;
 }
 .head-table th {
     background: @blue-bird!important; border: none !important; color: #ffffff;
 }
+.modal-header {
+    background:@blue-bird; color: @white;
+}
 .form-control {
-    height:31px;
-    padding:6px 4px;
-    font-size: 12px;
+    height:31px; padding:6px 4px; font-size: 12px;
 }
 .left {
     float:left;
@@ -43,8 +43,7 @@ h2.form-signin-heading {
     height:40px;
 }
 .checkbox  {
-    margin-bottom: 0;
-    margin-top: 3px;
+    margin-bottom: 0; margin-top: 3px;
 }
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th { background-color: #ffffff; }
 .fa-trash-o::before {
@@ -110,7 +109,7 @@ td.actions a {
 .headline {
     font-size: 22px;
     &::after {
-        border-bottom: 1px solid #1abc9c;
+        border-bottom: 1px solid @flat-green;
         content: " ";
         display: block;
         margin: 0 auto;
