@@ -19,13 +19,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class AjaxController extends Controller
 {
-
     /**
      * @Route("/ajaxCall", name="addPartnerAjax", options={"expose"=true} )
      *
      */
     public function AddPartnerAjaxAction(Request $request)
     {
+        $managerId = $request->get('managedBy');
+
+        $em = $this->getDoctrine();
+        // $manager = $em->getRepository('UserBundle:User')->find($managerId);
+
+
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
@@ -37,42 +42,40 @@ class AjaxController extends Controller
         $user->setEnabled(true);
 
         $user->setEmail($request->get('email'));
-        $user->setCivility($request->get('email'));
-        $user->setName($request->get('email'));
-        $user->setEmail($request->get('email'));
-        $user->setEmail($request->get('email'));
-var_dump($user);die;
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
+        $user->setCivility($request->get('civility'));
+        $user->setName($request->get('name'));
+        $user->setUsername($request->get('username'));
+        $user->setPlainPassword($request->get('plainPassword'));
+       // $user->setManagedBy();
 
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
-
-        $form = $formFactory->createForm();
-        $form->setData($user);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $event = new FormEvent($form, $request);
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-
-            $userManager->updateUser($user);
-
-            if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('fos_user_registration_confirmed');
-                $response = new RedirectResponse($url);
-            }
-
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
-
-            return $response;
-        }
-
-        return $this->render('FOSUserBundle:Registration:register.html.twig', array(
-            'form' => $form->createView(),
-        ));
-
+        $userManager->updateUser($user);
     }
+
+    /**
+     * @Route("/deleteUser/{id}", name="delete_user", options={"expose"=true} )
+     *
+     */
+    public function DeleteUserAjaxAction(Request $request)
+    {
+        $em = $this->getDoctrine();
+
+        $userId = $request->get('id');
+
+        $user = $em->getRepository('UserBundle:User')->find($userId);
+
+        $userManager = $this->get('fos_user.user_manager');
+
+        $userManager->deleteUser($user);
+
+        $managers = $em->getRepository('UserBundle:User')->findByRole('ROLE_SUPER_ADMIN');
+
+        return $this->render('UserBundle:Default:index.html.twig',
+            array(
+                'managers' => $managers
+            )
+        );
+    }
+
+
+    
 }

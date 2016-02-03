@@ -25,9 +25,14 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $civility;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="BirdOffice\UserBundle\Entity\User")
@@ -51,10 +56,6 @@ class User extends BaseUser
         $this->managedBy = new \Doctrine\Common\Collections\ArrayCollection();
         $this->managers = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-
-
-
 
 
 
@@ -124,5 +125,53 @@ class User extends BaseUser
     public function getManagers()
     {
         return $this->managers;
+    }
+
+    /**
+     * Set civility
+     *
+     * @param string $civility
+     *
+     * @return User
+     */
+    public function setCivility($civility)
+    {
+        $this->civility = $civility;
+
+        return $this;
+    }
+
+    /**
+     * Get civility
+     *
+     * @return string
+     */
+    public function getCivility()
+    {
+        return $this->civility;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return User
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

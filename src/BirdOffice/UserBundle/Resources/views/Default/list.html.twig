@@ -2,14 +2,16 @@
     {# total items count #}
 
 
-        <table class="table table-striped table-bordered text-center">
-            <tr class="head-table">
-                {# sorting of properties based on query components #}
-                <th class="text-center">Id</th>
-                <th class="text-center">Username</th>
-                <th class="text-center">Email</th>
-                <th class="text-center" width="100">Actions</th>
-            </tr>
+    <table class="table table-striped table-bordered text-center">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th class="text-center">Id</th>
+            <th class="text-center">Username</th>
+            <th class="text-center">Email</th>
+            <th class="text-center" width="100">Actions</th>
+        </tr>
+
+
         {# table body #}
         {% for user in users %}
             <tr {% if loop.index is odd %}class="color"{% endif %}>
@@ -17,7 +19,7 @@
                 <td class="text-center">{{ user.username }}</td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="actions text-center">
-                    <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
+                    <a class="text-danger" href="{{ path('delete_user', { 'id':user.id }) }}"><i class="fa fa-trash-o icon-size"></i></a>
                     <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>
                     <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
                 </td>
