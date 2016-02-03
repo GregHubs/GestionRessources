@@ -66,17 +66,9 @@
         var addPartnerAjax = "{{  path('addPartnerAjax') }}";
 
         $('#add-partner').click(function (){
-
            // console.log(plainPassword);
-            ajax_add_partner(
-                    civility,
-                    name,
-                    username,
-                    email,
-                    plainPassword,
-                    managedBy
-            );
-            return false;
+            ajax_add_partner();
+           // return false;
         });
 
 
