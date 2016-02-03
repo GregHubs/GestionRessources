@@ -91,13 +91,15 @@ td.actions a {
 .btn-primary {
     border: none; background: @flat-green; color: @white; padding: 6px;
     &:hover {
-        transition-duration: @transition; background: @green-hover; color: @white; text-decoration: none;
+        transition-duration: @transition; background: @white; color: @green-hover; outline: solid 1px @green-hover; text-decoration: none;
     }
     &:active {
         background: @flat-green;
+        color: @white;
     }
     &:focus {
         background: @flat-green;
+        color: @white;
     }
 }
 .headline {

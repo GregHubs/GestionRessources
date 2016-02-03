@@ -15,7 +15,7 @@
                             <option>Octobre 2015</option>
                         </select>
                     </div>
-                    <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal">Ajouter un jour</button>
+                    <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal2">Ajouter un jour</button>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
         Détails
     </button>
 
-    <!-- Modal -->
+    <!-- Modal : Détails-->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -86,6 +86,26 @@
                         <li>Nom du valideur : Kévin</li>
                         <li>Date de la validation : 16/12/2015</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal : ajouter un jour-->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Détails de la demande</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label>Date début</label>
+                            <input class="form-control date" id="date" type="text" value="">                            <label>Date fin</label>
+                            <input type="date" class="form-control"  placeholder="">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
