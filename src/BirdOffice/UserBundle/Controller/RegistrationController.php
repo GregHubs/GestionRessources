@@ -17,6 +17,7 @@ class RegistrationController extends BaseController
     public function RegisterAction(Request $request)
     {
         $formFactory = $this->container->get('fos_user.registration.form.factory');
+
         $form = $formFactory->createForm();
 
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.twig', array(

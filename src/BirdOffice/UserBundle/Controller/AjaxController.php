@@ -76,6 +76,28 @@ class AjaxController extends Controller
         );
     }
 
+    /**
+     * @Route("/editUser/{id}", name="edit_user", options={"expose"=true} )
+     *
+     */
+    public function updateAction(Request $request)
+    {
+        $em = $this->getDoctrine();
 
-    
+        $userId = $request->get('id');
+
+        $user = $em->getRepository('UserBundle:User')->find($userId);
+
+
+        $user->setEmail('');
+
+        $this->get('fos_user.user_manager')->updateUser($user, false);
+
+        // make more modifications to the database
+
+        $this->getDoctrine()->getManager()->flush();
+    }
+
+
+
 }
