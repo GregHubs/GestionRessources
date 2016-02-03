@@ -26,10 +26,38 @@ h2.form-signin-heading {
 .margin15 {
     margin-bottom: 15px!important;
 }
+.head-table th {
+    background: @blue-bird!important; border: none !important; color: #ffffff;
+}
+.left {
+    float:left;
+}
+.fa-trash-o::before {
+    color: #e74c3c;
+}
+.fa-edit::before, .fa-pencil-square-o::before {
+    color: #7ebdce; display: block; margin-top: 2px;
+}
+
+.fa-search::before {
+    color: #6d879b;
+}
+.right{
+    float: right;
+}
 .icon-size {
-    color: #a0a0a0;
     font-size: 19px;
     vertical-align: middle;
+    opacity: 0.74;
+    &:hover {
+        opacity:1;
+    }
+}
+td.actions a {
+    margin-right: 5px;
+    &:last-child {
+        margin-right: 0;
+    }
 }
 .h1, h1, h2, .h2 {
     font-size: 16px;
@@ -41,8 +69,7 @@ h2.form-signin-heading {
 }
 
 .navbar-default {
-    border-bottom: 3px solid #7EBDCE;
-    margin-bottom: 70px;
+    border-bottom: 3px solid #7EBDCE; margin-bottom: 70px;
 }
 
 .btn-default,
@@ -51,6 +78,12 @@ h2.form-signin-heading {
     border: none; background: @flat-green; color: @white; padding: 6px;
     &:hover {
         transition-duration: @transition; background: @green-hover; color: @white; text-decoration: none;
+    }
+    &:active {
+        background: @flat-green;
+    }
+    &:focus {
+        background: @flat-green;
     }
 }
 .headline {
@@ -63,4 +96,12 @@ h2.form-signin-heading {
         padding-top: 10px;
         width: 40px;
     }
+}
+
+.error {
+    color: @flat-red;
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 15px;
+    text-align: center;
 }
