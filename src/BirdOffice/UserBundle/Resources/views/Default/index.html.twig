@@ -94,6 +94,30 @@
         }
 
 
+        var editUser = "{{ path('edit_user') }}";
+
+        $('.edit-user').click(function (){
+            console.log($(this).attr('id'));
+            ajax_edit_partner(
+                    $(this).attr('data-user')
+            )
+        });
+
+
+        function ajax_edit_partner(userId){
+            $.ajax({
+                type: "POST",
+                url: editUser,
+                data: {
+                    user: userId
+                },
+                success: function(data) {
+                    jQuery('#myModal').addClass('modal-success');
+                }
+            });
+        }
+
+
 
 
 

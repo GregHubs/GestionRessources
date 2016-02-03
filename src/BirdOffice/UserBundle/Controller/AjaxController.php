@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 
@@ -77,26 +78,43 @@ class AjaxController extends Controller
     }
 
     /**
-     * @Route("/editUser/{id}", name="edit_user", options={"expose"=true} )
+     * @Route("/editUser", name="edit_user", options={"expose"=true} )
      *
      */
-    public function updateAction(Request $request)
+    public function EditUserAction(Request $request)
     {
-        $em = $this->getDoctrine();
+        $managerId = $request->get('managedBy');
 
-        $userId = $request->get('id');
+        /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+        /*$formFactory = $this->get('fos_user.profile.form.factory');
 
-        $user = $em->getRepository('UserBundle:User')->find($userId);
+        $form = $formFactory->createForm();
+        $form->setData($user);
 
+        $form->handleRequest($request);
 
-        $user->setEmail('');
+        if ($form->isValid()) {
+            /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
+            /*$userManager = $this->get('fos_user.user_manager');
 
-        $this->get('fos_user.user_manager')->updateUser($user, false);
+            $event = new FormEvent($form, $request);
+            $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_SUCCESS, $event);
 
-        // make more modifications to the database
+            $userManager->updateUser($user);
 
-        $this->getDoctrine()->getManager()->flush();
+            if (null === $response = $event->getResponse()) {
+                $url = $this->generateUrl('fos_user_profile_show');
+                $response = new RedirectResponse($url);
+            }
+
+            $dispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
+            return $response;
+        }*/
+
     }
+
+
 
 
 

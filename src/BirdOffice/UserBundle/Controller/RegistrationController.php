@@ -25,4 +25,6 @@ class RegistrationController extends BaseController
         ));
     }
 
+
+
 }
