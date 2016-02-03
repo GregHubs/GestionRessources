@@ -4,16 +4,17 @@
 
 
     <div class="row">
-        <div class="col-md-offset-3 col-md-6 admin-title">
+        <div class="admin-title">
             <h1 class="center headline margin15">Liste des collaborateurs</h1>
-            <p class="text-center">Responsable :
+            <div class="left">Responsable :
                 <select name="manager" id="manager">
                     <option selected></option>
                     {% for manager in managers %}
                         <option value="{{ manager.id }}">{{ manager.username }}</option>
                     {% endfor %}
                 </select>
-            </p>
+            </div>
+            <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal">Ajouter un Collaborateur</button>
         </div>
     </div>
 
@@ -32,12 +33,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <button type="button" class="btn btn-default margin15" data-toggle="modal"  data-target="#myModal">        Ajouter un Collaborateur
-
-    </button>
-    <div id="searchContainer">
-
-    </div>
+    <div id="searchContainer"></div>
 
     <script>
         console.log($('#manager').val());
