@@ -96,19 +96,45 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Ajout du jour</h4>
+                    <h4 class="modal-title" id="myModalLabel">Ajout de jour</h4>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
                             <label>Date début</label>
-                            <input type="date" class="form-control"  placeholder="">
+                            <input type="date" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Date fin</label>
-                            <input type="date" class="form-control"  placeholder="">
+                            <input type="date" class="form-control">
                         </div>
+                        <div class="form-group">
+                            <label>Nombre d'heures</label>
+                            <input type="number" class="form-control" min="1" max="8">
+                        </div>
+                        <div class="form-group">
+                            <label>Type d'absence</label>
+                            <select class="form-control">
+                                <option>Congé payé</option>
+                                <option>Congé sans solde</option>
+                                <option>Absence école</option>
+                                <option>CIF / DIF</option>
+                                <option>Congé maladie</option>
+                                <option>Congé maternité / paternité</option>
+                                <option>Congé exceptionnel (mariage, décès, naissance...)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Type de présence</label>
+                            <select class="form-control">
+                                <option>Rattrapage</option>
+                                <option>Heures supp</option>
+                            </select>
+                        </div>
+                        <textarea class="form-control" rows="3" placeholder="Commentaire"></textarea>
+                        <button type="submit" class="btn btn-default right space">Valider</button>
                     </form>
+                    <div class="clear"></div>
                 </div>
             </div>
         </div>
