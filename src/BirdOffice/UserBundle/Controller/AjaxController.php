@@ -73,7 +73,8 @@ class AjaxController extends Controller
             array(
                 'managers' => $managers
             )
-        );    }
+        );
+    }
 
 
 }
