@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="admin-title">
+                    <h1 class="center headline margin15">Fiche collaborateur</h1>
+                    <div class="space40"></div>
+                    <div class="left">Choix du mois :
+                        <select class="form-control" id="select">
+                            <option>Janvier 2016</option>
+                            <option>Décembre 2015</option>
+                            <option>Novembre 2015</option>
+                            <option>Octobre 2015</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal">Ajouter un jour</button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered text-center">
+            <tr class="head-table">
+                <th class="text-center">Jour</th>
+                <th class="text-center">Durée</th>
+                <th class="text-center">Type</th>
+                <th class="text-center">Description</th>
+                <th class="text-center" width="100">Actions</th>
+                <th class="text-center" width="100">Validation</th>
+            </tr>
+            <tr>
+                <td class="text-center">12/12/2015</td>
+                <td class="text-center">7h</td>
+                <td class="text-center">Absence : maladie</td>
+                <td class="text-center">Lorem ipsum...</td>
+                <td class="actions text-center">
+                    <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
+                    <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>
+                    <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
+                </td>
+                <td class="text-center"><div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="" checked>Validé
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">08/12/2015</td>
+                <td class="text-center">8h</td>
+                <td class="text-center">Absence : congé payé</td>
+                <td class="text-center">Lorem ipsum...</td>
+                <td class="actions text-center">
+                    <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
+                    <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>
+                    <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
+                </td>
+                <td class="text-center"><div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="">Non validé
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+{% endblock %}

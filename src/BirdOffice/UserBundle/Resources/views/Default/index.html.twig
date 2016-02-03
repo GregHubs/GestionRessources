@@ -4,17 +4,20 @@
 
 
     <div class="row">
-        <div class="admin-title">
-            <h1 class="center headline margin15">Liste des collaborateurs</h1>
-            <div class="left">Responsable :
-                <select name="manager" id="manager">
-                    <option selected></option>
-                    {% for manager in managers %}
-                        <option value="{{ manager.id }}">{{ manager.username }}</option>
-                    {% endfor %}
-                </select>
+        <div class="col-md-12">
+            <div class="admin-title">
+                <h1 class="center headline margin15">Liste des collaborateurs</h1>
+                <div class="space40"></div>
+                <div class="left">Responsable :
+                    <select name="manager" id="manager">
+                        <option selected></option>
+                        {% for manager in managers %}
+                            <option value="{{ manager.id }}">{{ manager.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal">Ajouter un Collaborateur</button>
             </div>
-            <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal">Ajouter un Collaborateur</button>
         </div>
     </div>
 
