@@ -65,5 +65,15 @@ class DefaultController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render('UserBundle:Default:index2.html.twig');
+
+    }
+
+    /**
+     * @Route("/partner/detail", name="partner_detail")
+     */
+    public function PartnerDetailAction(Request $request)
+    {
+        // replace this example code with whatever you need
+        return $this->render('UserBundle:Default:collaborateur.html.twig');
     }
 }
