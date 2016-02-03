@@ -62,5 +62,32 @@
                 </td>
             </tr>
         </table>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Détails
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Détails de la demande</h4>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>Date de la demande : 15/12/2015</li>
+                        <li>Créateur de la demande : Gabriel</li>
+                        <li>Date effective de l'absence / présence : 20/12/2015</li>
+                        <li>Durée effective : 8h</li>
+                        <li>Type de la demande : congé payé</li>
+                        <li>Description : Pose de congé</li>
+                        <li>Nom du valideur : Kévin</li>
+                        <li>Date de la validation : 16/12/2015</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
