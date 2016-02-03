@@ -36,35 +36,27 @@
 
 </head>
 <body>
-
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-            {% block navbar %}
-                <nav class="navbar">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">
-                            <img class="logo" src="{{ asset('images/logo.png') }}" title="Bird Office Logo" />
-                        </a>
-                    </div>
-                    <div>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                        </ul>
-                    </div>
-                </nav>
-            {% endblock %}
-    </div>
-</nav>
-<!--<div class="col-md-10 col-md-offset-1" role="main">-->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-2"></div>
-        <div class="col-md-8">
-        {% block body %}{% endblock %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+                {% block navbar %}
+                    <nav class="navbar">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#">
+                                <img class="logo" src="{{ asset('images/logo.png') }}" title="Bird Office Logo" />
+                            </a>
+                        </div>
+                    </nav>
+                {% endblock %}
         </div>
-        <div class="col-lg-2"></div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+            {% block body %}{% endblock %}
+            </div>
+            <div class="col-md-2"></div>
+        </div>
     </div>
-</div>
-
 </body>
 </html>

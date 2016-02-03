@@ -41,8 +41,7 @@ h2.form-signin-heading {
 }
 
 .navbar-default {
-    border-bottom: 3px solid #7EBDCE;
-    margin-bottom: 70px;
+    border-bottom: 3px solid #7EBDCE; margin-bottom: 70px;
 }
 
 .btn-default,
@@ -51,6 +50,12 @@ h2.form-signin-heading {
     border: none; background: @flat-green; color: @white; padding: 6px;
     &:hover {
         transition-duration: @transition; background: @green-hover; color: @white; text-decoration: none;
+    }
+    &:active {
+        background: @flat-green;
+    }
+    &:focus {
+        background: @flat-green;
     }
 }
 .headline {
@@ -63,4 +68,12 @@ h2.form-signin-heading {
         padding-top: 10px;
         width: 40px;
     }
+}
+
+.error {
+    color: @flat-red;
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 15px;
+    text-align: center;
 }

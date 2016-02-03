@@ -4,13 +4,13 @@
 
 {% block fos_user_content %}
 {% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-3"></div>
-        <div class="col-lg-6">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
             <div class="wrapper">
                 <h1 class="center headline">Gestion interne du personnel</h1>
                 <form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin margin">
@@ -36,7 +36,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-lg-3"></div>
+        <div class="col-md-3"></div>
     </div>
 </div>
 {% endblock fos_user_content %}
