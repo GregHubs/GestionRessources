@@ -103,16 +103,35 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label>Date début</label>
-                            <input type="date" class="form-control">
+                        <label for="date-picker-3" class="control-label">Date début</label>
+                            <div class="controls">
+                                <div class="input-group">
+                                    <label for="date-picker-3" class="input-group-addon btn"></label>
+                                    <input id="date-picker-3" type="text" class="date-picker form-control" />
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label>Date fin</label>
-                            <input type="date" class="form-control">
+                        <label for="date-picker-3" class="control-label">Date fin</label>
+                            <div class="controls">
+                                <div class="input-group">
+                                    <label for="date-picker-3" class="input-group-addon btn"></label>
+                                    <input id="date-picker-3" type="text" class="date-picker form-control" />
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Nombre d'heures</label>
-                            <input type="number" class="form-control" min="1" max="8">
+                            <select class="form-control">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Type d'absence</label>
@@ -135,11 +154,22 @@
                         </div>
                         <textarea class="form-control" rows="3" placeholder="Commentaire"></textarea>
                         <button type="submit" class="btn btn-default right space">Valider</button>
+                        <div class="clear"></div>
                     </form>
-                    <div class="clear"></div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<script>
+    $(".date-picker").datepicker();
+
+    $(".date-picker").on("change", function () {
+        var id = $(this).attr("id");
+        var val = $("label[for='" + id + "']").text();
+        $("#msg").text(val + " changed");
+    });
+</script>
+
 
 {% endblock %}

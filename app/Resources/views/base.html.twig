@@ -26,12 +26,14 @@
     '@UserBundle/Resources/less/class.less'
     '@UserBundle/Resources/less/styles.less'
     %}
+
     <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
 
     {% block javascripts %}
         <script src="{{ asset('bundles/user/js/jquery.js') }}"></script>
         <script src="{{ asset('bundles/user/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/user/js/bootstrap-datepicker.js') }}"></script>
     {% endblock %}
 
 </head>

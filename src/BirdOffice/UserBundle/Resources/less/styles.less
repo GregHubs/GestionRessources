@@ -1,5 +1,6 @@
 @import "class";
 
+label.control-label span { cursor: pointer; }
 body { font-size: 12px}
 
 .hover {
@@ -33,7 +34,11 @@ h2.form-signin-heading { font-size: 15px; font-style: italic; margin-top: @margi
         background: @flatgreen;
     }
 }
-.form-control { height:31px; padding:6px 4px }
+.datepicker.dropdown-menu { z-index: 9999 }
+
+.form-control { height:33px; padding:6px 4px }
+
+#select { height: 30px; font-size: 12px}
 
 .modal-body { font-size: 13px }
 
@@ -92,7 +97,7 @@ td.actions a {
 .btn-default,
 .btn-block,
 .btn-primary {
-    border: none; background: @blue-bird; color: @white; padding: 6px;
+    border: none; background: @blue-bird; color: @white; padding: 6px; font-size: 12px;
     &:hover {
         transition-duration: @transition; background: @white; color: @blue-bird; outline: solid 1px @blue-bird; text-decoration: none;
     }
@@ -167,3 +172,4 @@ div.info-bulle::before {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
 }
+.switch { text-align: center}
