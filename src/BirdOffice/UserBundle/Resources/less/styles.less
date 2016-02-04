@@ -148,24 +148,24 @@ i.bouton:hover div.info-bulle{
 
 div.info-bulle {
     width: 30%;
-    padding: 0px;
+    padding: 0;
     margin: 0 auto;
     background: @light-dark-blue;
-}
-
-div.info-bulle p {
-    font-size: 13px;
-    color: @white;
-    padding: 10px 5px;
-    margin: 0;
-    text-align: center;
+    & li, p {
+        font-size: 12px;
+        color: @white;
+        margin: 0;
+        line-height: 18px;
+        padding: 4px 2px 2px;
+        text-align: left;
+    }
 }
 
 div.info-bulle::before {
     content: '' !important;
     position: absolute !important;
     bottom: -5px;
-    left: 87%;
+    right: 24px;
     width: 0;
     height: 0;
     border-top: 5px solid @light-dark-blue;
