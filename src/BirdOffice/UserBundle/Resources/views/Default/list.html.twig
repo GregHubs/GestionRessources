@@ -13,18 +13,24 @@
                 <td class="text-center">{{ user.username }}</td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="actions text-center">
-                    <a class="text-danger" href="{{ path('delete_user', { 'id':user.id }) }}">
-                        <i class="fa fa-trash-o icon-size" data-toggle="modal"  data-target="#myModal4" ></i>
+                    <a class="text-danger"  href="{{ path('delete_user', { 'id':user.id }) }}">
+                        <i class="fa fa-trash-o icon-size" data-toggle="modal"  data-target="#myModal4"></i>
                     </a>
-                    <i class="fa fa-edit icon-size" ></i>
-                    <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
+                    <i class="fa fa-edit icon-size"></i>
+                    <a class="text-default" href=""><i class="fa fa-search icon-size bouton">
+                            <div class="info-bulle">
+                                <p>Décembre : </p>
+                                <ul>
+                                    <li>Jours d'absence : 5</li>
+                                    <li>Jours de présence : 15</li>
+                                </ul>
+                            </div>
+                        </i></a>
+
                 </td>
             </tr>
         {% endfor %}
-
     </table>
-    <a href="#" data-toggle="tooltip" title="Some tooltip text!">Hover over me</a>
-
     <!-- Generated markup by the plugin -->
     <div class="tooltip top" role="tooltip">
         <div class="tooltip-arrow"></div>
