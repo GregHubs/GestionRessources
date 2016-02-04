@@ -30,10 +30,13 @@ h2.form-signin-heading {
 }
 .modal-header {
     background:@blue-bird; color: @white;
+    &.alert {
+        background: @pink-flat;margin-bottom: 0;
+    }
 }
-.form-control {
-    height:31px; padding:6px 4px; font-size: 12px;
-}
+.form-control { height:31px; padding:6px 4px;  }
+.modal-body { font-size: 13px  }
+
 h3.nom-responsable {
     font-size: 15px;
     font-style: italic;
@@ -41,8 +44,7 @@ h3.nom-responsable {
     margin: 5px;
     text-align: center;
 }
-.left {
-    float:left;
+.left { float:left;
 }
 .space40 {
     height:40px;
@@ -128,6 +130,7 @@ td.actions a {
         width: 40px;
     }
 }
+li { font-size: 13px; line-height: 25px;}
 
 .error {
     color: @flat-red; font-size: 15px; font-style: italic; margin-bottom: 15px; text-align: center;
