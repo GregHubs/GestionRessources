@@ -13,19 +13,26 @@
                 <td class="text-center">{{ user.username }}</td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="actions text-center">
-
                     <a class="text-danger" href="{{ path('delete_user', { 'id':user.id }) }}">
-                        <i class="fa fa-trash-o icon-size" data-toggle="modal"  data-target="#myModal3" ></i>
+                        <i class="fa fa-trash-o icon-size" data-toggle="modal"  data-target="#myModal4" ></i>
                     </a>
-                    <i class="fa fa-edit icon-size"></i>
+                    <i class="fa fa-edit icon-size" ></i>
                     <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
                 </td>
             </tr>
         {% endfor %}
 
     </table>
+    <a href="#" data-toggle="tooltip" title="Some tooltip text!">Hover over me</a>
 
-    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <!-- Generated markup by the plugin -->
+    <div class="tooltip top" role="tooltip">
+        <div class="tooltip-arrow"></div>
+        <div class="tooltip-inner">
+            Some tooltip text!
+        </div>
+    </div>
+    <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header alert">
@@ -43,4 +50,3 @@
         </div>
     </div>
 
->>>>>>> b2e67cfbae77ffe8698fa0fff3571fb985e4b0cc
