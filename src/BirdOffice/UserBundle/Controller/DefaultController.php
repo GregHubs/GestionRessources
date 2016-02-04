@@ -73,8 +73,15 @@ class DefaultController extends Controller
      */
     public function PartnerDetailAction(Request $request)
     {
-        // replace this example code with whatever you need
         return $this->render('UserBundle:Default:collaborateur.html.twig');
+    }
+
+    /**
+     * @Route("/emailing/recap", name="emailing_recap")
+     */
+    public function emailingRecapAction(Request $request)
+    {
+        return $this->render('UserBundle:Default:emailing-recap.html.twig');
     }
 
 
