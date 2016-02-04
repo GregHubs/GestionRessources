@@ -8,9 +8,7 @@ body {
     &:hover { text-decoration:none; }
 }
 h2.form-signin-heading {
-    font-size: 15px;
-    font-style: italic;
-    margin-top: @margin;
+    font-size: 15px; font-style: italic; margin-top: @margin;
 }
 .space { margin-top: @margin!important }
 .form-signin { padding: @padding15 }
@@ -36,6 +34,13 @@ h2.form-signin-heading {
 .form-control {
     height:31px; padding:6px 4px; font-size: 12px;
 }
+h3.nom-responsable {
+    font-size: 15px;
+    font-style: italic;
+    font-weight: lighter;
+    margin: 5px;
+    text-align: center;
+}
 .left {
     float:left;
 }
@@ -44,6 +49,11 @@ h2.form-signin-heading {
 }
 .checkbox  {
     margin-bottom: 0; margin-top: 3px;
+}
+h2.nom-collab {
+    color: #3c5166;
+    font-weight: bold;
+    text-align: center;
 }
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th { background-color: #ffffff; }
 .fa-trash-o::before {
@@ -93,20 +103,21 @@ td.actions a {
 .btn-default,
 .btn-block,
 .btn-primary {
-    border: none; background: @flat-green; color: @white; padding: 6px;
+    border: none; background: @blue-bird; color: @white; padding: 6px;
     &:hover {
-        transition-duration: @transition; background: @white; color: @green-hover; outline: solid 1px @green-hover; text-decoration: none;
+        transition-duration: @transition; background: @white; color: @blue-bird; outline: solid 1px @blue-bird; text-decoration: none;
     }
     &:active {
-        background: @flat-green;
+        background: @blue-bird;
         color: @white;
     }
     &:focus {
-        background: @flat-green;
+        background: @blue-bird;
         color: @white;
     }
 }
 .headline {
+    padding-bottom: 10px;
     font-size: 22px;
     &::after {
         border-bottom: 1px solid @flat-green;
@@ -119,9 +130,5 @@ td.actions a {
 }
 
 .error {
-    color: @flat-red;
-    font-size: 15px;
-    font-style: italic;
-    margin-bottom: 15px;
-    text-align: center;
+    color: @flat-red; font-size: 15px; font-style: italic; margin-bottom: 15px; text-align: center;
 }
