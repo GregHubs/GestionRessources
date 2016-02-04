@@ -45,7 +45,7 @@ class DefaultController extends Controller
               //  $users  = $em->getRepository('UserBundle:User')->findByManager($manager);
                 $users = array();
             else
-                $users  = $em->getRepository('UserBundle:User')->findAll();
+                $users  = $em->getRepository('UserBundle:User')->findBy(array('enabled' => true));
 
                 $template = $this->renderView('UserBundle:Default:list.html.twig', array('users' => $users));
         }

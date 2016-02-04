@@ -37,9 +37,11 @@
     </div><!-- /.modal -->
 
     <div id="searchContainer"></div>
+    <div id="modal-edit"></div>
 
     <script>
-        console.log($('#manager').val());
+
+//Affiche la liste des collaborateurs
         $(function (){
             $('#manager').change(function(){
                 ajaxCall();
@@ -60,12 +62,18 @@
                 success: function (msg) {
                     console.log(msg);
                     $('#searchContainer').html(msg);
+
+                    $("#edit-user").click(function(){
+                        ajax_edit_partner(
+                                $(this).attr('data-user')
+                        );
+                    });
                 }
             });
 
         }
 
-
+// Modale ajout collaborateur
         var addPartnerAjax = "{{  path('addPartnerAjax') }}";
 
         $('#add-partner').click(function (){
@@ -88,21 +96,12 @@
                     managedBy:$('#fos_user_registration_form_managedBy').val()
                 },
             success: function(data) {
-                    jQuery('#myModal').addClass('modal-success');
                 }
             });
         }
 
-
+// Modale édition collaborateur
         var editUser = "{{ path('edit_user') }}";
-
-        $('.edit-user').click(function (){
-            console.log($(this).attr('id'));
-            ajax_edit_partner(
-                    $(this).attr('data-user')
-            )
-        });
-
 
         function ajax_edit_partner(userId){
             $.ajax({
@@ -112,13 +111,11 @@
                     user: userId
                 },
                 success: function(data) {
-                    jQuery('#myModal').addClass('modal-success');
+                    $('#modal-edit').html(data);
+                    $('#edit_button').trigger('click');
                 }
             });
         }
-
-
-
 
 
     </script>
