@@ -22,21 +22,10 @@ class MailController extends Controller
             ->setTo('ponsgregory@gmail.com')
             ->setBody(
                 $this->renderView(
-                // app/Resources/views/Emails/registration.html.twig
-                    'UserBundle:Mail:test.html.twig'),
+                    'UserBundle:Default:emailing-recap.html.twig'),
                 'text/html'
-            )
-            /*
-             * If you also want to include a plaintext version of the message
-            ->addPart(
-                $this->renderView(
-                    'Emails/registration.txt.twig',
-                    array('name' => $name)
-                ),
-                'text/plain'
-            )
-            */
-        ;
+            );
+
         $this->get('mailer')->send($message);
 
         $managers = $this->getDoctrine()->getRepository('UserBundle:User')->findByRole('ROLE_SUPER_ADMIN');

@@ -227,10 +227,11 @@ dump($userId);
 
             $monthId = $request->get('month');
 
-            $days = $em->getRepository('UserBundle:Day')->findByMonth($monthId, $user);
-
             if ($monthId == 0)
                 $days = $em->getRepository('UserBundle:Day')->findBy(array('user' => $user));
+            else
+                $days = $em->getRepository('UserBundle:Day')->findByMonth($monthId/*, $user*/);
+
             $template = $this->renderView('UserBundle:Presence:presence.html.twig', array('user' => $user, 'days' => $days));
         }
 

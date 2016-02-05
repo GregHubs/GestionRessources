@@ -8,7 +8,7 @@ use Doctrine\DBAL\Types\Type;
 
 class DayRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findByMonth($month, $user)
+    public function findByMonth($month/*, $user*/)
     {
         $db = $this->getEntityManager()
             ->createQueryBuilder()

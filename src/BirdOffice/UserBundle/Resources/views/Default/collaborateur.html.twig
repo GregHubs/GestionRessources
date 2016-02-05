@@ -8,8 +8,8 @@
                     <h2 class="nom-collab" id="username" data-user="{{ user.id }}" >{{ user.username }}</h2>
                     <div class="space40"></div>
                     <div class="left">
-                        <select class="form-control month" id="select">
-                            <option selected value="0">Choix du mois</option>
+                        <select class="form-control month" name="month" id="select">
+                            <option value="0">Choix du mois</option>
                             <option value="01">Janvier 2016</option>
                             <option value="02">Février 2016</option>
                             <option value="03">Mars 2016</option>
@@ -143,13 +143,12 @@
 
 
     //Affiche la liste des absences/présences
-    $(function (){
-
+    $("#select").change(function (){
         var month = $("#select").val();
         var user = $('#username').attr('data-user');
 
         $('.month').change(function(){
-            ajaxMonthCall(user, month);
+            ajaxMonthCall(user, month);alert(month);
         });
         ajaxMonthCall(user, month);
     });
@@ -164,7 +163,6 @@
             data: {
                 month: month,
                 userId: user
-
             },
             success: function (data) {
                 $('#presences').html(data);

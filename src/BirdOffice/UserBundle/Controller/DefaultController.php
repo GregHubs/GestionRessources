@@ -26,7 +26,6 @@ class DefaultController extends Controller
         );
     }
 
-
     /**
      * @Route("/dashboard", name="admin_index")
      */

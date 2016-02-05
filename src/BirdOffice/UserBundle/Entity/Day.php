@@ -53,12 +53,12 @@ class Day
     private $endDate;
 
     /**
-     * @ORMColumn(type="text")
+     * @ORM\Column(type="text")
      */
     private $description;
 
     /**
-     * @ORMColumn(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $hours;
     
@@ -191,5 +191,53 @@ class Day
     public function getPresenceType()
     {
         return $this->presenceType;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Day
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set hours
+     *
+     * @param integer $hours
+     *
+     * @return Day
+     */
+    public function setHours($hours)
+    {
+        $this->hours = $hours;
+
+        return $this;
+    }
+
+    /**
+     * Get hours
+     *
+     * @return integer
+     */
+    public function getHours()
+    {
+        return $this->hours;
     }
 }
