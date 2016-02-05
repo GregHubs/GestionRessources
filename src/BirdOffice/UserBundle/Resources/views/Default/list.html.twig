@@ -1,6 +1,6 @@
-    <table class="table table-striped table-bordered text-center">
+<table class="table table-striped table-bordered text-center">
         <tr class="head-table">
-            {# sorting of properties based on query components #}
+        {# sorting of properties based on query components #}
             <th class="text-center">Id</th>
             <th class="text-center">Username</th>
             <th class="text-center">Email</th>
@@ -13,34 +13,13 @@
                 <td class="text-center">{{ user.username }}</td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="actions text-center">
-
-                    <a class="text-danger" href="{{ path('delete_user', { 'id':user.id }) }}">
-                        <i class="fa fa-trash-o icon-size" data-toggle="modal"  data-target="#myModal3" ></i>
+                    <i data-user="{{ user.id }}" class="fa fa-trash-o icon-size trash-user"></i>
+                    <i data-user="{{ user.id }}" class="fa fa-edit icon-size edit-user"></i>
+                    <a class="text-default" href="">
+                        <i onMouseOver="infobulle(this, 'texte à afficher');" class="fa fa-search icon-size"></i>
                     </a>
-                    <i class="fa fa-edit icon-size"></i>
-                    <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
                 </td>
             </tr>
         {% endfor %}
+</table>
 
-    </table>
-
-    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header alert">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Détails de la demande</h4>
-                </div>
-                <div class="modal-body">
-                    Etes-vous sûr de vouloir supprimer ce collaborateur ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Supprimer</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
->>>>>>> b2e67cfbae77ffe8698fa0fff3571fb985e4b0cc

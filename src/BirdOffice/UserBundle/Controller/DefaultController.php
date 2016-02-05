@@ -26,37 +26,6 @@ class DefaultController extends Controller
         );
     }
 
-    /**
-     * @Route("/list", name="list")
-     */
-    public function listAction(Request $request)
-    {
-        $em    = $this->get('doctrine.orm.entity_manager');
-
-        // On récupère la requête
-        $request = $this->get('request');
-        $template = array();
-        // On vérifie qu'elle est de type POST
-        if ('POST' == $request->getMethod()){
-
-            $manager = $request->get('manager');
-
-            if(!empty($manager))
-              //  $users  = $em->getRepository('UserBundle:User')->findByManager($manager);
-                $users = array();
-            else
-                $users  = $em->getRepository('UserBundle:User')->findBy(array('enabled' => true));
-
-                $template = $this->renderView('UserBundle:Default:list.html.twig', array('users' => $users));
-        }
-
-        $json = json_encode($template);
-        $response = new Response($json, 200);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-
-    }
-
 
     /**
      * @Route("/dashboard", name="admin_index")
