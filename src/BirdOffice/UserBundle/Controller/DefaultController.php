@@ -84,5 +84,19 @@ class DefaultController extends Controller
         return $this->render('UserBundle:Default:emailing-recap.html.twig');
     }
 
+    /**
+     * @Route("/emailing/reponse", name="emailing_reponse")
+     */
+    public function emailingReponsepAction(Request $request)
+    {
+        return $this->render('UserBundle:Default:emailing-reponse.html.twig');
+    }
 
+    /**
+     * @Route("/emailing/refus", name="emailing_refus")
+     */
+    public function emailingRefuspAction(Request $request)
+    {
+        return $this->render('UserBundle:Default:emailing-refus.html.twig');
+    }
 }
