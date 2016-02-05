@@ -21,6 +21,58 @@ class AjaxController extends Controller
 {
 
     /**
+     * @Route("/list", name="list")
+     */
+    public function listAction(Request $request)
+    {
+        $em    = $this->get('doctrine.orm.entity_manager');
+
+        // On récupère la requête
+        $request = $this->get('request');
+        $template = array();
+        // On vérifie qu'elle est de type POST
+        if ('POST' == $request->getMethod()){
+
+            $managerId = $request->get('manager');
+
+            $manager = $em->getRepository('UserBundle:User')->find($managerId);
+
+            if(!empty($manager))
+                $users  = $em->getRepository('UserBundle:User')->findByManagedBy(array('managedBy' => $manager));
+            else
+                $users  = $em->getRepository('UserBundle:User')->findBy(array('enabled' => true));
+
+            $template = $this->renderView('UserBundle:Default:list.html.twig', array('users' => $users));
+        }
+
+        $json = json_encode($template);
+        $response = new Response($json, 200);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+    }
+
+    /**
+     * @Route("/show_add_modal", name="show_add_modal", options={"expose"=true} )
+     */
+    public function ShowAddModal(Request $request)
+    {
+        $modalTitle = 'Ajout collaborateur';
+
+        $formFactory = $this->container->get('fos_user.registration.form.factory');
+
+        $form = $formFactory->createForm();
+
+        $modalBody = $this->render('FOSUserBundle:Registration:register.html.twig', array('form' => $form->createView()))->getContent();
+
+        $return = json_encode(array('responseCode'=>200, 'notification' => 'success', 'modalTitle' => $modalTitle,'modalBody' => $modalBody));
+
+        return new Response($return, 200, array('Content-Type'=>'application/json'));
+
+    }
+
+
+    /**
      * @Route("/ajaxCall", name="addPartnerAjax", options={"expose"=true} )
      *
      */
@@ -30,7 +82,6 @@ class AjaxController extends Controller
 
         $em = $this->getDoctrine();
         // $manager = $em->getRepository('UserBundle:User')->find($managerId);
-
 
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
@@ -50,18 +101,28 @@ class AjaxController extends Controller
        // $user->setManagedBy();
 
         $userManager->updateUser($user);
+
+        $modalTitle = 'Ajout collaborateur';
+        $modalBody = $this->render('FOSUserBundle:Registration:register.html.twig')->getContent();
+
+
+        $return = json_encode(array('responseCode'=>200, 'notification' => 'success', 'modalTitle' => $modalTitle,'modalBody' => $modalBody));
+
+        return new Response($return, 200, array('Content-Type'=>'application/json'));
     }
 
     /**
-     * @Route("/deleteUser/{id}", name="delete_user", options={"expose"=true} )
+     * @Route("/deleteUser", name="delete_user", options={"expose"=true} )
      *
      */
     public function DeleteUserAjaxAction(Request $request)
     {
+        $helper = $this->get('bird_office.helper');
+
         $em = $this->getDoctrine()->getManager();
 
-        $userId = $request->get('id');
-
+        $userId = $request->get('user');
+dump($userId);
         $user = $em->getRepository('UserBundle:User')->find($userId);
 
         $user->setEnabled(false);
@@ -70,13 +131,15 @@ class AjaxController extends Controller
 
         $em->flush();
 
-        $managers = $em->getRepository('UserBundle:User')->findByRole('ROLE_SUPER_ADMIN');
+        $users = $em->getRepository('UserBundle:User')->findBy(array('enabled' => true));
 
-        return $this->render('UserBundle:Default:index.html.twig',
-            array(
-                'managers' => $managers
-            )
-        );
+        $message = 'Utilisateur supprimé avec succès';
+
+        $htmlContent = $this->render('UserBundle:Default:list.html.twig', array('users' => $users))->getContent();
+
+        $return = json_encode(array('responseCode'=>200, 'message' => $message, 'notification' => 'success', 'htmlContent' => $htmlContent));
+
+        return new Response($return, 200, array('Content-Type'=>'application/json'));
     }
 
     /**
@@ -130,19 +193,52 @@ class AjaxController extends Controller
 
             return $response;
 
-        }else {
+        } else {
 
-            $template = $this->renderView('FOSUserBundle:Profile:edit.html.twig', array(
+            $modalTitle     = 'Modification fiche collaborateur';
+            $modalBody      = $this->renderView('FOSUserBundle:Profile:edit.html.twig', array(
                 'form' => $form->createView(),
                 'user' => $user
             ));
 
-            $json = json_encode($template);
-            $response = new Response($json, 200);
-            $response->headers->set('Content-Type', 'application/json');
-            return $response;
+
+            $return = json_encode(array('responseCode'=>200, 'notification' => 'success', 'modalTitle' => $modalTitle,'modalBody' => $modalBody));
+
+            return new Response($return, 200, array('Content-Type'=>'application/json'));
         }
 
+    }
+
+    /**
+     * @Route("/addPresenceAbsence", name="add_presence_absence", options={"expose"=true} )
+     *
+     */
+    public function AddPresenceAbsence(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $userId = $request->get('userId');
+
+        $user = $em->getRepository('UserBundle:User')->find($userId);
+
+        $template = array();
+
+        // check if POST
+        if ('POST' == $request->getMethod()) {
+
+            $monthId = $request->get('month');
+
+            $days = $em->getRepository('UserBundle:Day')->findByMonth($monthId, $user);
+
+            if ($monthId == 0)
+                $days = $em->getRepository('UserBundle:Day')->findBy(array('user' => $user));
+            $template = $this->renderView('UserBundle:Presence:presence.html.twig', array('user' => $user, 'days' => $days));
+        }
+
+        $json = json_encode($template);
+        $response = new Response($json, 200);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
 

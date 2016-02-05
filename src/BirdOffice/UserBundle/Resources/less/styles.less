@@ -1,6 +1,7 @@
 @import "class";
 
-body { font-size: 12px}
+label.control-label span { cursor: pointer; }
+body { font-size: 13px}
 
 .hover {
     visibility: visible;
@@ -33,7 +34,11 @@ h2.form-signin-heading { font-size: 15px; font-style: italic; margin-top: @margi
         background: @flatgreen;
     }
 }
-.form-control { height:31px; padding:6px 4px }
+.datepicker.dropdown-menu { z-index: 9999 }
+
+.form-control { height:33px; padding:6px 4px }
+
+#select { height: 28px; font-size: 13px; padding-top:4px}
 
 .modal-body { font-size: 13px }
 
@@ -92,7 +97,7 @@ td.actions a {
 .btn-default,
 .btn-block,
 .btn-primary {
-    border: none; background: @blue-bird; color: @white; padding: 6px;
+    border: none; background: @blue-bird; color: @white; padding: 6px; font-size: 13px;
     &:hover {
         transition-duration: @transition; background: @white; color: @blue-bird; outline: solid 1px @blue-bird; text-decoration: none;
     }
@@ -120,3 +125,48 @@ td.actions a {
 li { font-size: 13px; line-height: 25px}
 
 .error {color: @flat-red; font-size: 15px; font-style: italic; margin-bottom: 15px; text-align: center}
+
+i.bouton div.info-bulle {
+    visibility: hidden;
+    opacity: 0;
+    font-family: "Open Sans";
+    text-align: left;
+    position: absolute;
+    right: 10px;
+    top: 105px;
+    color: @white;
+    transition: 0.3s ease-out;
+    -webkit-transition: 0.3s ease-out;
+}
+i.bouton:hover div.info-bulle{
+        visibility: visible;
+        opacity: 1;
+        top: 90px;
+        transition: 0.8s ease-out;
+        -webkit-transition: 0.8s ease-out;
+    }
+
+div.info-bulle {
+    width: 30%;
+    padding: 0;
+    margin: 0 auto;
+    background: @light-dark-blue;
+    & li, p {
+        font-size: 12px;
+        color: @white;
+        margin: 0;
+        line-height: 18px;
+        padding: 4px 2px 2px;
+        text-align: left;
+    }
+}
+
+div.info-bulle::before {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -5px;
+    right: 24px;
+    width: 0;
+    height: 0;
+}
+.switch { text-align: center}

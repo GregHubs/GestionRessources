@@ -12,3 +12,6 @@ services:
         class: BirdOffice\UserBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: bird_user_registration }
+
+    bird_office.helper:
+        class: BirdOffice\UserBundle\Helper\Helper

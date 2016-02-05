@@ -1,0 +1,39 @@
+<table class="table table-striped table-bordered text-center">
+    <tr class="head-table">
+        <th class="text-center">Jour</th>
+        <th class="text-center">Durée</th>
+        <th class="text-center">Type</th>
+        <th class="text-center">Description</th>
+        <th class="text-center" width="100">Actions</th>
+        <th class="text-center" width="100">Validation</th>
+    </tr>
+    {% for day in days %}
+    <tr>
+        <td class="text-center">{{ day.startDate }}</td>
+        <td class="text-center">{{ day.hours }}</td>
+        <td class="text-center">Absence : {{ day.absenceType }}</td>
+        <td class="text-center">{{ day.description }}</td>
+        <td class="actions text-center">
+            <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
+            <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>
+            <a class="text-default" href="">
+                <i class="fa fa-search icon-size bouton">
+                    <div class="info-bulle">
+                        <p class="center"><strong>Récapitulatif sur Décembre : </strong></p>
+                        <ul>
+                            <li>Jours d'absence : 5</li>
+                            <li>Jours de présence : 15</li>
+                        </ul>
+                    </div>
+                </i>
+            </a>
+        </td>
+        <td class="text-center"><div class="checkbox">
+                <label>
+                    <input type="checkbox" value="" checked>Validé
+                </label>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

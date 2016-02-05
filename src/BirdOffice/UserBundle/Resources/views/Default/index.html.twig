@@ -1,6 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {%  block body %}
+    <!-- Modal -->
+    <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 id="modal-title" class="modal-title"></h4>
+                </div>
+                <div id="modal-body" class="modal-body">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="modal2" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header alert">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Détails de la demande</h4>
+                </div>
+                <div class="modal-body">
+                    Etes-vous sûr de vouloir supprimer ce collaborateur ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal-delete" data-user="" data-dismiss="modal" class="delete-user btn btn-primary">Supprimer</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="row">
@@ -9,33 +40,32 @@
                 <h1 class="center headline margin15">Liste des collaborateurs</h1>
                 <div class="space40"></div>
                 <div class="left">
-                    <select class="form-control" id="select">
+                    <select id="manager" class="form-control" id="select">
                         <option selected></option>
                         <option>Responsable</option>
                         {% for manager in managers %}
-                            <option value="{{ manager.id }}">{{ manager.username }}</option>
+                            <option  value="{{ manager.id }}">{{ manager.username }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal">Ajouter un Collaborateur</button>
+                <button id="add-partner" type="button" class="btn btn-default margin15 right">Ajouter un Collaborateur</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Modal : Success-->
+    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Ajouter un Collaborateur</h4>
+                <div class="modal-header success">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    {{ render(controller('UserBundle:Registration:Register')) }}
+                    Le collaborateur a été ajouté avec succès !
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+        </div>
+    </div>
 
     <div id="searchContainer"></div>
     <div id="modal-edit"></div>
@@ -58,14 +88,26 @@
                 type: "POST",
                 url: urlpost,
                 data: {
-                    associate: $('#manager').val()
+                    manager: $('#manager').val()
                 },
                 success: function (msg) {
-                    console.log(msg);
                     $('#searchContainer').html(msg);
 
-                    $("#edit-user").click(function(){
+                    $(".edit-user").click(function(){
                         ajax_edit_partner(
+                                $(this).attr('data-user')
+                        );
+                    });
+
+                    $(".delete-user").click(function(){
+                        ajax_delete_partner(
+                                $(this).attr('data-user')
+                        );
+                    });
+
+                    //  trash warning modal
+                    $('.trash-user').click(function (){
+                        trashWarningModal(
                                 $(this).attr('data-user')
                         );
                     });
@@ -74,15 +116,30 @@
 
         }
 
-// Modale ajout collaborateur
-        var addPartnerAjax = "{{  path('addPartnerAjax') }}";
+    // Show add modal
+
+        var showAddModal = "{{ path('show_add_modal') }}";
 
         $('#add-partner').click(function (){
-           // console.log(plainPassword);
-            ajax_add_partner();
-           // return false;
-        });
+            show_add_modal();
+            });
 
+        function show_add_modal(userId){
+            $.ajax({
+                type: "POST",
+                url: showAddModal,
+                data: {
+                    user: userId
+                },
+                success: function(data) {
+                        $('#modal-title').html(data.modalTitle);
+                        $('#modal-body').html(data.modalBody);
+                        $('#modal').modal('show');
+                }
+            })}
+
+    // Modale ajout collaborateur
+        var addPartnerAjax = "{{  path('addPartnerAjax') }}";
 
         function ajax_add_partner(){
             $.ajax({
@@ -97,11 +154,14 @@
                     managedBy:$('#fos_user_registration_form_managedBy').val()
                 },
             success: function(data) {
+                $('#modal-title').html(data.modalTitle);
+                $('#modal-body').html(data.modalBody);
+                $('#modal').modal('show');
                 }
             });
         }
 
-// Modale édition collaborateur
+    // Modale édition collaborateur
         var editUser = "{{ path('edit_user') }}";
 
         function ajax_edit_partner(userId){
@@ -112,12 +172,35 @@
                     user: userId
                 },
                 success: function(data) {
-                    $('#modal-edit').html(data);
-                    $('#edit_button').trigger('click');
+                    console.log(data);
+                    $('#modal-title').html(data.modalTitle);
+                    $('#modal-body').html(data.modalBody);
+                    $('#modal').modal('show');
                 }
             });
         }
 
+        function trashWarningModal(userId){
+            $('#modal2').modal('show');
+            $("#modal-delete").attr('data-user', userId);
+        }
 
+    //  suppression collaborateur
+        var deleteUser = "{{ path('delete_user') }}";
+
+        function ajax_delete_partner(userId){
+            $.ajax({
+                type: "POST",
+                url: deleteUser,
+                data: {
+                    user: userId
+                },
+                success: function(data) {
+                    if(data.responseCode == 200){
+                        $.notify(data.message, data.notification);
+                        $('#searchContainer').html(data.htmlContent);
+                    }
+                }
+            })}
     </script>
 {% endblock %}

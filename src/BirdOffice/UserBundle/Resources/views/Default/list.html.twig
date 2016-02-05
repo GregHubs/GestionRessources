@@ -10,16 +10,42 @@
         {% for user in users %}
             <tr {% if loop.index is odd %}class="color"{% endif %}>
                 <td class="text-center">{{ user.id }}</td>
-                <td class="text-center">{{ user.username }}</td>
+                <td class="text-center"><a href="{{ path('partner_detail', {'id': user.id}) }}">{{ user.username }}</a></td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="actions text-center">
                     <i data-user="{{ user.id }}" class="fa fa-trash-o icon-size trash-user"></i>
                     <i data-user="{{ user.id }}" class="fa fa-edit icon-size edit-user"></i>
                     <a class="text-default" href="">
-                        <i onMouseOver="infobulle(this, 'texte à afficher');" class="fa fa-search icon-size"></i>
+                        <i class="fa fa-search icon-size bouton">
+                            <div class="info-bulle">
+                                <p class="center"><strong>Récapitulatif sur Décembre : </strong></p>
+                                <ul>
+                                    <li>Jours d'absence : 5</li>
+                                    <li>Jours de présence : 15</li>
+                                </ul>
+                            </div>
+                         </i>
                     </a>
                 </td>
             </tr>
         {% endfor %}
-</table>
+    </table>
+    <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Détails de la demande</h4>
+                </div>
+                <div class="modal-body">
+                    Etes-vous sûr de vouloir supprimer ce collaborateur ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Supprimer</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 

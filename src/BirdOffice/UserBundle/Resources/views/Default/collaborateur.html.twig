@@ -5,66 +5,34 @@
             <div class="col-md-12">
                 <div class="admin-title">
                     <h1 class="center headline margin15">Fiche collaborateur</h1>
-                    <h2 class="nom-collab">Gabriel</h2>
-                    <h3 class="nom-responsable">Responsable : Kévin</h3>
+                    <h2 class="nom-collab" id="username" data-user="{{ user.id }}" >{{ user.username }}</h2>
                     <div class="space40"></div>
                     <div class="left">
-                        <select class="form-control" id="select">
-                            <option selected disabled>Choix du mois</option>
-                            <option>Janvier 2016</option>
-                            <option>Décembre 2015</option>
-                            <option>Novembre 2015</option>
-                            <option>Octobre 2015</option>
+                        <select class="form-control month" id="select">
+                            <option selected value="0">Choix du mois</option>
+                            <option value="01">Janvier 2016</option>
+                            <option value="02">Février 2016</option>
+                            <option value="03">Mars 2016</option>
+                            <option value="04">Avril 2016</option>
+                            <option value="05">Mai 2016</option>
+                            <option value="06">Juin 2016</option>
+                            <option value="07">Juillet 2016</option>
+                            <option value="08">Août 2016</option>
+                            <option value="09">Septembre 2016</option>
+                            <option value="10">Octobre 2016</option>
+                            <option value="11">Novembre 2016</option>
+                            <option value="12">Décembre 2016</option>
                         </select>
                     </div>
                     <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal2">Ajouter un jour</button>
                 </div>
             </div>
         </div>
-        <table class="table table-striped table-bordered text-center">
-            <tr class="head-table">
-                <th class="text-center">Jour</th>
-                <th class="text-center">Durée</th>
-                <th class="text-center">Type</th>
-                <th class="text-center">Description</th>
-                <th class="text-center" width="100">Actions</th>
-                <th class="text-center" width="100">Validation</th>
-            </tr>
-            <tr>
-                <td class="text-center">12/12/2015</td>
-                <td class="text-center">7h</td>
-                <td class="text-center">Absence : maladie</td>
-                <td class="text-center">Lorem ipsum...</td>
-                <td class="actions text-center">
-                    <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
-                    <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>
-                    <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
-                </td>
-                <td class="text-center"><div class="checkbox">
-                        <label>
-                            <input type="checkbox" value="" checked>Validé
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">08/12/2015</td>
-                <td class="text-center">8h</td>
-                <td class="text-center">Absence : congé payé</td>
-                <td class="text-center">Lorem ipsum...</td>
-                <td class="actions text-center">
-                    <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
-                    <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>
-                    <a class="text-default" href=""><i class="fa fa-search icon-size"></i></a>
-                </td>
-                <td class="text-center"><div class="checkbox">
-                        <label>
-                            <input type="checkbox" value="">Non validé
-                        </label>
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <div id="presences">
+
+        </div>
+        <!-- ICI PRESENCES -->
+
     <button type="button" class="btn btn-primary right" data-toggle="modal" data-target="#myModal">
         Détails
     </button>
@@ -103,16 +71,36 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label>Date début</label>
-                            <input type="date" class="form-control">
+                        <label for="date-picker-3" class="control-label">Date début</label>
+                            <div class="controls">
+                                <div class="input-group">
+                                    <label for="date-picker-3" class="input-group-addon btn"></label>
+                                    <input id="date-picker-3" type="text" class="date-picker form-control" />
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label>Date fin</label>
-                            <input type="date" class="form-control">
+                        <label for="date-picker-3" class="control-label">Date fin</label>
+                            <div class="controls">
+                                <div class="input-group">
+                                    <label for="date-picker-3" class="input-group-addon btn"></label>
+                                    <input id="date-picker-3" type="text" class="date-picker form-control" />
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Nombre d'heures</label>
-                            <input type="number" class="form-control" min="1" max="8">
+                            <select class="form-control">
+                                <option selected> </option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Type d'absence</label>
@@ -135,11 +123,78 @@
                         </div>
                         <textarea class="form-control" rows="3" placeholder="Commentaire"></textarea>
                         <button type="submit" class="btn btn-default right space">Valider</button>
+                        <div class="clear"></div>
                     </form>
-                    <div class="clear"></div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<script>
+
+    // DATE PICKER
+    $(".date-picker").datepicker();
+
+    $(".date-picker").on("change", function () {
+        var id = $(this).attr("id");
+        var val = $("label[for='" + id + "']").text();
+        $("#msg").text(val + " changed");
+    });
+
+
+    //Affiche la liste des absences/présences
+    $(function (){
+
+        var month = $("#select").val();
+        var user = $('#username').attr('data-user');
+
+        $('.month').change(function(){
+            ajaxMonthCall(user, month);
+        });
+        ajaxMonthCall(user, month);
+    });
+
+    var add_presence_absence = "{{  path('add_presence_absence') }}";
+
+    function ajaxMonthCall(user, month){
+
+        $.ajax({
+            type: "POST",
+            url: add_presence_absence,
+            data: {
+                month: month,
+                userId: user
+
+            },
+            success: function (data) {
+                $('#presences').html(data);
+            }
+        });
+
+    }
+
+    // Show add modal
+
+    var showAddModal = "{{ path('show_add_modal') }}";
+
+    $('#add-partner').click(function (){
+        show_add_modal();
+    });
+
+    function show_add_modal(userId){
+        $.ajax({
+            type: "POST",
+            url: showAddModal,
+            data: {
+                user: userId
+            },
+            success: function(data) {
+                $('#modal-title').html(data.modalTitle);
+                $('#modal-body').html(data.modalBody);
+                $('#modal').modal('show');
+            }
+        })}
+</script>
+
 
 {% endblock %}

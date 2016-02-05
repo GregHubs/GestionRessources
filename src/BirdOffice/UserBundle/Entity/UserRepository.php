@@ -32,7 +32,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder();
         $qb->select('u')
             ->from('UserBundle:User', 'u')
-            ->where('u.manager LIKE :manager')
+            ->where('u.managedBy LIKE :manager')
             ->setParameter('manager', '%"'.$associate.'"%');
 
         return $qb->getQuery()->getResult();
