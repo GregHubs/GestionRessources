@@ -93,7 +93,7 @@
                 success: function (msg) {
                     $('#searchContainer').html(msg);
 
-                    $(".edit-user").click(function(){
+                    $(".edit-user").unbind('click').click(function(){
                         ajax_edit_partner(
                                 $(this).attr('data-user')
                         );

@@ -124,11 +124,11 @@ class Day
     /**
      * Set user
      *
-     * @param \BirdOffice\UserBundle\Entity\User $user
+     * @param User $user
      *
      * @return Day
      */
-    public function setUser(\BirdOffice\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -138,7 +138,7 @@ class Day
     /**
      * Get user
      *
-     * @return \BirdOffice\UserBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -148,11 +148,11 @@ class Day
     /**
      * Set absenceType
      *
-     * @param \BirdOffice\UserBundle\Entity\AbsenceType $absenceType
+     * @param AbsenceType $absenceType
      *
      * @return Day
      */
-    public function setAbsenceType(\BirdOffice\UserBundle\Entity\AbsenceType $absenceType = null)
+    public function setAbsenceType(AbsenceType $absenceType = null)
     {
         $this->absenceType = $absenceType;
 
@@ -176,7 +176,7 @@ class Day
      *
      * @return Day
      */
-    public function setPresenceType(\BirdOffice\UserBundle\Entity\PresenceType $presenceType = null)
+    public function setPresenceType(PresenceType $presenceType = null)
     {
         $this->presenceType = $presenceType;
 
@@ -186,7 +186,7 @@ class Day
     /**
      * Get presenceType
      *
-     * @return \BirdOffice\UserBundle\Entity\PresenceType
+     * @return PresenceType
      */
     public function getPresenceType()
     {

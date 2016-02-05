@@ -9,11 +9,9 @@ use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -25,7 +23,7 @@ class AjaxController extends Controller
      */
     public function listAction(Request $request)
     {
-        $em    = $this->get('doctrine.orm.entity_manager');
+        $em = $this->getDoctrine()->getManager();
 
         // On récupère la requête
         $request = $this->get('request');
@@ -38,7 +36,7 @@ class AjaxController extends Controller
             $manager = $em->getRepository('UserBundle:User')->find($managerId);
 
             if(!empty($manager))
-                $users  = $em->getRepository('UserBundle:User')->findByManagedBy(array('managedBy' => $manager));
+                $users  = $em->getRepository('UserBundle:User')->findBy(array('managedBy' => $manager));
             else
                 $users  = $em->getRepository('UserBundle:User')->findBy(array('enabled' => true));
 
@@ -228,10 +226,12 @@ dump($userId);
             $monthId = $request->get('month');
 
             if ($monthId == 0)
-                $days = $em->getRepository('UserBundle:Day')->findBy(array('user' => $user));
+                $args = array('user' => $user);
             else
-                $days = $em->getRepository('UserBundle:Day')->findByMonth($monthId/*, $user*/);
+                $args = array('user' => $user, 'month' => $monthId);
 
+            $days = $em->getRepository('UserBundle:Day')->getList($args);
+dump($days);
             $template = $this->renderView('UserBundle:Presence:presence.html.twig', array('user' => $user, 'days' => $days));
         }
 

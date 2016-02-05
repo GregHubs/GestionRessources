@@ -9,10 +9,10 @@
     </tr>
     {% for day in days %}
     <tr>
-        <td class="text-center">{{ day.startDate }}</td>
+        <td class="text-center">{{ day.startDate|date("m/d/Y") }}</td>
         <td class="text-center">{{ day.hours }}</td>
-        <td class="text-center">Absence : {{ day.absenceType }}</td>
-        <td class="text-center">{{ day.description }}</td>
+        <td class="text-center">Absence : {{ day.absenceType.absenceType }}</td>
+        <td class="text-center">{{ day.description|default('') }}</td>
         <td class="actions text-center">
             <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
             <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>

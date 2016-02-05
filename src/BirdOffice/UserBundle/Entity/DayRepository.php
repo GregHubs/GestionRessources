@@ -2,22 +2,32 @@
 
 namespace BirdOffice\UserBundle\Entity;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\DBAL\Types\Type;
-
 
 class DayRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findByMonth($month/*, $user*/)
+    public function getList(array $args = array())
     {
-        $db = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->from('UserBundle:Day', 'p')
-            ->addSelect('p.id')
-            ->where("DATE_FORMAT(p.startDate, '%m') = :month")
-          //  ->andWhere('p.user Like :user')
-            ->setParameter('month', $month);
-         //   ->setParameter('user', '%"'.$user.'"%');
+        $default = array(
+            'month' => null,
+            'user' => null
+        );
+
+        $args = array_merge($default, $args);
+        extract($args);
+
+        $db = $this->createQueryBuilder('d');
+
+        if (!empty($month)){
+            $db->andWhere("DATE_FORMAT(d.startDate, '%m') = :month")
+                ->setParameter('month', $month);
+        }
+
+        if (isset($user) && $user instanceof User){
+            $db->join('d.user', 'u')
+                ->addSelect('u')
+                ->andWhere('u.id = :userId')
+                ->setParameter('userId', $user->getId());
+        }
 
         return $db->getQuery()->getResult();
 
