@@ -37,6 +37,7 @@
         <script src="{{ asset('bundles/user/js/bootstrap-datepicker.js') }}"></script>
     {% endblock %}
 
+
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -45,7 +46,9 @@
                     <nav class="navbar">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="#">
-                                <img class="logo" src="{{ asset('images/logo.png') }}" alt="Bird Office Logo" />
+                                {% image '@UserBundle/Resources/public/images/logo.png' %}
+                                     <img src="{{ asset_url }}" alt="Bird Office Logo" />
+                                {% endimage %}
                             </a>
                         </div>
                     </nav>
@@ -56,7 +59,11 @@
         {% if app.request.attributes.get('_route') != 'fos_user_security_login' %}
         <div class="row">
             <div class="col-md-12 no-marge">
-                <div class="full"><img class="visuel center block" src="{{ asset('images/visuel-web.jpg') }}" alt="Outil de gestion de planning"/></div>
+                <div class="full">
+                    {% image '@UserBundle/Resources/public/images/visuel-web.jpg' %}
+                        <img src="{{ asset_url }}" alt="Outil de gestion de planning" class="center block margin15"/>
+                    {% endimage %}
+                </div>
             </div>
         </div>
         {% endif %}
