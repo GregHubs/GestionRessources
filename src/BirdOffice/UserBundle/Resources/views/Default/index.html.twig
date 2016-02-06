@@ -80,7 +80,7 @@
             ajaxCall();
         });
 
-        var urlpost = "{{  path('list') }}";
+        var urlpost = "{{  path('ajaxList') }}";
 
         function ajaxCall(){
 
@@ -118,7 +118,7 @@
 
     // Show add modal
 
-        var showAddModal = "{{ path('show_add_modal') }}";
+        var showAddModal = "{{ path('showAddModal') }}";
 
         $('#add-partner').click(function (){
             show_add_modal();
@@ -162,7 +162,7 @@
         }
 
     // Modale édition collaborateur
-        var editUser = "{{ path('edit_user') }}";
+        var editUser = "{{ path('editPartnerAjax') }}";
 
         function ajax_edit_partner(userId){
             $.ajax({
@@ -186,7 +186,7 @@
         }
 
     //  suppression collaborateur
-        var deleteUser = "{{ path('delete_user') }}";
+        var deleteUser = "{{ path('deletePartnerAjax') }}";
 
         function ajax_delete_partner(userId){
             $.ajax({

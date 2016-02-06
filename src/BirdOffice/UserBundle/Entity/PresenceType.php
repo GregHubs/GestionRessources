@@ -26,7 +26,7 @@ class PresenceType
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $presenceType;
+    private $name;
 
 
     /**

@@ -1,0 +1,52 @@
+superAdminIndex:
+    path:   /
+    defaults: { _Controller: BirdOffice:UserBundle:Default:SuperAdminIndex }
+
+adminIndex:
+    path:   /dashboard
+    defaults: { _Controller: BirdOffice:UserBundle:Default:AdminIndex }
+
+partnerDetail:
+    path:   /partner/detail/{id}
+    defaults: { _Controller: BirdOffice:UserBundle:Default:PartnerDetail }
+
+emailingRecap:
+    path:   /emailing/recap
+    defaults: { _Controller: BirdOffice:UserBundle:Default:EmailingRecap }
+
+ajaxList:
+    path:   /list
+    defaults: { _Controller: BirdOffice:UserBundle:Ajax:List }
+    options:
+        expose: true
+
+showAddModal:
+    path:   /show-add-modal
+    defaults: { _Controller: BirdOffice:UserBundle:ShowAddModal }
+    options:
+        expose: true
+
+addPartnerAjax:
+    path:   /add-partner-ajax
+    defaults: { _Controller: BirdOffice:UserBundle:AddPartnerAjax }
+    options:
+        expose: true
+
+deletePartnerAjax:
+    path:   /delete-partner
+    defaults: { _Controller: BirdOffice:UserBundle:DeletePartnerAjax }
+    options:
+        expose: true
+
+editPartnerAjax:
+    path:   /edit-partner
+    defaults: { _Controller: BirdOffice:UserBundle:EditPartnerAjax }
+    options:
+        expose: true
+
+addPresenceAbsence:
+    path:   /add-presence-absence
+    defaults: { _Controller: BirdOffice:UserBundle:AddPresenceAbsenceAjax }
+    options:
+        expose: true
+

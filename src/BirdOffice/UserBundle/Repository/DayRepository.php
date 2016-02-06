@@ -1,6 +1,6 @@
 <?php
 
-namespace BirdOffice\UserBundle\Entity;
+namespace BirdOffice\UserBundle\Repository;
 
 
 class DayRepository extends \Doctrine\ORM\EntityRepository

@@ -1,6 +1,6 @@
 <?php
 
-namespace BirdOffice\UserBundle\Entity;
+namespace BirdOffice\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

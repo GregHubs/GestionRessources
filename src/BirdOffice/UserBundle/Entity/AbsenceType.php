@@ -26,7 +26,7 @@ class AbsenceType
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $absenceType;
+    private $name;
 
 
     /**

@@ -17,11 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AjaxController extends Controller
 {
-
-    /**
-     * @Route("/list", name="list")
-     */
-    public function listAction(Request $request)
+    public function ListAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -29,16 +25,16 @@ class AjaxController extends Controller
         $request = $this->get('request');
         $template = array();
         // On vérifie qu'elle est de type POST
-        if ('POST' == $request->getMethod()){
+        if ('POST' == $request->getMethod()) {
 
             $managerId = $request->get('manager');
 
             $manager = $em->getRepository('UserBundle:User')->find($managerId);
 
-            if(!empty($manager))
-                $users  = $em->getRepository('UserBundle:User')->findBy(array('managedBy' => $manager));
+            if (!empty($manager))
+                $users = $em->getRepository('UserBundle:User')->findBy(array('managedBy' => $manager));
             else
-                $users  = $em->getRepository('UserBundle:User')->findBy(array('enabled' => true));
+                $users = $em->getRepository('UserBundle:User')->findBy(array('enabled' => true));
 
             $template = $this->renderView('UserBundle:Default:list.html.twig', array('users' => $users));
         }
@@ -50,10 +46,7 @@ class AjaxController extends Controller
 
     }
 
-    /**
-     * @Route("/show_add_modal", name="show_add_modal", options={"expose"=true} )
-     */
-    public function ShowAddModal(Request $request)
+    public function ShowAddModal()
     {
         $modalTitle = 'Ajout collaborateur';
 
@@ -63,30 +56,17 @@ class AjaxController extends Controller
 
         $modalBody = $this->render('FOSUserBundle:Registration:register.html.twig', array('form' => $form->createView()))->getContent();
 
-        $return = json_encode(array('responseCode'=>200, 'notification' => 'success', 'modalTitle' => $modalTitle,'modalBody' => $modalBody));
+        $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'modalTitle' => $modalTitle, 'modalBody' => $modalBody));
 
-        return new Response($return, 200, array('Content-Type'=>'application/json'));
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
 
     }
 
 
-    /**
-     * @Route("/ajaxCall", name="addPartnerAjax", options={"expose"=true} )
-     *
-     */
     public function AddPartnerAjaxAction(Request $request)
     {
-        $managerId = $request->get('managedBy');
-
-        $em = $this->getDoctrine();
-        // $manager = $em->getRepository('UserBundle:User')->find($managerId);
-
-        /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
-        $formFactory = $this->get('fos_user.registration.form.factory');
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
-        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
 
         $user = $userManager->createUser();
         $user->setEnabled(true);
@@ -96,31 +76,26 @@ class AjaxController extends Controller
         $user->setName($request->get('name'));
         $user->setUsername($request->get('username'));
         $user->setPlainPassword($request->get('plainPassword'));
-       // $user->setManagedBy();
 
         $userManager->updateUser($user);
 
         $modalTitle = 'Ajout collaborateur';
         $modalBody = $this->render('FOSUserBundle:Registration:register.html.twig')->getContent();
 
+        $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'modalTitle' => $modalTitle, 'modalBody' => $modalBody));
 
-        $return = json_encode(array('responseCode'=>200, 'notification' => 'success', 'modalTitle' => $modalTitle,'modalBody' => $modalBody));
-
-        return new Response($return, 200, array('Content-Type'=>'application/json'));
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    /**
-     * @Route("/deleteUser", name="delete_user", options={"expose"=true} )
-     *
-     */
-    public function DeleteUserAjaxAction(Request $request)
+
+    public function DeletePartnerAjaxAction(Request $request)
     {
         $helper = $this->get('bird_office.helper');
 
         $em = $this->getDoctrine()->getManager();
 
         $userId = $request->get('user');
-dump($userId);
+
         $user = $em->getRepository('UserBundle:User')->find($userId);
 
         $user->setEnabled(false);
@@ -135,18 +110,14 @@ dump($userId);
 
         $htmlContent = $this->render('UserBundle:Default:list.html.twig', array('users' => $users))->getContent();
 
-        $return = json_encode(array('responseCode'=>200, 'message' => $message, 'notification' => 'success', 'htmlContent' => $htmlContent));
+        $return = json_encode(array('responseCode' => 200, 'message' => $message, 'notification' => 'success', 'htmlContent' => $htmlContent));
 
-        return new Response($return, 200, array('Content-Type'=>'application/json'));
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    /**
-     * @Route("/editUser", name="edit_user", options={"expose"=true} )
-     *
-     */
-    public function editAction(Request $request)
+    public function EditPartnerAjaxAction(Request $request)
     {
-        $em     = $this->getDoctrine();
+        $em = $this->getDoctrine();
 
         $userId = $request->get('user');
 
@@ -193,25 +164,21 @@ dump($userId);
 
         } else {
 
-            $modalTitle     = 'Modification fiche collaborateur';
-            $modalBody      = $this->renderView('FOSUserBundle:Profile:edit.html.twig', array(
+            $modalTitle = 'Modification fiche collaborateur';
+            $modalBody = $this->renderView('FOSUserBundle:Profile:edit.html.twig', array(
                 'form' => $form->createView(),
                 'user' => $user
             ));
 
 
-            $return = json_encode(array('responseCode'=>200, 'notification' => 'success', 'modalTitle' => $modalTitle,'modalBody' => $modalBody));
+            $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'modalTitle' => $modalTitle, 'modalBody' => $modalBody));
 
-            return new Response($return, 200, array('Content-Type'=>'application/json'));
+            return new Response($return, 200, array('Content-Type' => 'application/json'));
         }
 
     }
 
-    /**
-     * @Route("/addPresenceAbsence", name="add_presence_absence", options={"expose"=true} )
-     *
-     */
-    public function AddPresenceAbsence(Request $request)
+    public function AddPresenceAbsenceAjax(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $userId = $request->get('userId');
@@ -231,7 +198,7 @@ dump($userId);
                 $args = array('user' => $user, 'month' => $monthId);
 
             $days = $em->getRepository('UserBundle:Day')->getList($args);
-dump($days);
+            dump($days);
             $template = $this->renderView('UserBundle:Presence:presence.html.twig', array('user' => $user, 'days' => $days));
         }
 
@@ -241,7 +208,6 @@ dump($days);
 
         return $response;
     }
-
 
 
 }

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 /**
  * @ORM\Entity
  * @ORM\Table(name="day")
- * @ORM\Entity(repositoryClass="BirdOffice\UserBundle\Entity\DayRepository")
+ * @ORM\Entity(repositoryClass="BirdOffice\UserBundle\Repository\DayRepository")
  */
 class Day
 {

@@ -13,7 +13,7 @@ class DefaultController extends Controller
     /**
      * @Route("/associate/list", name="super_admin_index")
      */
-    public function superAdminIndexAction(Request $request)
+    public function SuperAdminIndexAction()
     {
         $em = $this->getDoctrine();
 
@@ -29,7 +29,7 @@ class DefaultController extends Controller
     /**
      * @Route("/dashboard", name="admin_index")
      */
-    public function adminIndexAction(Request $request)
+    public function AdminIndexAction()
     {
         // replace this example code with whatever you need
         return $this->render('UserBundle:Default:index2.html.twig');
@@ -50,7 +50,7 @@ class DefaultController extends Controller
     /**
      * @Route("/emailing/recap", name="emailing_recap")
      */
-    public function emailingRecapAction(Request $request)
+    public function EmailingRecapAction()
     {
         return $this->render('UserBundle:Default:emailing-recap.html.twig');
     }
@@ -58,7 +58,7 @@ class DefaultController extends Controller
     /**
      * @Route("/emailing/reponse", name="emailing_reponse")
      */
-    public function emailingReponsepAction(Request $request)
+    public function emailingReponsepAction()
     {
         return $this->render('UserBundle:Default:emailing-reponse.html.twig');
     }
@@ -66,7 +66,7 @@ class DefaultController extends Controller
     /**
      * @Route("/emailing/refus", name="emailing_refus")
      */
-    public function emailingRefuspAction(Request $request)
+    public function emailingRefuspAction()
     {
         return $this->render('UserBundle:Default:emailing-refus.html.twig');
     }
