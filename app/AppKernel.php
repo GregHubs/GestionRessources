@@ -19,7 +19,8 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new BirdOffice\UserBundle\UserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new JMS\TwigJsBundle\JMSTwigJsBundle()
+            new JMS\TwigJsBundle\JMSTwigJsBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
         );
 

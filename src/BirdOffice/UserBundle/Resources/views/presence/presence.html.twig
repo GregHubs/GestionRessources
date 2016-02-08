@@ -36,7 +36,7 @@
         </td>
         <td class="text-center"><div class="checkbox">
                 <label>
-                    <input id="day-validation" type="checkbox" value="">Validé
+                    <input name="day-validation" id="day-validation" {% if day.isValidated %}checked{% endif %} type="checkbox" value=""><span class="day-validation">{% if day.isValidated %}Validé{% else %}Non validé{% endif %}</span>
                 </label>
             </div>
         </td>

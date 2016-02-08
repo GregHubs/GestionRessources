@@ -21,7 +21,8 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "jms/twig-js": "dev-master",
         "jms/twig-js-bundle": "dev-master",
-        "leafo/lessphp": "dev-master"
+        "leafo/lessphp": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "^1.6"
 
 
     },

@@ -155,8 +155,10 @@
                     $('#day-validation').change(function () {
                         if ($(this).is(":checked")) {
                             var validation = 1;
+                            $('.day-validation').html('Validé');
                         } else {
                             validation = 0;
+                            $('.day-validation').html('Non Validé');
                         }
 
                         var validationPath = "{{ path('validationAjax') }}";
