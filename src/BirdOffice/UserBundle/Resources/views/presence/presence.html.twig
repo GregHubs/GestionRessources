@@ -15,7 +15,7 @@
         <td class="text-center">Absence : {{ day.absenceType.name|default('') }}</td>
         <td class="text-center">{{ day.description|default('') }}</td>
         <td class="text-center">
-            <button type="button" class="btn btn-primary right" data-toggle="modal" data-target="#myModal">
+            <button type="button" id="detail-day" data-day="{{ day.id }}" class="btn btn-primary right" data-toggle="modal" data-target="#myModal">
                 Détails
             </button>
         </td>
@@ -36,7 +36,7 @@
         </td>
         <td class="text-center"><div class="checkbox">
                 <label>
-                    <input type="checkbox" value="" checked>Validé
+                    <input id="day-validation" type="checkbox" value="">Validé
                 </label>
             </div>
         </td>

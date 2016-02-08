@@ -66,7 +66,22 @@ class Day
      * @ORM\Column(name="is_validated", type="boolean")
      */
     private $isValidated;
-    
+
+    /**
+     * @ORM\Column(type="datetime", name="asking_date")
+     */
+    private $askingDate;
+
+    /**
+     * @ORM\Column(type="datetime", name="validation_date", nullable=true)
+     */
+    private $validationDate;
+
+
+    public function __construct()
+    {
+        $this->askingDate = new \DateTime();
+    }
 
     /**
      * Get id
@@ -268,5 +283,54 @@ class Day
     public function getIsValidated()
     {
         return $this->isValidated;
+    }
+
+
+    /**
+     * Set askingDate
+     *
+     * @param \DateTime $askingDate
+     *
+     * @return Day
+     */
+    public function setAskingDate($askingDate)
+    {
+        $this->askingDate = $askingDate;
+
+        return $this;
+    }
+
+    /**
+     * Get askingDate
+     *
+     * @return \DateTime
+     */
+    public function getAskingDate()
+    {
+        return $this->askingDate;
+    }
+
+    /**
+     * Set validationDate
+     *
+     * @param \DateTime $validationDate
+     *
+     * @return Day
+     */
+    public function setValidationDate($validationDate)
+    {
+        $this->validationDate = $validationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get validationDate
+     *
+     * @return \DateTime
+     */
+    public function getValidationDate()
+    {
+        return $this->validationDate;
     }
 }

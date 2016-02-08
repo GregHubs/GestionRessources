@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 class AjaxController extends Controller
@@ -171,7 +172,6 @@ class AjaxController extends Controller
                 'user' => $user
             ));
 
-
             $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'modalTitle' => $modalTitle, 'modalBody' => $modalBody));
 
             return new Response($return, 200, array('Content-Type' => 'application/json'));
@@ -241,11 +241,54 @@ class AjaxController extends Controller
             $day->setPresenceType($presence);
             $day->setDescription($description);
             $day->setIsValidated(false);
+            $day->setAskingDate(new \DateTime('now'));
 
             $em->persist($day);
             $em->flush();
         }
 
+        $json = json_encode($template);
+        $response = new Response($json, 200);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    public function ModalDetailContentAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $dayId = $request->get('dayId');
+
+        $day = $em->getRepository('UserBundle:Day')->find($dayId);
+
+        $modalTitle = 'Détails de la demande';
+
+        $modalBody = $this->renderView('UserBundle:Presence:detailJour.html.twig', array(
+            'day' => $day
+        ));
+
+        $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'modalTitle' => $modalTitle, 'modalBody' => $modalBody));
+
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    public function ValidationAjaxAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $dayId = $request->get('dayId');
+        $validation = $request->get('validation');
+
+        $day = $em->getRepository('UserBundle:Day')->find($dayId);
+
+        $day->setIsValidated($validation);
+        $day->setValidationDate(new \DateTime('now'));
+
+        $em->persist($day);
+        $em->flush();
+
+        $template = array();
         $json = json_encode($template);
         $response = new Response($json, 200);
         $response->headers->set('Content-Type', 'application/json');

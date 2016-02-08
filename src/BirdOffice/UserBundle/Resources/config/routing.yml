@@ -55,3 +55,15 @@ addNewDay:
     defaults: { _controller: UserBundle:Ajax:AddNewDayAjax }
     options:
         expose: true
+
+ModalDetailContent:
+    path:   /ModalDetailContent
+    defaults: { _controller: UserBundle:Ajax:ModalDetailContent }
+    options:
+        expose: true
+
+validationAjax:
+    path:   /validationAjax
+    defaults: { _controller: UserBundle:Ajax:ValidationAjax }
+    options:
+        expose: true
