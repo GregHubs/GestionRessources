@@ -94,7 +94,7 @@
                         </div>
                         <div class="form-group">
                             <label>Nombre d'heures</label>
-                            <select class="form-control">
+                            <select id="form-hours" class="form-control">
                                 <option selected> </option>
                                 <option>1</option>
                                 <option>2</option>
@@ -108,25 +108,24 @@
                         </div>
                         <div class="form-group">
                             <label>Type d'absence</label>
-                            <select class="form-control">
-                                <option>Congé payé</option>
-                                <option>Congé sans solde</option>
-                                <option>Absence école</option>
-                                <option>CIF / DIF</option>
-                                <option>Congé maladie</option>
-                                <option>Congé maternité / paternité</option>
-                                <option>Congé exceptionnel (mariage, décès, naissance...)</option>
+                            <select id="absence-type" class="form-control">
+                                <option selected> </option>
+                                {%  for absence in absences %}
+                                    <option value="{{ absence.id }}">{{ absence.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Type de présence</label>
-                            <select class="form-control">
-                                <option>Rattrapage</option>
-                                <option>Heures supp</option>
+                            <select id="presence-type" class="form-control">
+                                <option selected> </option>
+                                {% for presence in presences %}
+                                    <option value="{{ presence.id }}">{{ presence.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
-                        <textarea class="form-control" rows="3" placeholder="Commentaire"></textarea>
-                        <button type="submit" class="btn btn-default right space">Valider</button>
+                        <textarea id="day-description" class="form-control" rows="3" placeholder="Commentaire"></textarea>
+                        <button  type="submit" class="btn btn-default right space form-submit">Valider</button>
                         <div class="clear"></div>
                     </form>
                 </div>
@@ -135,6 +134,15 @@
     </div>
 </div>
 <script>
+    // DATE PICKER
+    $(".date-picker").datepicker();
+
+    $(".date-picker").on("change", function () {
+        var id = $(this).attr("id");
+        var val = $("label[for='" + id + "']").text();
+        $("#msg").text(val + " changed");
+    });
+
 
 
     //Affiche la liste des absences/présences
@@ -163,7 +171,37 @@
                 $('#presences').html(data);
             }
         });
+    }
 
+    $(function(){
+        var month = $("#select").val();
+        var user = $('#username').attr('data-user');
+        $('.form-submit').click(function(){
+            addNewDay();
+            ajaxMonthCall(user, month)
+        });
+    });
+
+    var add_new_day = "{{ path('addNewDay') }}";
+    var user = $('#username').attr('data-user');
+
+    function addNewDay(){
+        $.ajax({
+            type: "POST",
+            url: add_new_day,
+            data: {
+                userId: user,
+                startDate: $('#date-picker-3').datepicker().val(),
+                endDate: $('#date-picker-4').datepicker().val(),
+                hours: $('#form-hours').val(),
+                absenceType: $('#absence-type').val(),
+                presenceType: $('#presence-type').val(),
+                description: $('#day-description').val()
+            },
+            success: function (data) {
+
+            }
+        });
     }
 
 

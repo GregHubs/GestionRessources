@@ -2,6 +2,7 @@
 
 namespace BirdOffice\UserBundle\Controller;
 
+use BirdOffice\UserBundle\Entity\Day;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -191,6 +192,7 @@ class AjaxController extends Controller
         if ('POST' == $request->getMethod()) {
 
             $monthId = $request->get('month');
+          //  var_dump($monthId);die;
 
             if ($monthId == 0)
                 $args = array('user' => $user);
@@ -198,8 +200,50 @@ class AjaxController extends Controller
                 $args = array('user' => $user, 'month' => $monthId);
 
             $days = $em->getRepository('UserBundle:Day')->getList($args);
-            dump($days);
+          //  dump($user);
             $template = $this->renderView('UserBundle:Presence:presence.html.twig', array('user' => $user, 'days' => $days));
+        }
+
+        $json = json_encode($template);
+        $response = new Response($json, 200);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    public function AddNewDayAjaxAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $userId         = $request->get('userId');
+        $startDate      = $request->get('startDate');
+        $endDate        = $request->get('endDate');
+        $hours          = $request->get('hours');
+        $absenceType    = $request->get('absenceType');
+        $presenceType   = $request->get('presenceType');
+        $description    = $request->get('description');
+
+        $template = array();
+
+        $day = new Day();
+
+        $user = $em->getRepository('UserBundle:User')->find($userId);
+        $absence = $em->getRepository('UserBundle:AbsenceType')->find($absenceType);
+        $presence = $em->getRepository('UserBundle:PresenceType')->find($presenceType);
+
+        if ('POST' == $request->getMethod()) {
+
+            $day->setUser($user);
+            $day->setStartDate(new \DateTime($startDate));
+            $day->setEndDate(new \DateTime($endDate));
+            $day->setHours($hours);
+            $day->setAbsenceType($absence);
+            $day->setPresenceType($presence);
+            $day->setDescription($description);
+            $day->setIsValidated(false);
+
+            $em->persist($day);
+            $em->flush();
         }
 
         $json = json_encode($template);

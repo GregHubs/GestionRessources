@@ -50,3 +50,8 @@ addPresenceAbsence:
     options:
         expose: true
 
+addNewDay:
+    path:   /add-new-day
+    defaults: { _controller: UserBundle:Ajax:AddNewDayAjax }
+    options:
+        expose: true

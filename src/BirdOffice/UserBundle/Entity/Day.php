@@ -32,13 +32,13 @@ class Day
 
     /**
      * @ORM\ManyToOne(targetEntity="BirdOffice\UserBundle\Entity\AbsenceType")
-     * @ORM\JoinColumn(name="absenceType", referencedColumnName="id")
+     * @ORM\JoinColumn(name="absence_type", referencedColumnName="id", nullable=true)
      */
     private $absenceType;
 
     /**
      * @ORM\ManyToOne(targetEntity="BirdOffice\UserBundle\Entity\PresenceType")
-     * @ORM\JoinColumn(name="presenceType", referencedColumnName="id")
+     * @ORM\JoinColumn(name="presence_type", referencedColumnName="id", nullable=true)
      */
     private $presenceType;
 
@@ -48,7 +48,7 @@ class Day
     private $startDate;
 
     /**
-     * @ORM\Column(type="datetime", name="end_date")
+     * @ORM\Column(type="datetime", name="end_date", nullable=true)
      */
     private $endDate;
 
@@ -61,6 +61,11 @@ class Day
      * @ORM\Column(type="integer")
      */
     private $hours;
+
+    /**
+     * @ORM\Column(name="is_validated", type="boolean")
+     */
+    private $isValidated;
     
 
     /**
@@ -80,9 +85,9 @@ class Day
      *
      * @return Day
      */
-    public function setStartDate($startDate)
+    public function setStartDate(\DateTime $startDate = null)
     {
-        $this->startDate = $startDate;
+        $this->startDate = $startDate ? clone $startDate : null;
 
         return $this;
     }
@@ -94,7 +99,7 @@ class Day
      */
     public function getStartDate()
     {
-        return $this->startDate;
+        return $this->startDate  ? clone $this->startDate : null;
     }
 
     /**
@@ -239,5 +244,29 @@ class Day
     public function getHours()
     {
         return $this->hours;
+    }
+
+    /**
+     * Set isValidated
+     *
+     * @param boolean $isValidated
+     *
+     * @return Day
+     */
+    public function setIsValidated($isValidated)
+    {
+        $this->isValidated = $isValidated;
+
+        return $this;
+    }
+
+    /**
+     * Get isValidated
+     *
+     * @return boolean
+     */
+    public function getIsValidated()
+    {
+        return $this->isValidated;
     }
 }

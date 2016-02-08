@@ -38,7 +38,15 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $userId = $request->get('id');
         $user = $em->getRepository('UserBundle:User')->find($userId);
-        return $this->render('UserBundle:Default:collaborateur.html.twig', array('user'=>$user));
+        $absences = $em->getRepository('UserBundle:AbsenceType')->findAll();
+        $presences = $em->getRepository('UserBundle:PresenceType')->findAll();
+        return $this->render('UserBundle:Default:collaborateur.html.twig',
+            array(
+            'user'=>$user,
+            'absences'=>$absences,
+            'presences'=>$presences
+            )
+        );
     }
 
 
