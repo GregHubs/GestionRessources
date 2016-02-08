@@ -31,15 +31,16 @@ h2.form-signin-heading { font-size: 15px; font-style: italic; margin-top: @margi
         background: @pink-flat;margin-bottom: 0;
     }
     &.success {
-        background: @flatgreen;
+        background: @flatgreen; height: 45px
     }
 }
 
 .visuel {background: @blue-bird;
         margin-bottom: 20px
 }
+.table-condensed > thead { background:@blue-bird; color: @white}
 
-.datepicker.dropdown-menu { z-index: 9999 }
+.datepicker.dropdown-menu { z-index: 9999; padding: 0 }
 
 .form-control { height:33px; padding:6px 4px }
 
@@ -103,22 +104,6 @@ td.actions a {
 
 .table {border-top:none}
 
-.btn-default,
-.btn-block,
-.btn-primary {
-    border: none; background: @blue-bird; color: @white; padding: 6px; font-size: 13px;
-    &:hover {
-        transition-duration: @transition; background: @white; color: @blue-bird; outline: solid 1px @blue-bird; text-decoration: none;
-    }
-    &:active {
-        background: @blue-bird;
-        color: @white;
-    }
-    &:focus {
-        background: @blue-bird;
-        color: @white;
-    }
-}
 .headline {
     padding-bottom: 10px;
     font-size: 22px;
