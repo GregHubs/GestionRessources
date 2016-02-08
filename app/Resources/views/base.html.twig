@@ -37,6 +37,16 @@
         <script src="{{ asset('bundles/user/js/bootstrap-datepicker.js') }}"></script>
     {% endblock %}
 
+    {% javascripts output='js/app.js'
+        'bundles/user/js/jquery.js'
+        'bundles/user/js/bootstrap.min.js'
+        'bundles/user/js/notify.min.js'
+        'bundles/user/js/main.js'
+        'bundles/user/js/bootstrap-datepicker.js'
+    %}
+
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 
 </head>
 <body>

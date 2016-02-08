@@ -35,6 +35,24 @@
   border-radius: @tl @tr @br @bl;
 }
 
+.btn-default,
+.btn-block,
+.btn-primary,
+.button, html input[type="button"], input[type="reset"], input[type="submit"]{
+  border: none; background: @blue-bird; color: @white; padding: 6px; font-size: 13px;
+  &:hover {
+    transition-duration: @transition; background: @white; color: @blue-bird; outline: solid 1px @blue-bird; text-decoration: none;
+  }
+  &:active {
+    background: @blue-bird;
+    color: @white;
+  }
+  &:focus {
+    background: @blue-bird;
+    color: @white;
+  }
+}
+
 .center,.info-bulle p { margin: 0 auto;text-align: center !important}
 
 @media screen and (max-width: 625px) {
