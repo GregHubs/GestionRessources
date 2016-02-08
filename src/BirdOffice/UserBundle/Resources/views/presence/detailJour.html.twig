@@ -5,5 +5,5 @@
     {% if day.hours != 0 %}{<li>Durée effective : {{  day.hours }}</li>{% endif %}
     <li>Type de la demande : {{ day.absenceType.name }}</li>
     <li>Description : {{ day.description }}</li>
-    <li>Date de la validation : 16/12/2015</li>
+    <li>Date de la validation : {{ day.validationDate.date|date('d-m-y') }}</li>
 </ul>
