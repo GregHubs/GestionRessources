@@ -29,15 +29,14 @@
     <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
 
-    {% javascripts output="js/compiled-js.js"
-    'UserBundle/Resources/public/js/jquery.min.js'
-    'UserBundle/Resources/public/js/bootstrap.min.js'
-    'UserBundle/Ressources/public/js/notify.min.js'
-    'UserBundle/Ressources/public/js/main.js'
-    'UserBundle/Ressources/public/js/bootstrap-datepicker.js'
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {% block javascripts %}
+        <script src="{{ asset('bundles/user/js/jquery.js') }}"></script>
+        <script src="{{ asset('bundles/user/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/user/js/notify.min.js') }}"></script>
+        <script src="{{ asset('bundles/user/js/main.js') }}"></script>
+        <script src="{{ asset('bundles/user/js/bootstrap-datepicker.js') }}"></script>
+    {% endblock %}
+
 
 </head>
 <body>
