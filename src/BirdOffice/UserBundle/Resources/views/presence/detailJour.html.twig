@@ -1,4 +1,3 @@
-{{ dump(day) }}
 <ul>
     <li>Date de la demande : {{ day.startDate.date|date('d-m-y') }}</li>
     <li>Créateur de la demande : {{ day.user.firstname }}</li>
@@ -6,5 +5,5 @@
     {% if day.hours != 0 %}{<li>Durée effective : {{  day.hours }}</li>{% endif %}
     <li>Type de la demande : {{ day.absenceType.name }}</li>
     <li>Description : {{ day.description }}</li>
-    <li>Date de la validation : 16/12/2015</li>
+    <li>Date de la validation : {{ day.validationDate.date|date('d-m-y') }}</li>
 </ul>
