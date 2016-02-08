@@ -21,12 +21,12 @@ class RegistrationType extends AbstractType
                     )
                 )
             )
-            ->add('name', 'text',
+            ->add('lastname', 'text',
                 array(
                     'label' => 'Nom'
                 )
             )
-            ->add('username', 'text',
+            ->add('firstname', 'text',
                 array(
                     'label' => 'Prénom'
                 )

@@ -46,7 +46,7 @@ class AjaxController extends Controller
 
     }
 
-    public function ShowAddModal()
+    public function ShowAddModalAction()
     {
         $modalTitle = 'Ajout collaborateur';
 
@@ -178,7 +178,7 @@ class AjaxController extends Controller
 
     }
 
-    public function AddPresenceAbsenceAjax(Request $request)
+    public function AddPresenceAbsenceAjaxAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $userId = $request->get('userId');

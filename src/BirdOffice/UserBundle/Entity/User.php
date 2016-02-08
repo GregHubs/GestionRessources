@@ -25,14 +25,32 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @var string
+     *
+     * @ORM\Column(name="language", type="string", length=2)
+     */
+    private $language = 'fr';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="civility", type="string", length=3)
      */
     private $civility;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @var string
+     *
+     * @ORM\Column(name="last_name", type="string", length=255)
      */
-    private $name;
+    private $lastName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="first_name", type="string", length=255)
+     */
+    private $firstName;
 
 
     public function __construct()
@@ -43,6 +61,32 @@ class User extends BaseUser
         $this->managers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+
+
+
+    /**
+     * Set language
+     *
+     * @param string $language
+     *
+     * @return User
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
 
     /**
      * Set civility
@@ -69,26 +113,50 @@ class User extends BaseUser
     }
 
     /**
-     * Set name
+     * Set lastName
      *
-     * @param string $name
+     * @param string $lastName
      *
      * @return User
      */
-    public function setName($name)
+    public function setLastName($lastName)
     {
-        $this->name = $name;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get lastName
      *
      * @return string
      */
-    public function getName()
+    public function getLastName()
     {
-        return $this->name;
+        return $this->lastName;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     *
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
     }
 }

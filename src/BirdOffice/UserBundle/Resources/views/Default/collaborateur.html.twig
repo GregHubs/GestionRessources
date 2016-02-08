@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="admin-title">
                     <h1 class="center headline margin15">Fiche collaborateur</h1>
-                    <h2 class="nom-collab" id="username" data-user="{{ user.id }}" >{{ user.username }}</h2>
+                    <h2 class="nom-collab" id="username" data-user="{{ user.id }}" >{{ user.firstname }}</h2>
                     <div class="space40"></div>
                     <div class="left">
                         <select class="form-control month" name="month" id="select" title="Mois">
@@ -136,15 +136,6 @@
 </div>
 <script>
 
-    // DATE PICKER
-    $(".date-picker").datepicker();
-
-    $(".date-picker").on("change", function () {
-        var id = $(this).attr("id");
-        var val = $("label[for='" + id + "']").text();
-        $("#msg").text(val + " changed");
-    });
-
 
     //Affiche la liste des absences/présences
     $(function (){
@@ -158,10 +149,9 @@
         ajaxMonthCall(user, month);
     });
 
-    var add_presence_absence = "{{  path('add_presence_absence') }}";
+    var add_presence_absence = "{{  path('addPresenceAbsence') }}";
 
     function ajaxMonthCall(user, month){
-
         $.ajax({
             type: "POST",
             url: add_presence_absence,
@@ -176,27 +166,7 @@
 
     }
 
-    // Show add modal
 
-    var showAddModal = "{{ path('showAddModal') }}";
-
-    $('#add-partner').click(function (){
-        show_add_modal();
-    });
-
-    function show_add_modal(userId){
-        $.ajax({
-            type: "POST",
-            url: showAddModal,
-            data: {
-                user: userId
-            },
-            success: function(data) {
-                $('#modal-title').html(data.modalTitle);
-                $('#modal-body').html(data.modalBody);
-                $('#modal').modal('show');
-            }
-        })}
 </script>
 
 

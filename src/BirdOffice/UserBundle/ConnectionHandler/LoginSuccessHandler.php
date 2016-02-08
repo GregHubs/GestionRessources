@@ -26,7 +26,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface{
 
         if ($security->isGranted('ROLE_SUPER_ADMIN'))
         {
-            $response = new RedirectResponse($this->router->generate('super_admin_index'));
+            $response = new RedirectResponse($this->router->generate('superAdminIndex'));
         }
         elseif ($security->isGranted('ROLE_ADMIN'))
         {

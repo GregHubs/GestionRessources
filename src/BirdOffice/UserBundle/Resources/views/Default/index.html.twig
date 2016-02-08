@@ -44,7 +44,7 @@
                         <option selected></option>
                         <option>Responsable</option>
                         {% for manager in managers %}
-                            <option  value="{{ manager.id }}">{{ manager.username }}</option>
+                            <option  value="{{ manager.id }}">{{ manager.lastname }}</option>
                         {% endfor %}
                     </select>
                 </div>

@@ -10,7 +10,7 @@
         {% for user in users %}
             <tr {% if loop.index is odd %}class="color"{% endif %}>
                 <td class="text-center">{{ user.id }}</td>
-                <td class="text-center"><a href="{{ path('partner_detail', {'id': user.id}) }}">{{ user.username }}</a></td>
+                <td class="text-center"><a href="{{ path('partnerDetail', {'id': user.id}) }}">{{ user.firstname }}</a></td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="actions text-center">
                     <i data-user="{{ user.id }}" class="fa fa-trash-o icon-size trash-user"></i>

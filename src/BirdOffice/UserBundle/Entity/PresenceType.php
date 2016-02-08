@@ -29,6 +29,8 @@ class PresenceType
     private $name;
 
 
+
+
     /**
      * Get id
      *
@@ -40,26 +42,26 @@ class PresenceType
     }
 
     /**
-     * Set presenceType
+     * Set name
      *
-     * @param string $presenceType
+     * @param string $name
      *
      * @return PresenceType
      */
-    public function setPresenceType($presenceType)
+    public function setName($name)
     {
-        $this->presenceType = $presenceType;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get presenceType
+     * Get name
      *
      * @return string
      */
-    public function getPresenceType()
+    public function getName()
     {
-        return $this->presenceType;
+        return $this->name;
     }
 }

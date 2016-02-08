@@ -1,52 +1,52 @@
 superAdminIndex:
-    path:   /
-    defaults: { _Controller: BirdOffice:UserBundle:Default:SuperAdminIndex }
+    path:   /admin
+    defaults: { _controller: UserBundle:Default:SuperAdminIndex }
 
 adminIndex:
     path:   /dashboard
-    defaults: { _Controller: BirdOffice:UserBundle:Default:AdminIndex }
+    defaults: { _controller: UserBundle:Default:AdminIndex }
 
 partnerDetail:
     path:   /partner/detail/{id}
-    defaults: { _Controller: BirdOffice:UserBundle:Default:PartnerDetail }
+    defaults: { _controller: UserBundle:Default:PartnerDetail }
 
 emailingRecap:
     path:   /emailing/recap
-    defaults: { _Controller: BirdOffice:UserBundle:Default:EmailingRecap }
+    defaults: { _controller: UserBundle:Default:EmailingRecap }
 
 ajaxList:
     path:   /list
-    defaults: { _Controller: BirdOffice:UserBundle:Ajax:List }
+    defaults: { _controller: UserBundle:Ajax:List }
     options:
         expose: true
 
 showAddModal:
     path:   /show-add-modal
-    defaults: { _Controller: BirdOffice:UserBundle:ShowAddModal }
+    defaults: { _controller: UserBundle:Ajax:ShowAddModal }
     options:
         expose: true
 
 addPartnerAjax:
     path:   /add-partner-ajax
-    defaults: { _Controller: BirdOffice:UserBundle:AddPartnerAjax }
+    defaults: { _controller: UserBundle:Ajax:AddPartnerAjax }
     options:
         expose: true
 
 deletePartnerAjax:
     path:   /delete-partner
-    defaults: { _Controller: BirdOffice:UserBundle:DeletePartnerAjax }
+    defaults: { _controller: UserBundle:Ajax:DeletePartnerAjax }
     options:
         expose: true
 
 editPartnerAjax:
     path:   /edit-partner
-    defaults: { _Controller: BirdOffice:UserBundle:EditPartnerAjax }
+    defaults: { _controller: UserBundle:Ajax:EditPartnerAjax }
     options:
         expose: true
 
 addPresenceAbsence:
     path:   /add-presence-absence
-    defaults: { _Controller: BirdOffice:UserBundle:AddPresenceAbsenceAjax }
+    defaults: { _controller: UserBundle:Ajax:AddPresenceAbsenceAjax }
     options:
         expose: true
 

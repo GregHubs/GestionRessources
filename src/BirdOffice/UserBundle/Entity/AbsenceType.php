@@ -39,27 +39,29 @@ class AbsenceType
         return $this->id;
     }
 
+
+
     /**
-     * Set absenceType
+     * Set name
      *
-     * @param string $absenceType
+     * @param string $name
      *
      * @return AbsenceType
      */
-    public function setAbsenceType($absenceType)
+    public function setName($name)
     {
-        $this->absenceType = $absenceType;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get absenceType
+     * Get name
      *
      * @return string
      */
-    public function getAbsenceType()
+    public function getName()
     {
-        return $this->absenceType;
+        return $this->name;
     }
 }

@@ -3,6 +3,8 @@
 namespace BirdOffice\UserBundle\Repository;
 
 
+use BirdOffice\UserBundle\Entity\User;
+
 class DayRepository extends \Doctrine\ORM\EntityRepository
 {
     public function getList(array $args = array())
