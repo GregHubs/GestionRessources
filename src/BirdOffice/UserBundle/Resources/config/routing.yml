@@ -67,3 +67,7 @@ validationAjax:
     defaults: { _controller: UserBundle:Ajax:ValidationAjax }
     options:
         expose: true
+
+SendMail:
+    path:   /sendmail
+    defaults: { _controller: UserBundle:Mail:SendMail }

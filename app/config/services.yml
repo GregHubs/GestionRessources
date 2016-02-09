@@ -15,3 +15,8 @@ services:
 
     bird_office.helper:
         class: BirdOffice\UserBundle\Helper\Helper
+
+    bird_office.mailer:
+        class: BirdOffice\UserBundle\Mailer\Mailer
+        arguments:
+            - "@service_container"

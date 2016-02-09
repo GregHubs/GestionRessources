@@ -10,11 +10,18 @@
                     <div class="left">
                         <select class="form-control month" name="month" id="select" title="Mois">
                             <option value="0">Choix du mois</option>
-
-                            {% for month in range(1, 12, 1) %}
-                                <option>{{ month }}</option>  
-                            {% endfor %}
-
+                            <option value="01">Janvier 2016</option>
+                            <option value="02">Février 2016</option>
+                            <option value="03">Mars 2016</option>
+                            <option value="04">Avril 2016</option>
+                            <option value="05">Mai 2016</option>
+                            <option value="06">Juin 2016</option>
+                            <option value="07">Juillet 2016</option>
+                            <option value="08">Août 2016</option>
+                            <option value="09">Septembre 2016</option>
+                            <option value="10">Octobre 2016</option>
+                            <option value="11">Novembre 2016</option>
+                            <option value="12">Décembre 2016</option>
                         </select>
                     </div>
                     <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal2">Ajouter un jour</button>
@@ -98,135 +105,5 @@
             </div>
         </div>
     </div>
-</div>
-<script>
-    // DATE PICKER
-    $(".date-picker").datepicker();
-
-    $(".date-picker").on("change", function () {
-        var id = $(this).attr("id");
-        var val = $("label[for='" + id + "']").text();
-        $("#msg").text(val + " changed");
-    });
-
-
-
-    //Affiche la liste des absences/présences
-    $(function (){
-        var month = $("#select").val();
-        var user = $('#username').attr('data-user');
-
-        $('.month').change(function(){
-            var month = $("#select").val();
-            ajaxMonthCall(user, month);
-        });
-        ajaxMonthCall(user, month);
-    });
-
-    var add_presence_absence = "{{  path('addPresenceAbsence') }}";
-
-    function ajaxMonthCall(user, month){
-        $.ajax({
-            type: "POST",
-            url: add_presence_absence,
-            data: {
-                month: month,
-                userId: user
-            },
-            success: function (data) {
-                $('#presences').html(data);
-
-                $(function(){
-                    $('#detail-day').click(function(){
-                        detailDay($(this).attr('data-day'));
-                    });
-                });
-
-                // VALIDATION DE LA DEMANDE
-                $(function() {
-
-                    $('#day-validation').change(function () {
-                        if ($(this).is(":checked")) {
-                            var validation = 1;
-                            $('.day-validation').html('Validé');
-                        } else {
-                            validation = 0;
-                            $('.day-validation').html('Non Validé');
-                        }
-
-                        var validationPath = "{{ path('validationAjax') }}";
-
-                        ValidationDay();
-
-                        function ValidationDay() {
-                            $.ajax({
-                                type: "POST",
-                                url: validationPath,
-                                data: {
-                                    dayId: $('#detail-day').attr('data-day'),
-                                    validation: validation
-                                },
-                                success: function () {
-                                }
-                            });
-                        }
-                    })
-                });
-                // FIN VALIDATION
-            }
-        });
-    }
-
-    $(function(){
-        var month = $("#select").val();
-        var user = $('#username').attr('data-user');
-        $('.form-submit').click(function(){
-            addNewDay();
-            ajaxMonthCall(user, month)
-        });
-    });
-
-    var add_new_day = "{{ path('addNewDay') }}";
-    var user = $('#username').attr('data-user');
-
-    function addNewDay(){
-        $.ajax({
-            type: "POST",
-            url: add_new_day,
-            data: {
-                userId: user,
-                startDate: $('#date-picker-3').datepicker().val(),
-                endDate: $('#date-picker-4').datepicker().val(),
-                hours: $('#form-hours').val(),
-                absenceType: $('#absence-type').val(),
-                presenceType: $('#presence-type').val(),
-                description: $('#day-description').val()
-            },
-            success: function (data) {
-
-            }
-        });
-    }
-
-
-    var detailDayAjax = "{{ path('ModalDetailContent') }}";
-
-    function detailDay(dayId){
-        $.ajax({
-            type: "POST",
-            url: detailDayAjax,
-            data: {
-                dayId : dayId
-            },
-            success: function (data) {
-                $('#modal-title').html(data.modalTitle);
-                $('#modal-body').html(data.modalBody);
-                $('#modal').modal('show');
-            }
-        });
-    }
-
-</script>
-
 
 {% endblock %}

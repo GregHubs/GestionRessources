@@ -194,14 +194,17 @@ class AjaxController extends Controller
             $monthId = $request->get('month');
           //  var_dump($monthId);die;
 
-            if ($monthId == 0)
+            if ($monthId == 0) {
                 $args = array('user' => $user);
-            else
+            } else {
                 $args = array('user' => $user, 'month' => $monthId);
+            }
 
             $days = $em->getRepository('UserBundle:Day')->getList($args);
-          //  dump($user);
+
             $template = $this->renderView('UserBundle:Presence:presence.html.twig', array('user' => $user, 'days' => $days));
+
+
         }
 
         $json = json_encode($template);
@@ -246,6 +249,12 @@ class AjaxController extends Controller
             $em->persist($day);
             $em->flush();
         }
+
+        // Envoi de mail pour la demande d'absence
+        $admin = $em->getRepository('UserBundle:User')->find(15);
+        $mailer = $this->get('bird_office.mailer');
+        $mailer->sendDemandToSuperAdmin($user, $admin, $day);
+
 
         $json = json_encode($template);
         $response = new Response($json, 200);

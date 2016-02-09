@@ -3,7 +3,7 @@
     <li>Créateur de la demande : {{ day.user.firstname }}</li>
     <li>Date effective de l'absence / présence :  {{ day.startDate.date|date('d-m-y') }}</li>
     {% if day.hours != 0 %}{<li>Durée effective : {{  day.hours }}</li>{% endif %}
-    <li>Type de la demande : {{ day.absenceType.name }}</li>
-    <li>Description : {{ day.description }}</li>
-    <li>Date de la validation : {{ day.validationDate.date|date('d-m-y') }}</li>
+    <li>Type de la demande : {% if day.absenceType %}Absence : {{ day.absenceType.name }}{% elseif day.presenceType %}Presence : {{ day.presenceType.name }}{% endif %}</li>
+    {% if day.description %}<li>Description : {{ day.description }}</li>{% endif %}
+    <li>Date de la validation : {% if day.validationDate %}{{ day.validationDate.date|date('d-m-y') }}{% else %} Demande en cours {% endif %}</li>
 </ul>
