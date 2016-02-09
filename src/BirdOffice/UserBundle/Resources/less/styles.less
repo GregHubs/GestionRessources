@@ -27,6 +27,14 @@ h2.form-signin-heading { font-size: 15px; font-style: italic; margin-top: @margi
 
 .text-center { vertical-align: middle !important}
 
+label { font-weight: 400}
+
+td.actions i {
+    margin-right: 5px;
+&:last-child {
+    margin-right:0  }
+}
+
 .modal-header {
     background:@blue-bird; color: @white;
     &.alert {
@@ -65,7 +73,7 @@ h3.nom-responsable {
 
 .checkbox  {margin-bottom: 0; margin-top: 3px}
 
-h2.nom-collab {color: #3c5166; font-weight: bold; text-align: center}
+h2.nom-collab {color: #3c5166; font-weight: bold; text-align: center; margin-top: 40px}
 
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th { background-color: #ffffff }
 
@@ -82,6 +90,10 @@ h2.nom-collab {color: #3c5166; font-weight: bold; text-align: center}
 .no-marge {margin:0; padding:0}
 
 .full {width: 100%; background: @blue-bird}
+
+#modal-body li {font-size: 14px; font-weight: 600}
+
+.blue-violet {color: @blue-violet; font-weight: inherit}
 
 .icon-size {
     cursor: pointer;
@@ -169,9 +181,8 @@ div.info-bulle::before {
 
 .switch {text-align: center}
 
-a { color:
-        @blue-violet;
-    font-weight: bold;
+a { color: @blue-violet; font-weight: bold;
 &:hover {
-color: @blue-bird; transition-duration: @transition}
+    color: @blue-bird; transition-duration: @transition
+    }
 }

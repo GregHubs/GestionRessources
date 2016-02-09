@@ -20,18 +20,18 @@
                     <h2 class="form-signin-heading center margin15">Connectez-vous</h2>
                       <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
                     <div>
-                        <label for="username">{{ 'security.login.username'|trans }}</label>
-                        <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" required="required" />
+                        <label for="username"></label>
+                        <input type="text" id="username" name="_username" placeholder="Login" value="{{ last_username }}" class="form-control" required="required" />
                     </div>
                     <div>
-                        <label for="password">{{ 'security.login.password'|trans }}</label>
-                        <input type="password" id="password" name="_password" class="form-control" required="required" />
+                        <label for="password"></label>
+                        <input type="password" id="password" placeholder="Mot de passe" name="_password" class="form-control" required="required" />
                     </div>
                     <div class="space">
                         <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-                        <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                        <label for="remember_me">Mémoriser mes identifiants</label>
                     </div>
-                    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" class="btn btn-lg btn-primary btn-block" />
+                    <input type="submit" id="_submit" name="_submit" value="Connexion" class="btn btn-lg btn-primary btn-block" />
                      <h2 class="form-signin-heading center margin">Vous n'êtes pas inscrit ?</h2>
                      <a href="{{ path('fos_user_registration_register') }}" class="hover">
                          <input type="submit" id="_submit" name="_submit" value="M'inscrire" class="btn btn-primary center space block" />
