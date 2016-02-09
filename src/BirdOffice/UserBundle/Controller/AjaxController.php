@@ -255,7 +255,6 @@ class AjaxController extends Controller
         $mailer = $this->get('bird_office.mailer');
         $mailer->sendDemandToSuperAdmin($user, $admin, $day);
 
-
         $json = json_encode($template);
         $response = new Response($json, 200);
         $response->headers->set('Content-Type', 'application/json');

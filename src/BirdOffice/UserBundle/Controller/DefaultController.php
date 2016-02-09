@@ -49,6 +49,23 @@ class DefaultController extends Controller
         );
     }
 
+    public function testMailAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $em->getRepository('UserBundle:User')->find(17);
+        $admin = $em->getRepository('UserBundle:User')->find(15);
+        $day = $em->getRepository('UserBundle:Day')->find(1);
+
+        return $this->render('UserBundle:Mail:emailing-recap.html.twig',
+            array(
+                'user'=>$user,
+                'admin'=>$admin,
+                'day'=>$day
+            )
+        );
+    }
+
 
 
 }
