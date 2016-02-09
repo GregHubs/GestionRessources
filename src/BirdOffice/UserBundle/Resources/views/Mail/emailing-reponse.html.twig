@@ -78,24 +78,24 @@
                         <tr>
                             <td valign="middle" width="120" height="35" align="center" style="border-bottom: 1px solid #cccccc; border-left: solid 1px #cccccc; border-right:
                             solid 1px #cccccc;">
-                                <font face="Arial" size="1" color="#626262" style="font-size:12px;"><strong>15/02/2016</strong></font>
+                                <font face="Arial" size="1" color="#626262" style="font-size:12px;"><strong>{{ day.startDate.date|date('d-m-y') }}</strong></font>
                             </td>
                             <td valign="middle" width="120" height="35" align="center" style="border-bottom: 1px solid #cccccc;border-right:
                             solid 1px #cccccc;">
-                                <font face="Arial" size="1" color="#626262" style="font-size:12px;"><strong>15/02/2016</strong></font>
+                                <font face="Arial" size="1" color="#626262" style="font-size:12px;"><strong>{{ day.endDate.date|date('d-m-y') }}</strong></font>
                             </td>
                             <td valign="middle" width="120" height="35" align="center" style="border-bottom: 1px solid #cccccc;border-right:
                             solid 1px #cccccc;">
-                                <font face="Arial" size="1" color="#626262" style="font-size:12px;"><strong>7h</strong></font>
+                                <font face="Arial" size="1" color="#626262" style="font-size:12px;"><strong>{{ day.hours }}</strong></font>
                             </td>
                             <td valign="middle" width="120" height="35" align="center" style="border-bottom: 1px solid #cccccc; border-right:
                             solid 1px #cccccc;">
-                                <font face="Arial" size="1" color="#626262" style="font-size:12px;"><strong>Congé payé</strong></font>
+                                <font face="Arial" size="1" color="#626262" style="font-size:12px;"><strong>{{ day.absenceType }}</strong></font>
                             </td>
                             <td valign="middle" width="120" height="35" align="center" style="border-bottom: 1px solid #cccccc;border-right:
                             solid 1px #cccccc;">
                                 <font face="Arial" size="1" color="#626262" style="font-size:12px;line-height: 18px">
-                                    <i>Bonjour, j'aimerais poser un congé pour la journée du 15/02/2016 :-)</i>
+                                    <i>{{ day.description }}</i>
                                 </font>
                             </td>
                         </tr>
