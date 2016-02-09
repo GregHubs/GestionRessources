@@ -50,20 +50,5 @@ class DefaultController extends Controller
     }
 
 
-    public function EmailingRecapAction()
-    {
-        return $this->render('UserBundle:Default:emailing-recap.html.twig');
-    }
 
-
-    public function emailingReponsepAction()
-    {
-        return $this->render('UserBundle:Default:emailing-reponse.html.twig');
-    }
-
-
-    public function emailingRefuspAction()
-    {
-        return $this->render('UserBundle:Default:emailing-refus.html.twig');
-    }
 }

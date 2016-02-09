@@ -209,7 +209,7 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
         var user = $('#username').attr('data-user');
         $('.form-submit').click(function () {
             addNewDay();
-            return false;
+           // return false;
             ajaxMonthCall(user, month)
         });
     });
