@@ -53,17 +53,54 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $user = $em->getRepository('UserBundle:User')->find(17);
-        $admin = $em->getRepository('UserBundle:User')->find(15);
-        $day = $em->getRepository('UserBundle:Day')->find(1);
+        $user   = $em->getRepository('UserBundle:User')->find(17);
+        $admin  = $em->getRepository('UserBundle:User')->find(15);
+        $day    = $em->getRepository('UserBundle:Day')->find(1);
 
-        return $this->render('UserBundle:Mail:emailing-recap.html.twig',
+        return $this->render('UserBundle:Mail:emailing-reponse.html.twig',
             array(
                 'user'=>$user,
                 'admin'=>$admin,
                 'day'=>$day
             )
         );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * Gestion de la validation/refus des jours depuis email de notification
+     */
+    public function validateDayAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $dayId      = $request->get('dayId');
+        $validation = $request->get('validation');
+        $userId     = $request->get('user');
+
+        $day  = $em->getRepository('UserBundle:Day')->find($dayId);
+        $user = $em->getRepository('UserBundle:User')->find($userId);
+
+        $day->setIsValidated($validation);
+
+        $em->persist($day);
+        $em->flush();
+
+        if($validation){
+            $admin = $em->getRepository('UserBundle:User')->find(15);
+            $mailer = $this->get('bird_office.mailer');
+            $mailer->sendAcceptationMail($user, $day);
+        }
+
+        $managers = $em->getRepository('UserBundle:User')->findByRole('ROLE_SUPER_ADMIN');
+
+        return $this->render('UserBundle:Default:index.html.twig',
+            array(
+                'managers' => $managers
+            )
+        );
+
     }
 
 

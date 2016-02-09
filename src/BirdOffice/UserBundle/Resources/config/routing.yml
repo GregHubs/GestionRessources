@@ -71,3 +71,8 @@ validationAjax:
 testMail:
     path:   /test-mail
     defaults: { _controller: UserBundle:Default:testMail }
+
+validateDay:
+    path:   /validate-day/{dayId}/{validation}
+    defaults: { _controller: UserBundle:Default:ValidateDay }
+

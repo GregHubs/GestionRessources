@@ -45,14 +45,24 @@ class Mailer
 
     public function sendDemandToSuperAdmin(\BirdOffice\UserBundle\Entity\User $user, \BirdOffice\UserBundle\Entity\User $admin, $day)
     {
-        $subject = "Nouvelle demande de jour(s)";
-        $template = "UserBundle:Mail:emailing-recap.html.twig";
-        $from = 'gestion-personnel@bird-office.com';
-       // $to = $admin->getEmail();
-        $to = 'hamouri.sarah@gmail.com';
-        $body = $this->templating->render($template, array('admin' => $admin, 'user' => $user, 'day' => $day));
+        $subject    = "Nouvelle demande de jour(s)";
+        $template   = "UserBundle:Mail:emailing-recap.html.twig";
+        $from       = 'gestion-personnel@bird-office.com';
+        $to         = $admin->getEmail();
+        $body       = $this->templating->render($template, array('admin' => $admin, 'user' => $user, 'day' => $day));
+
         $this->sendMail($subject, $from, $to, $body);
     }
-    
 
+
+    public function sendAcceptationMail(\BirdOffice\UserBundle\Entity\User $user, $day)
+    {
+        $subject = "Mise à jour de votre demande de jour(s)";
+        $template = "UserBundle:Mail:emailing-reponse.html.twig";
+        $from = 'gestion-personnel@bird-office.com';
+        $to = $user->getEmail();
+        $body = $this->templating->render($template, array('user' => $user, 'day' => $day));
+
+        $this->sendMail($subject, $from, $to, $body);
+    }
 }
