@@ -49,21 +49,23 @@ class DefaultController extends Controller
         );
     }
 
-
-    public function EmailingRecapAction()
+    public function testMailAction()
     {
-        return $this->render('UserBundle:Default:emailing-recap.html.twig');
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $em->getRepository('UserBundle:User')->find(17);
+        $admin = $em->getRepository('UserBundle:User')->find(15);
+        $day = $em->getRepository('UserBundle:Day')->find(1);
+
+        return $this->render('UserBundle:Mail:emailing-recap.html.twig',
+            array(
+                'user'=>$user,
+                'admin'=>$admin,
+                'day'=>$day
+            )
+        );
     }
 
 
-    public function emailingReponsepAction()
-    {
-        return $this->render('UserBundle:Default:emailing-reponse.html.twig');
-    }
 
-
-    public function emailingRefuspAction()
-    {
-        return $this->render('UserBundle:Default:emailing-refus.html.twig');
-    }
 }
