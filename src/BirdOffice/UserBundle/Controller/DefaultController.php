@@ -49,7 +49,6 @@ class DefaultController extends Controller
         // replace this example code with whatever you need
     }
 
-
     public function PartnerDetailAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -82,6 +81,12 @@ class DefaultController extends Controller
                 'day'=>$day
             )
         );
+    }
+
+    public function CallbackAction()
+    {
+
+        return $this->render('UserBundle:Mail:emailing-callback.html.twig');
     }
 
     /**

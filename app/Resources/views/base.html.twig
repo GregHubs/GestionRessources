@@ -77,6 +77,7 @@
     </nav>
     <div class="container-fluid">
         {% if app.request.attributes.get('_route') != 'fos_user_security_login' %}
+        {% if app.request.attributes.get('_route') != 'Callback' %}
         <div class="row">
             <div class="col-md-12 no-marge">
                 <div class="full">
@@ -86,6 +87,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         {% endif %}
         <div class="row">
             <div class="col-md-2"></div>

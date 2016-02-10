@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{%  block body %}
+
+    {% image '@UserBundle/Resources/public/images/check.png' %}
+        <img src="{{ asset_url }}" alt="Réponse envoyée" class="check"/>
+    {% endimage %}
+    <div class="alert alert-success space" role="alert">La réponse a bien été transmise au collaborateur !</div>
+
+{% endblock %}
