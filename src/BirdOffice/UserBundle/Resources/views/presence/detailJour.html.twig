@@ -2,8 +2,8 @@
     <li>Date de la demande : <span class="blue-violet">{{ day.startDate.date|date('d-m-y') }}</span></li>
     <li>Créateur de la demande : <span class="blue-violet">{{ day.user.firstname }}</span></li>
     <li>Date effective de l'absence / présence :  <span class="blue-violet">{{ day.startDate.date|date('d-m-y') }}</span></li>
-    {% if day.hours != 0 %}{<li>Durée effective : <span class="blue-violet">{{  day.hours }}</span></li>{% endif %}
+    {% if day.hours != 0 %}<li>Durée effective : <span class="blue-violet">{{  day.hours }}</span></li>{% endif %}
     <li>Type de la demande : <span class="blue-violet">{% if day.absenceType %}Absence : {{ day.absenceType.name }}{% elseif day.presenceType %}Presence : {{ day.presenceType.name }}{% endif %}</span></li>
-    <li>Description : <span class="blue-violet">{{ day.description }}</span></li>
+    {% if day.description %}<li>Description : <span class="blue-violet">{{ day.description }}</span></li>{% endif %}
     <li>Date de la validation : <span class="blue-violet">{% if day.validationDate %}{{ day.validationDate.date|date('d-m-y') }}{% else %} Demande en cours {% endif %}</span></li>
 </ul>

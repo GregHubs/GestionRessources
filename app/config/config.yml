@@ -98,6 +98,9 @@ fos_user:
     registration:
         form:
             type: BirdOffice\UserBundle\Form\RegistrationType
+    profile:
+        form:
+            type: BirdOffice\UserBundle\Form\ProfileType
 
 services:
     fos_user.doctrine_registry:

@@ -30,12 +30,17 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface{
         }
         elseif ($security->isGranted('ROLE_ADMIN'))
         {
-            $response = new RedirectResponse($this->router->generate('admin_index'));
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            $userId = $user->getId();
+
+            $response = new RedirectResponse($this->router->generate('partnerDetail', array('id' => $userId)));
         }
         elseif ($security->isGranted('ROLE_USER'))
         {
-            $response = new RedirectResponse($this->router->generate('admin_index'));
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            $userId = $user->getId();
 
+            $response = new RedirectResponse($this->router->generate('partnerDetail', array('id' => $userId)));
         }
 
         return $response;

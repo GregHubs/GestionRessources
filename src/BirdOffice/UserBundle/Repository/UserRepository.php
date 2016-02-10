@@ -11,13 +11,13 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
      *
      * @return array
      */
-    public function findByRole($role)
+    public function getRole($role)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('u')
             ->from('UserBundle:User', 'u')
             ->where('u.roles LIKE :roles')
-            ->setParameter('roles', $role);
+            ->setParameter('roles', '%"'.$role.'"%');
 
         return $qb->getQuery()->getResult();
     }

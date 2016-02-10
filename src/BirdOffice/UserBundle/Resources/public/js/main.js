@@ -1,14 +1,8 @@
-$( document ).ready(function() {    // Affiche la liste des collaborateurs pour la HP super_admin
-    $(function () {
-        $('#manager').change(function () {
-            ajaxCall();
-        });
-        ajaxCall();
-    });
 
-    var urlpost = Routing.generate('ajaxList');
+
 
     function ajaxCall() {
+        var urlpost = Routing.generate('ajaxList');
 
         $.ajax({
             type: "POST",
@@ -24,6 +18,7 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                         $(this).attr('data-user')
                     );
                 });
+
 
                 $(".delete-user").click(function () {
                     ajax_delete_partner(
@@ -44,54 +39,63 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
 
     // Show add modal
 
-    var showAddModal = Routing.generate('showAddModal');
-
-    $('#add-partner').click(function () {
-        show_add_modal();
-    });
-
-    function show_add_modal(userId) {
+    function show_add_modal() {
+        var showAddModal = Routing.generate('showAddModal');
         $.ajax({
             type: "POST",
             url: showAddModal,
             data: {
-                user: userId
             },
             success: function (data) {
                 $('#modal-title').html(data.modalTitle);
                 $('#modal-body').html(data.modalBody);
                 $('#modal').modal('show');
+
+                $('#add-partner-ajax').unbind('click').click(function(){
+                    ajax_add_partner();
+                    //return false;
+                });
             }
         })
     }
 
+
+
+
     // Modale ajout collaborateur
-    var addPartnerAjax = Routing.generate('addPartnerAjax');
 
-    function ajax_add_partner() {
-        $.ajax({
-            type: "POST",
-            url: addPartnerAjax,
-            data: {
-                civility: $('#fos_user_registration_form_civility').val(),
-                name: $('#fos_user_registration_form_name').val(),
-                username: $('#fos_user_registration_form_username').val(),
-                email: $('#fos_user_registration_form_email').val(),
-                plainPassword: $('#fos_user_registration_form_plainPassword_first').val(),
-                managedBy: $('#fos_user_registration_form_managedBy').val()
-            },
-            success: function (data) {
-                $('#modal-title').html(data.modalTitle);
-                $('#modal-body').html(data.modalBody);
-                $('#modal').modal('show');
-            }
-        });
-    }
 
-    // Modale édition collaborateur
-    var editUser = Routing.generate('editPartnerAjax');
+        function ajax_add_partner() {
+            var addPartnerAjax = Routing.generate('addPartnerAjax');
+
+            $.ajax({
+                type: "POST",
+                url: addPartnerAjax,
+                data: {
+                    civility: $('#fos_user_registration_form_civility').val(),
+                    lastname: $('#fos_user_registration_form_lastname').val(),
+                    firstname: $('#fos_user_registration_form_firstname').val(),
+                    email: $('#fos_user_registration_form_email').val(),
+                    plainPassword: $('#fos_user_registration_form_plainPassword_first').val(),
+                    managedBy: $('#fos_user_registration_form_manager').val()
+                },
+                success: function (data) {
+                    $('#modal-title').html(data.modalTitle);
+                    $('#modal-body').html(data.modalBody);
+                    $('#modal').modal('show');
+                    if (data.responseCode == 200) {
+                        $.notify(data.message, data.notification);
+                    }
+                }
+            });
+        }
+
+
+    // Affiche Modale édition collaborateur
 
     function ajax_edit_partner(userId) {
+        var editUser = Routing.generate('editPartnerAjax');
+
         $.ajax({
             type: "POST",
             url: editUser,
@@ -103,6 +107,39 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                 $('#modal-title').html(data.modalTitle);
                 $('#modal-body').html(data.modalBody);
                 $('#modal').modal('show');
+
+                $('#edit-partner-ajax').click(function(){
+                    edit_partner(userId);
+                   // return false;
+
+                });
+            }
+        });
+    }
+
+    // traitement édition partenaire
+    function edit_partner(userId) {
+        var addPartnerAjax = Routing.generate('editPartner');
+
+        $.ajax({
+            type: "POST",
+            url: addPartnerAjax,
+            data: {
+                userId:userId,
+                civility: $('#fos_user_profile_form_civility').val(),
+                lastname: $('#fos_user_profile_form_lastname').val(),
+                firstname: $('#fos_user_profile_form_firstname').val(),
+                email: $('#fos_user_profile_form_email').val(),
+                plainPassword: $('#fos_user_profile_form_plainPassword_first').val(),
+                managedBy: $('#fos_user_profile_form_manager').val()
+            },
+            success: function (data) {
+                $('#modal-title').html(data.modalTitle);
+                $('#modal-body').html(data.modalBody);
+                $('#modal').modal('show');
+                if (data.responseCode == 200) {
+                    $.notify(data.message, data.notification);
+                }
             }
         });
     }
@@ -113,9 +150,10 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
     }
 
     //  suppression collaborateur
-    var deleteUser = Routing.generate('deletePartnerAjax');
 
     function ajax_delete_partner(userId) {
+        var deleteUser = Routing.generate('deletePartnerAjax');
+
         $.ajax({
             type: "POST",
             url: deleteUser,
@@ -130,33 +168,33 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
             }
         })
     }
+$( document ).ready(function() {    // Affiche la liste des collaborateurs pour la HP super_admin
 
-    // DATE PICKER
+    // date PICKER
     $(".date-picker").datepicker().on("change", function () {
         var id = $(this).attr("id");
         var val = $("label[for='" + id + "']").text();
         $("#msg").text(val + " changed");
     });
 
-
-    //Affiche la liste des absences/présences
-    $(function () {
-        var month = $("#select").val();
-        var user = $('#username').attr('data-user');
-
-        $('.month').change(function () {
-            var month = $("#select").val();
-            ajaxMonthCall(user, month);
+    $(".datepicker-month").datepicker({
+        format: "mm-yyyy",
+        startView: "months",
+        viewMode: "months",
+        minViewMode: "months"
         });
-        ajaxMonthCall(user, month);
-    });
+});
 
-    var add_presence_absence = Routing.generate('addPresenceAbsence');
+
+  // Affiche la liste des collaborateurs pour la HP super_admin
+
 
     function ajaxMonthCall(user, month) {
-        $.ajax({
+        var monthCall = Routing.generate('monthCallAjax');
+
+            $.ajax({
             type: "POST",
-            url: add_presence_absence,
+            url: monthCall,
             data: {
                 month: month,
                 userId: user
@@ -164,9 +202,9 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
             success: function (data) {
                 $('#presences').html(data);
 
-                    $('.detail-day').unbind('click').click(function () {
-                        detailDay($(this).attr('data-day'));
-                    });
+                $('.detail-day').unbind('click').click(function () {
+                    detailDay($(this).attr('data-day'));
+                });
 
 
                 // VALIDATION DE LA DEMANDE
@@ -175,11 +213,12 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                     $('.validate').change(function () {
                         if ($(this).is(":checked")) {
                             var validation = 1;
-                            $('.day-validation').html('Validé');
+                                $('.day-validation').html('Validé');
                         } else {
                             validation = 0;
-                            $('.day-validation').html('Non Validé');
+                          //  $('.day-validation').html('Non Validé');
                         }
+
 
                         var validationPath = Routing.generate('validationAjax');
 
@@ -204,6 +243,7 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
         });
     }
 
+
     $(function () {
         var month = $("#select").val();
         var user = $('#username').attr('data-user');
@@ -213,10 +253,10 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
         });
     });
 
-    var add_new_day = Routing.generate('addNewDay');
-    var user = $('#username').attr('data-user');
 
     function addNewDay() {
+        var add_new_day = Routing.generate('addNewDay');
+        var user = $('#username').attr('data-user');
         $.ajax({
             type: "POST",
             url: add_new_day,
@@ -235,9 +275,10 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
         });
     }
 
-    var detailDayAjax = Routing.generate('ModalDetailContent');
 
+    // Affiche le détail d'une journée dans une modale
     function detailDay(dayId) {
+        var detailDayAjax = Routing.generate('ModalDetailContent');
         $.ajax({
             type: "POST",
             url: detailDayAjax,
@@ -251,4 +292,28 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
             }
         });
     }
-});
+
+    //
+
+
+    function show_day_modal(dayId) {
+        var showDayModal = Routing.generate('showDayModal');
+        $.ajax({
+            type: "POST",
+            url: showDayModal,
+            data: {
+                day: dayId
+            },
+            success: function (data) {
+                console.log(data);
+                $('#modal-title').html(data.modalTitle);
+                $('#modal-body').html(data.modalBody);
+                $('#modal').modal('show');
+
+                $('#edit-day-ajax').click(function(){
+                    edit_day(dayId);
+                    // return false;
+                });
+            }
+        });
+    }

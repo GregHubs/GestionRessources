@@ -2,6 +2,7 @@
 
 namespace BirdOffice\UserBundle\Controller;
 
+use BirdOffice\UserBundle\Entity\Day;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine();
 
-        $managers = $em->getRepository('UserBundle:User')->findByRole('ROLE_SUPER_ADMIN');
+        $managers = $em->getRepository('UserBundle:User')->getRole('ROLE_SUPER_ADMIN');
 
         return $this->render('UserBundle:Default:index.html.twig',
             array(
@@ -24,12 +25,28 @@ class DefaultController extends Controller
         );
     }
 
+    public function PartnerIndexAction(Request $request)
+    {
+        $user = $request->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $absences = $em->getRepository('UserBundle:AbsenceType')->findAll();
+        $presences = $em->getRepository('UserBundle:PresenceType')->findAll();
+
+        return $this->render('UserBundle:Default:collaborateur.html.twig',
+            array(
+                'user'=>$user,
+                'absences'=>$absences,
+                'presences'=>$presences
+            )
+        );
+
+    }
+
 
     public function AdminIndexAction()
     {
         // replace this example code with whatever you need
-        return $this->render('UserBundle:Default:index2.html.twig');
-
     }
 
 
@@ -40,6 +57,7 @@ class DefaultController extends Controller
         $user = $em->getRepository('UserBundle:User')->find($userId);
         $absences = $em->getRepository('UserBundle:AbsenceType')->findAll();
         $presences = $em->getRepository('UserBundle:PresenceType')->findAll();
+
         return $this->render('UserBundle:Default:collaborateur.html.twig',
             array(
             'user'=>$user,
@@ -82,6 +100,9 @@ class DefaultController extends Controller
         $day  = $em->getRepository('UserBundle:Day')->find($dayId);
         $user = $em->getRepository('UserBundle:User')->find($userId);
 
+        if (!$day instanceof Day){
+            throw new \Exception;
+        }
         $day->setIsValidated($validation);
 
         $em->persist($day);

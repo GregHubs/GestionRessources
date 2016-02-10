@@ -35,12 +35,15 @@
             </a>
         </td>
         <td class="text-center">
-            <div class="checkbox">
-                <label>
-                    <input class="validate" {% if day.isValidated %}checked{% endif %} type="checkbox" value="">
-                        <span class="day-validation">{% if day.isValidated %}Validé{% else %}Non validé{% endif %}</span>
-                </label>
+            <p>
+            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-id-switch-indeterminate bootstrap-switch-animate bootstrap-switch-off bootstrap-switch-indeterminate" style="width: 102px;">
+                <div class="bootstrap-switch-container" style="width: 150px; margin-left: -25px;">
+                    <span class="bootstrap-switch-handle-on bootstrap-switch-primary" style="width: 50px;">ON</span>
+                    <span class="bootstrap-switch-label" style="width: 50px;">&nbsp;</span><span class="bootstrap-switch-handle-off bootstrap-switch-default" style="width: 50px;">OFF</span>
+                    <input id="switch-indeterminate" type="checkbox" name="switch-indeterminate" checked="" data-indeterminate="true">
+                </div>
             </div>
+            </p>
         </td>
     </tr>
     {% endfor %}
