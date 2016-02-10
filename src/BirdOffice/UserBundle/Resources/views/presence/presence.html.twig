@@ -37,11 +37,15 @@
         <td class="text-center">
             <div class="checkbox">
                 <label>
-                    <input class="validate" {% if day.isValidated %}checked{% endif %} type="checkbox" value="">
-                    <span class="day-validation">{% if day.isValidated %}Validé{% else %}Non validé{% endif %}</span>
+                    <input class="validate" id="switch-indeterminate"  data-indeterminate="true" {% if day.isValidated %}checked{% endif %} type="checkbox" value="" name="my-checkbox" checked>
+                    <!--<span class="day-validation">{% if day.isValidated %}Validé{% else %}Non validé{% endif %}</span>-->
                 </label>
             </div>
         </td>
     </tr>
     {% endfor %}
 </table>
+
+<script>
+    $("[name='my-checkbox']").bootstrapSwitch();
+</script>

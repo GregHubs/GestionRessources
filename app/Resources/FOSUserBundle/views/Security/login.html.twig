@@ -12,13 +12,12 @@
         <div class="col-md-12 space40"></div>
     </div>
     <div class="row">
-        <div class="col-md-4">
-            {% image '@UserBundle/Resources/public/images/icon-calendar.png' %}
-            <img src="{{ asset_url }}" alt="Outil de gestion de planning" class="picto-calendar right"/>
-            {% endimage %}
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
             <div class="wrap-login">
+              <!--  {% image '@UserBundle/Resources/public/images/icon-calendar.png' %}
+                <img src="{{ asset_url }}" alt="Outil de gestion de planning" class="picto-calendar"/>
+                {% endimage %}-->
             <h1 class="center main-title">Gestion interne du personnel</h1>
                 <div class="wrapper">
                     <form action="{{ path("fos_user_security_check") }}" method="post" class="form-signin margin">
@@ -44,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-3"></div>
     </div>
 </div>
 {% endblock fos_user_content %}
