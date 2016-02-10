@@ -95,7 +95,7 @@ class DefaultController extends Controller
 
         $dayId      = $request->get('dayId');
         $validation = $request->get('validation');
-        $userId     = $request->get('user');
+        $userId     = $request->get('userId');
 
         $day  = $em->getRepository('UserBundle:Day')->find($dayId);
         $user = $em->getRepository('UserBundle:User')->find($userId);
@@ -108,13 +108,10 @@ class DefaultController extends Controller
         $em->persist($day);
         $em->flush();
 
-        if($validation){
-            $admin = $em->getRepository('UserBundle:User')->find(15);
-            $mailer = $this->get('bird_office.mailer');
-            $mailer->sendAcceptationMail($user, $day);
-        }
+        $mailer = $this->get('bird_office.mailer');
+        $mailer->sendAcceptationMail($user, $day);
 
-        $managers = $em->getRepository('UserBundle:User')->findByRole('ROLE_SUPER_ADMIN');
+        $managers = $em->getRepository('UserBundle:User')->getRole('ROLE_SUPER_ADMIN');
 
         return $this->render('UserBundle:Default:index.html.twig',
             array(

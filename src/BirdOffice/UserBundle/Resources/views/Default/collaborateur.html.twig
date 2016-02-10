@@ -24,7 +24,7 @@
                             <option value="12">Décembre 2016</option>
                         </select>
                     </div>
-                    <button type="button" class="btn btn-default margin15 right" id="show-day-modal">Ajouter un jour</button>
+                    <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal2">Ajouter un jour</button>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
         <!-- ICI PRESENCES -->
 
     <!-- Modal : ajouter un jour-->
-    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="myModal2" data-user="{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -106,9 +106,6 @@
         </div>
     </div>
 <script>
-    $('#show-day-modal').click(function () {
-        show_day_modal();
-    });
 
     $( document ).ready(function() {    // Affiche la liste des collaborateurs pour la HP super_admin
 
@@ -124,8 +121,6 @@
             ajaxMonthCall(user, month);
 
         });
-
-
     });
 
 </script>

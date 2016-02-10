@@ -79,8 +79,9 @@ testMail:
     defaults: { _controller: UserBundle:Default:testMail }
 
 validateDay:
-    path:   /validate-day/{dayId}/{validation}
+    path:   /validate-day/{dayId}/{validation}/{userId}
     defaults: { _controller: UserBundle:Default:ValidateDay }
+
 
 
 

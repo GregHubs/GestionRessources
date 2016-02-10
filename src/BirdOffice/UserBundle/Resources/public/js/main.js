@@ -245,23 +245,17 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
 
 
     $(function () {
-        var month = $("#select").val();
         var user = $('#username').attr('data-user');
-        $('.form-submit').click(function () {
-            addNewDay();
-            ajaxMonthCall(user, month)
+        $('.form-submit').unbind('click').click(function () {
+            addNewDay(user);
         });
-    });
 
-
-    function addNewDay() {
-        var add_new_day = Routing.generate('addNewDay');
-        var user = $('#username').attr('data-user');
+    function addNewDay(user) {
         $.ajax({
             type: "POST",
-            url: add_new_day,
+            url: Routing.generate('addNewDay'),
             data: {
-                userId: user,
+                user: user,
                 startDate: $('#date-picker-3').datepicker().val(),
                 endDate: $('#date-picker-4').datepicker().val(),
                 hours: $('#form-hours').val(),
@@ -274,7 +268,7 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
             }
         });
     }
-
+    });
 
     // Affiche le détail d'une journée dans une modale
     function detailDay(dayId) {
@@ -289,31 +283,7 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                 $('#modal-title').html(data.modalTitle);
                 $('#modal-body').html(data.modalBody);
                 $('#modal').modal('show');
-            }
-        });
-    }
 
-    //
-
-
-    function show_day_modal(dayId) {
-        var showDayModal = Routing.generate('showDayModal');
-        $.ajax({
-            type: "POST",
-            url: showDayModal,
-            data: {
-                day: dayId
-            },
-            success: function (data) {
-                console.log(data);
-                $('#modal-title').html(data.modalTitle);
-                $('#modal-body').html(data.modalBody);
-                $('#modal').modal('show');
-
-                $('#edit-day-ajax').click(function(){
-                    edit_day(dayId);
-                    // return false;
-                });
             }
         });
     }

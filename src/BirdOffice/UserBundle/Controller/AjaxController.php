@@ -259,7 +259,8 @@ class AjaxController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $userId         = $request->get('userId');
+        $userId         = $request->get('user');
+
         $startDate      = $request->get('startDate');
         $endDate        = $request->get('endDate');
         $hours          = $request->get('hours');
