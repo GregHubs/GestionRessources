@@ -28,7 +28,6 @@
                 <div class="left">
                     <select id="manager" class="form-control" id="select">
                         <option selected></option>
-                        <option>Responsable</option>
                         {% for manager in managers %}
                             <option  value="{{ manager.id }}">{{ manager.lastname }}</option>
                         {% endfor %}
@@ -39,20 +38,23 @@
         </div>
     </div>
 
-    <!-- Modal : Success-->
-    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header success">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    Le collaborateur a été ajouté avec succès !
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="searchContainer"></div>
     <div id="modal-edit"></div>
+
+
+<script>
+    $('#add-partner').click(function () {
+        show_add_modal();
+    });
+
+    $( document ).ready(function() {    // Affiche la liste des collaborateurs pour la HP super_admin
+        $(function () {
+            $('#manager').change(function () {
+                ajaxCall();
+            });
+            ajaxCall();
+        });
+    });
+</script>
+
 {% endblock %}

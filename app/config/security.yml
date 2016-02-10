@@ -29,3 +29,5 @@ security:
         - { path: ^/register, role: ROLE_SUPER_ADMIN }
         - { path: ^/resetting, role: ROLE_SUPER_ADMIN }
         - { path: ^/associate/, role: ROLE_SUPER_ADMIN }
+        - { path: ^/partner/detail/*, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin, role: ROLE_SUPER_ADMIN }

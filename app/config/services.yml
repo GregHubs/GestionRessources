@@ -8,10 +8,15 @@ services:
         class: BirdOffice\UserBundle\ConnectionHandler\LoginSuccessHandler
         arguments: ["@router", "@service_container"]
 
-    app.form.registration:
-        class: BirdOffice\UserBundle\Form\RegistrationType
-        tags:
-            - { name: form.type, alias: bird_user_registration }
+        app.form.registration:
+            class: BirdOffice\UserBundle\Form\RegistrationType
+            tags:
+                - { name: form.type, alias: bird_user_registration }
+
+        app.form.edition:
+                class: BirdOffice\UserBundle\Form\ProfileType
+                tags:
+                    - { name: form.type, alias: bird_user_profile }
 
     bird_office.helper:
         class: BirdOffice\UserBundle\Helper\Helper

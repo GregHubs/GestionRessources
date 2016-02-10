@@ -2,13 +2,13 @@ superAdminIndex:
     path:   /admin
     defaults: { _controller: UserBundle:Default:SuperAdminIndex }
 
-adminIndex:
-    path:   /dashboard
-    defaults: { _controller: UserBundle:Default:AdminIndex }
-
 partnerDetail:
     path:   /partner/detail/{id}
     defaults: { _controller: UserBundle:Default:PartnerDetail }
+
+partnerIndex:
+    path:   /partner
+    defaults: { _controller: UserBundle:Default:PartnerIndex }
 
 emailingRecap:
     path:   /emailing/recap
@@ -39,14 +39,20 @@ deletePartnerAjax:
         expose: true
 
 editPartnerAjax:
-    path:   /edit-partner
-    defaults: { _controller: UserBundle:Ajax:EditPartnerAjax }
+    path:   /edit-partner-ajax
+    defaults: { _controller: UserBundle:Ajax:ShowEditModal }
     options:
         expose: true
 
-addPresenceAbsence:
-    path:   /add-presence-absence
-    defaults: { _controller: UserBundle:Ajax:AddPresenceAbsenceAjax }
+editPartner:
+    path:   /edit-partner
+    defaults: { _controller: UserBundle:Ajax:EditPartner }
+    options:
+        expose: true
+
+monthCallAjax:
+    path:   /ajax-month-call
+    defaults: { _controller: UserBundle:Ajax:AjaxMonthCall }
     options:
         expose: true
 
@@ -75,4 +81,7 @@ testMail:
 validateDay:
     path:   /validate-day/{dayId}/{validation}
     defaults: { _controller: UserBundle:Default:ValidateDay }
+
+
+
 

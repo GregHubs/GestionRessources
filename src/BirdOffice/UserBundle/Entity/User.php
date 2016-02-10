@@ -52,6 +52,13 @@ class User extends BaseUser
      */
     private $firstName;
 
+    /**
+     * On enregistre ici le user id du manager correspondant à l'utilisateur
+     *
+     * @ORM\Column(name="manager", type="integer")
+     */
+    private $manager;
+
 
     public function __construct()
     {
@@ -158,5 +165,29 @@ class User extends BaseUser
     public function getFirstName()
     {
         return $this->firstName;
+    }
+
+    /**
+     * Set manager
+     *
+     * @param integer $manager
+     *
+     * @return User
+     */
+    public function setManager($manager)
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get manager
+     *
+     * @return integer
+     */
+    public function getManager()
+    {
+        return $this->manager;
     }
 }
