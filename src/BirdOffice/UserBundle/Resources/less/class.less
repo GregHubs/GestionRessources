@@ -56,8 +56,24 @@
 
 .center,.info-bulle p { margin: 0 auto;text-align: center !important}
 
+@media screen and (max-width: 768px) {
+  .navbar-brand {
+    display: block; float: none; margin: 0 auto; text-align: center;
+  }
+}
+
 @media screen and (max-width: 625px) {
   .visuel {
     width: 100%;
   }
 }
+
+@media screen and (max-width: 580px) {
+  .none-mobile {
+    display: none;
+  }
+  #modal-body > ul {
+    padding-left: 15px;
+  }
+}
+
