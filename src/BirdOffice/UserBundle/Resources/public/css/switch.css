@@ -148,7 +148,7 @@
 .bootstrap-switch.bootstrap-switch-disabled,
 .bootstrap-switch.bootstrap-switch-readonly,
 .bootstrap-switch.bootstrap-switch-indeterminate {
-    cursor: default !important;
+    cursor: pointer !important;
 }
 .bootstrap-switch.bootstrap-switch-disabled .bootstrap-switch-handle-on,
 .bootstrap-switch.bootstrap-switch-readonly .bootstrap-switch-handle-on,
@@ -161,7 +161,7 @@
 .bootstrap-switch.bootstrap-switch-indeterminate .bootstrap-switch-label {
     opacity: 0.5;
     filter: alpha(opacity=50);
-    cursor: default !important;
+    cursor: pointer !important;
 }
 .bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-container {
     -webkit-transition: margin-left 0.5s;

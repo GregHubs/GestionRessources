@@ -82,6 +82,7 @@ validateDay:
     path:   /validate-day/{dayId}/{validation}
     defaults: { _controller: UserBundle:Default:ValidateDay }
 
-
-
+Callback:
+    path:   /email-callback
+    defaults: { _controller: UserBundle:Default:Callback }
 
