@@ -251,7 +251,6 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
     // Affiche Modale édition jour
 
     function ShowEditDay(dayId) {
-
         $.ajax({
             type: "POST",
             url: Routing.generate('showEditDay'),
@@ -265,7 +264,10 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                 $('#modal').modal('show');
 
                 $("#edit-day-ajax").unbind('click').click(function () {
-                    EditDay(dayId);
+                    validateForm();
+                    if(validateForm()){
+                        EditDay(dayId);
+                    }
                 });
             }
         });
@@ -283,12 +285,15 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                 presenceType: $('#form_presenceType').val(),
                 startDate: $('#form_startDate').val(),
                 endDate: $('#form_endDate').val(),
-                plainPassword: $('#form_description').val(),
-                managedBy: $('#form_hours').val()
+                description: $('#form_description').val(),
+                hours: $('#form_hours').val()
             },
             success: function (data) {
                 if (data.responseCode == 200) {
-                    $.notify(data.message, data.notification);
+                    $.notify(
+                        data.message,
+                        data.notification
+                    );
                 }
             }
         });
@@ -340,4 +345,14 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
 
             }
         });
+    }
+
+    // validation formulaire
+
+    function validateForm(){
+        if ($('#form_presenceType').val() != '' &&  $('#form_absenceType').val() != '' ) {
+            alert("Absence et présence ne peuvent être remplis en même temps");
+            return false;
+        }
+            return true;
     }

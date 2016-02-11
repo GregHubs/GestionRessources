@@ -392,24 +392,26 @@ class AjaxController extends Controller
         $form = $this->createFormBuilder($day)
             ->add('absenceType', EntityType::class, array(
                 'class' => 'UserBundle:AbsenceType',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'required' => false,
+
             ))
             ->add('presenceType', EntityType::class, array(
                 'class' => 'UserBundle:PresenceType',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'required' => false,
+
             ))
-            ->add('startDate','date', [
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-                'attr' => [
-                    'class' => 'form-control input-inline datepicker',
-                    'data-provide' => 'datepicker',
-                    'data-date-format' => 'dd-mm-yyyy'
-                ]
-            ])
+            ->add('startDate',DateType::class, array(
+                'input'  => 'datetime',
+                'widget' => 'choice',
+                'label' => 'Date de début'
+            ))
+
             ->add('endDate', DateType::class, array(
                 'input'  => 'datetime',
                 'widget' => 'choice',
+                'label' => 'Date de fin'
             ))
             ->add('description')
             ->add('hours')
@@ -442,6 +444,7 @@ class AjaxController extends Controller
      */
     public function EditDayAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
 
         $day            = $em->getRepository('UserBundle:Day')->find($request->get('dayId'));
@@ -458,13 +461,19 @@ class AjaxController extends Controller
         $day->setStartDate(new \DateTime($request->get('startDate')));
         $day->setEndDate(new \DateTime($request->get('endDate')));
         $day->setHours($request->get('hours'));
+        $day->setDescription($request->get('description'));
+
 
         $em->persist($day);
         $em->flush();
 
         $message = 'Jour modifié avec succès';
 
-        $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'message' => $message));
+        $return = json_encode(array(
+            'responseCode' => 200,
+            'notification' => 'success',
+            'message' => $message
+        ));
 
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
