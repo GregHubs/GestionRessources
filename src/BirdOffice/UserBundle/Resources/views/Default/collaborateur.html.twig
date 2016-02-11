@@ -10,18 +10,13 @@
                     <div class="left">
                         <select class="form-control month" name="month" id="select-month" title="Mois">
                             <option value="0">Choix du mois</option>
-                            <option value="01">Janvier 2016</option>
-                            <option value="02">Février 2016</option>
-                            <option value="03">Mars 2016</option>
-                            <option value="04">Avril 2016</option>
-                            <option value="05">Mai 2016</option>
-                            <option value="06">Juin 2016</option>
-                            <option value="07">Juillet 2016</option>
-                            <option value="08">Août 2016</option>
-                            <option value="09">Septembre 2016</option>
-                            <option value="10">Octobre 2016</option>
-                            <option value="11">Novembre 2016</option>
-                            <option value="12">Décembre 2016</option>
+                            {% set start_date = '01-01-2016' %}
+                            {% set end_date = '31-12-2016' %}
+
+                            {% for x in range(start_date|date("m"), end_date|date("m") ) %}
+                                <option value="02">{{ x|date("m") }}</option>
+                            {% endfor %}
+
                         </select>
                     </div>
                     <button type="button" class="btn btn-default margin15 right" data-toggle="modal"  data-target="#myModal2">Ajouter un jour</button>
@@ -107,7 +102,7 @@
     </div>
 <script>
 
-    $( document ).ready(function() {    // Affiche la liste des collaborateurs pour la HP super_admin
+    $( document ).ready(function() {
 
         //Affiche la liste des absences/présences
         $(function () {
@@ -120,7 +115,11 @@
             });
             ajaxMonthCall(user, month);
 
+
         });
+
+
+
     });
 
 </script>

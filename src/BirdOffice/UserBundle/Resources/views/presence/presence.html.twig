@@ -20,24 +20,18 @@
             </button>
         </td>
         <td class="actions text-center">
-            <a class="text-danger" href=""><i class="fa fa-trash-o icon-size"></i></a>
-            <a class="text-default" href=""><i class="fa fa-edit icon-size"></i></a>
-            <a class="text-default none-mobile" href="">
-                <i class="fa fa-search icon-size bouton">
-                    <div class="info-bulle">
-                        <p class="center"><strong>Récapitulatif sur Décembre : </strong></p>
-                        <ul>
-                            <li>Jours d'absence : 5</li>
-                            <li>Jours de présence : 15</li>
-                        </ul>
-                    </div>
-                </i>
-            </a>
+           {% if day.isValidated == 0 %} <i data-day="{{ day.id }}" class="fa fa-edit icon-size edit-day"></i>{% endif %}
         </td>
         <td class="text-center">
             <div class="checkbox">
                 <label>
-                    <input class="validate" id="switch-indeterminate"  data-indeterminate="true" {% if day.isValidated %}checked{% endif %} type="checkbox" value="" name="my-checkbox" checked>
+                    <input class="validate" {% if day.isValidated == 2 %}checked{% endif %} type="checkbox" value="">
+                    <span class="day-validation">
+                        {% if day.isValidated == 2 %}Validé
+                        {% elseif day.isValidated == 1 %}Refusé
+                        {% elseif day.isValidated == 0 %}En attente
+                        {% endif %}
+                    </span>
                 </label>
             </div>
         </td>
@@ -46,5 +40,10 @@
 </table>
 
 <script>
+
+
+
+
+
     $("[name='my-checkbox']").bootstrapSwitch();
 </script>

@@ -17,6 +17,26 @@ use Doctrine\ORM\Mapping\JoinColumn;
  */
 class Day
 {
+
+    const PENDING_VALUE     = 'En attente';
+    const UNVALIDATE_VALUE  = 'Refusé';
+    const VALIDATE_VALUE    = 'Validé';
+
+    const PENDING_KEY       = '0';
+    const UNVALIDATE_KEY    = '1';
+    const VALIDATE_KEY      = '2';
+
+
+    /**
+     * @var array
+     */
+    public $status = array(
+        self::PENDING_KEY       => self::PENDING_VALUE,
+        self::VALIDATE_KEY      => self::VALIDATE_VALUE,
+        self::UNVALIDATE_KEY    => self::UNVALIDATE_VALUE
+    )
+    ;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -63,11 +83,6 @@ class Day
     private $hours;
 
     /**
-     * @ORM\Column(name="is_validated", type="boolean")
-     */
-    private $isValidated;
-
-    /**
      * @ORM\Column(type="datetime", name="asking_date")
      */
     private $askingDate;
@@ -76,6 +91,11 @@ class Day
      * @ORM\Column(type="datetime", name="validation_date", nullable=true)
      */
     private $validationDate;
+
+    /**
+     * @ORM\Column(name="is_validated", type="integer")
+     */
+    private $isValidated;
 
 
     public function __construct()
@@ -262,31 +282,6 @@ class Day
     }
 
     /**
-     * Set isValidated
-     *
-     * @param boolean $isValidated
-     *
-     * @return Day
-     */
-    public function setIsValidated($isValidated)
-    {
-        $this->isValidated = $isValidated;
-
-        return $this;
-    }
-
-    /**
-     * Get isValidated
-     *
-     * @return boolean
-     */
-    public function getIsValidated()
-    {
-        return $this->isValidated;
-    }
-
-
-    /**
      * Set askingDate
      *
      * @param \DateTime $askingDate
@@ -332,5 +327,38 @@ class Day
     public function getValidationDate()
     {
         return $this->validationDate;
+    }
+
+    /**
+     * Set isValidated
+     *
+     * @param integer $isValidated
+     *
+     * @return Day
+     */
+    public function setIsValidated($isValidated)
+    {
+        $this->isValidated = $isValidated;
+
+        return $this;
+    }
+
+    /**
+     * Get isValidated
+     *
+     * @return integer
+     */
+    public function getIsValidated()
+    {
+        return $this->isValidated;
+    }
+
+    /**
+     * Get status
+     *
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

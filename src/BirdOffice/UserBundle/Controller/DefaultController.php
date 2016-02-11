@@ -99,7 +99,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $dayId      = $request->get('dayId');
-        $validation = $request->get('validation');
+        $status     = $request->get('status');
         $userId     = $request->get('userId');
 
         $day  = $em->getRepository('UserBundle:Day')->find($dayId);
@@ -108,7 +108,7 @@ class DefaultController extends Controller
         if (!$day instanceof Day){
             throw new \Exception;
         }
-        $day->setIsValidated($validation);
+        $day->setIsValidated($status);
 
         $em->persist($day);
         $em->flush();
@@ -118,11 +118,8 @@ class DefaultController extends Controller
 
         $managers = $em->getRepository('UserBundle:User')->getRole('ROLE_SUPER_ADMIN');
 
-        return $this->render('UserBundle:Default:index.html.twig',
-            array(
-                'managers' => $managers
-            )
-        );
+        return $this->redirect( $this->generateUrl('Callback' ));
+
 
     }
 

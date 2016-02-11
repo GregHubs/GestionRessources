@@ -3,6 +3,7 @@
 namespace BirdOffice\UserBundle\Controller;
 
 use BirdOffice\UserBundle\Entity\Day;
+use BirdOffice\UserBundle\Entity\User;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -15,6 +16,10 @@ use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+
 
 
 class AjaxController extends Controller
@@ -124,8 +129,12 @@ class AjaxController extends Controller
         $userManager = $this->get('fos_user.user_manager');
 
         $user = $userManager->createUser();
-        $user->setEnabled(true);
 
+        if (!$user instanceof User){
+            throw new \Exception;
+        }
+
+        $user->setEnabled(true);
         $user->setEmail($request->get('email'));
         $user->setCivility($request->get('civility'));
         $user->setLastName($request->get('lastname'));
@@ -160,7 +169,9 @@ class AjaxController extends Controller
         $userId = $request->get('user');
 
         $user = $em->getRepository('UserBundle:User')->find($userId);
-
+        if (!$user instanceof User){
+            throw new \Exception;
+        }
         $user->setEnabled(false);
 
         $em->persist($user);
@@ -285,7 +296,7 @@ class AjaxController extends Controller
             $day->setAbsenceType($absence);
             $day->setPresenceType($presence);
             $day->setDescription($description);
-            $day->setIsValidated(false);
+            $day->setIsValidated($day->getStatus(0));
             $day->setAskingDate(new \DateTime('now'));
 
             $em->persist($day);
@@ -335,7 +346,7 @@ class AjaxController extends Controller
     }
 
     /**
-     * Validation d'un jour via checkbox, $validation = boolean
+     * Validation d'un jour via checkbox
      *
      * @param Request $request
      * @return Response
@@ -345,11 +356,15 @@ class AjaxController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $dayId = $request->get('dayId');
-        $validation = $request->get('validation');
+        $status = $request->get('status');
 
         $day = $em->getRepository('UserBundle:Day')->find($dayId);
 
-        $day->setIsValidated($validation);
+        if (!$day instanceof Day){
+            throw new \Exception;
+        }
+
+        $day->setIsValidated($status);
         $day->setValidationDate(new \DateTime('now'));
 
         $em->persist($day);
@@ -363,6 +378,85 @@ class AjaxController extends Controller
         return $response;
     }
 
+    /**
+     * Affiche la modale pour l'ajout d'un collaborateur depuis l'acceuil SUPER_ADMIN
+     * @return Response
+     *
+     */
+    public function ShowEditDayAction(Request $request)
+    {
+        $em = $this->getDoctrine();
 
+        $dayId = $request->get('dayId');
+
+        $day = $em->getRepository('UserBundle:Day')->find($dayId);
+
+        $form = $this->createFormBuilder($day)
+            ->add('absenceType', EntityType::class, array(
+                'class' => 'UserBundle:AbsenceType',
+                'choice_label' => 'name'
+            ))
+            ->add('presenceType', EntityType::class, array(
+                'class' => 'UserBundle:PresenceType',
+                'choice_label' => 'name'
+            ))            ->add('startDate', DateType::class, array(
+                'input'  => 'datetime',
+                'widget' => 'choice',
+            ))
+            ->add('endDate', DateType::class, array(
+                'input'  => 'datetime',
+                'widget' => 'choice',
+            ))
+            ->add('description')
+            ->add('hours')
+            ->getForm();
+
+        $modalTitle = 'Modification jour';
+
+        $modalBody = $this->renderView('UserBundle:Day:edit.html.twig', array(
+            'form' => $form->createView(),
+            'day' => $day
+        ));
+
+        $return = json_encode(array(
+            'responseCode' => 200,
+            'notification' => 'success',
+            'modalTitle' => $modalTitle,
+            'modalBody' => $modalBody
+        ));
+
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
+
+    public function EditDayAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $day            = $em->getRepository('UserBundle:Day')->find($request->get('dayId'));
+        $absenceType    = $em->getRepository('UserBundle:AbsenceType')->find($request->get('absenceType'));
+        $presenceType   = $em->getRepository('UserBundle:PresenceType')->find($request->get('presenceType'));
+
+
+        if (!$day instanceof Day){
+            throw new \Exception;
+        }
+
+        $day->setAbsenceType($absenceType);
+        $day->setPresenceType($presenceType);
+        $day->setStartDate(new \DateTime($request->get('startDate')));
+        $day->setEndDate(new \DateTime($request->get('endDate')));
+        $day->setHours($request->get('hours'));
+
+        $em->persist($day);
+        $em->flush();
+
+        $message = 'Jour modifié avec succès';
+
+        $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'message' => $message));
+
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
+
+    }
 
 }

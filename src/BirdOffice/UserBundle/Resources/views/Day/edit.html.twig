@@ -1,0 +1,14 @@
+<form {{ form_enctype(form) }} method="POST" class="">
+
+    {{ form_row(form.absenceType) }}
+    {{ form_row(form.presenceType) }}
+    {{ form_row(form.startDate) }}
+    {{ form_row(form.endDate) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.hours) }}
+
+    <div>
+        <input id="edit-day-ajax" type="submit" class="btn btn-primary right" value="Valider"/>
+        <div class="clear"></div>
+    </div>
+</form>

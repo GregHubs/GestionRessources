@@ -79,11 +79,22 @@ testMail:
     defaults: { _controller: UserBundle:Default:testMail }
 
 validateDay:
-    path:   /validate-day/{dayId}/{validation}/{userId}
+    path:   /validate-day/{dayId}/{status}/{userId}
     defaults: { _controller: UserBundle:Default:ValidateDay }
 
 Callback:
     path:   /email-callback
     defaults: { _controller: UserBundle:Default:Callback }
 
+showEditDay:
+    path:   /show-edit-day
+    defaults: { _controller: UserBundle:Ajax:ShowEditDay }
+    options:
+        expose: true
+
+editDay:
+    path:   /edit-day
+    defaults: { _controller: UserBundle:Ajax:EditDay }
+    options:
+        expose: true
 

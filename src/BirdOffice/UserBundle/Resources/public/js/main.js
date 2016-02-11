@@ -206,31 +206,34 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                     detailDay($(this).attr('data-day'));
                 });
 
+                $(".edit-day").unbind('click').click(function () {
+                    ShowEditDay(
+                        $(this).attr('data-day')
+                    );
+                });
+
 
                 // VALIDATION DE LA DEMANDE
                 $(function () {
 
                     $('.validate').change(function () {
                         if ($(this).is(":checked")) {
-                            var validation = 1;
+                            var status = 2;
                                 $('.day-validation').html('Validé');
                         } else {
-                            validation = 0;
-                          //  $('.day-validation').html('Non Validé');
+                            status = 1;
+                            $('.day-validation').html('Non Validé');
                         }
-
-
-                        var validationPath = Routing.generate('validationAjax');
 
                         ValidationDay();
 
                         function ValidationDay() {
                             $.ajax({
                                 type: "POST",
-                                url: validationPath,
+                                url: Routing.generate('validationAjax'),
                                 data: {
                                     dayId: $('.detail-day').attr('data-day'),
-                                    validation: validation
+                                    status: status
                                 },
                                 success: function () {
                                 }
@@ -244,11 +247,62 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
     }
 
 
+
+    // Affiche Modale édition jour
+
+    function ShowEditDay(dayId) {
+
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('showEditDay'),
+            data: {
+                dayId: dayId
+            },
+            success: function (data) {
+                console.log(data);
+                $('#modal-title').html(data.modalTitle);
+                $('#modal-body').html(data.modalBody);
+                $('#modal').modal('show');
+
+                $("#edit-day-ajax").unbind('click').click(function () {
+                    EditDay(dayId);
+                });
+            }
+        });
+    }
+
+    // Modification jour
+
+    function EditDay(dayId) {
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('editDay'),
+            data: {
+                dayId: dayId,
+                absenceType: $('#form_absenceType').val(),
+                presenceType: $('#form_presenceType').val(),
+                startDate: $('#form_startDate').val(),
+                endDate: $('#form_endDate').val(),
+                plainPassword: $('#form_description').val(),
+                managedBy: $('#form_hours').val()
+            },
+            success: function (data) {
+                if (data.responseCode == 200) {
+                    $.notify(data.message, data.notification);
+                }
+            }
+        });
+    }
+
+
+
     $(function () {
         var user = $('#username').attr('data-user');
         $('.form-submit').unbind('click').click(function () {
-            addNewDay(user);
+            addNewDay($('#username').attr('data-user'));
+         //   return false;
         });
+    });
 
     function addNewDay(user) {
         $.ajax({
@@ -268,7 +322,7 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
             }
         });
     }
-    });
+
 
     // Affiche le détail d'une journée dans une modale
     function detailDay(dayId) {
