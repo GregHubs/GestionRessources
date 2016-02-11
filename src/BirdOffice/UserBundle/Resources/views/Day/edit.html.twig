@@ -1,5 +1,5 @@
 <form {{ form_enctype(form) }} name="form_day_edit" method="POST" class="datepick">
-
+    <span class="error-field">Les champs Absence et Présence ne peuvent être sélectionnés en même temps.</span>
     {{ form_row(form.absenceType) }}
     {{ form_row(form.presenceType) }}
     {{ form_row(form.startDate) }}
