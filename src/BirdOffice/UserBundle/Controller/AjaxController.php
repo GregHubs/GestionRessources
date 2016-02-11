@@ -162,8 +162,6 @@ class AjaxController extends Controller
      */
     public function DeletePartnerAjaxAction(Request $request)
     {
-        $helper = $this->get('bird_office.helper');
-
         $em = $this->getDoctrine()->getManager();
 
         $userId = $request->get('user');
@@ -399,10 +397,16 @@ class AjaxController extends Controller
             ->add('presenceType', EntityType::class, array(
                 'class' => 'UserBundle:PresenceType',
                 'choice_label' => 'name'
-            ))            ->add('startDate', DateType::class, array(
-                'input'  => 'datetime',
-                'widget' => 'choice',
             ))
+            ->add('startDate','date', [
+                'widget' => 'single_text',
+                'format' => 'dd-MM-yyyy',
+                'attr' => [
+                    'class' => 'form-control input-inline datepicker',
+                    'data-provide' => 'datepicker',
+                    'data-date-format' => 'dd-mm-yyyy'
+                ]
+            ])
             ->add('endDate', DateType::class, array(
                 'input'  => 'datetime',
                 'widget' => 'choice',
@@ -429,6 +433,13 @@ class AjaxController extends Controller
 
     }
 
+    /**
+     * Modification d'une demande de jour(s)
+     *
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
     public function EditDayAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
