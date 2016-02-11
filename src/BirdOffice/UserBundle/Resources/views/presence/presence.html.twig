@@ -23,20 +23,25 @@
            {% if day.isValidated == 0 %} <i data-day="{{ day.id }}" class="fa fa-edit icon-size edit-day"></i>{% endif %}
         </td>
         <td class="text-center">
-            {% if day.isValidated == 0 %}
-            <div class="checkbox">
-                <label>
-                    <input class="validate" {% if day.isValidated == 2 %}checked{% endif %} type="checkbox" value="">
-                        En attente
-
-                    </span>
-                </label>
-            </div>
-            {% elseif day.isValidated == 1%}
-            Refusé
-            {% elseif day.isValidated == 2 %}
-            Accepté
-            {% endif %}
+            <form>
+                {% if day.isValidated == 0 %}
+                    <p class="waiting">En attente</p>
+                    <div class="checkbox">
+                        <label class="choice-yes">
+                            <input class="validate" {% if day.isValidated == 2 %}checked{% endif %} type="checkbox" value="">
+                                Valider
+                        </label>
+                        <label class="choice-no">
+                            <input class="validate" {% if day.isValidated == 1 %}checked{% endif %} type="checkbox" value="">
+                                Refuser
+                        </label>
+                    </div>
+                    {% elseif day.isValidated == 1%}
+                        <label class="choice-no center">Refusé</label>
+                    {% elseif day.isValidated == 2 %}
+                         <label class="choice-yes center">Accepté</label>
+                    {% endif %}
+            </form>
         </td>
     </tr>
     {% endfor %}
