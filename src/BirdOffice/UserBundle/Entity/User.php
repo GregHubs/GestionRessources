@@ -55,7 +55,7 @@ class User extends BaseUser
     /**
      * On enregistre ici le user id du manager correspondant à l'utilisateur
      *
-     * @ORM\Column(name="manager", type="integer")
+     * @ORM\Column(name="manager", type="integer", nullable = true)
      */
     private $manager;
 

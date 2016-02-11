@@ -1,6 +1,3 @@
-
-
-
     function ajaxCall() {
         var urlpost = Routing.generate('ajaxList');
 
@@ -59,6 +56,20 @@
         })
     }
 
+    // validation formulaire
+
+    function validateForm(){
+        if ($('#form_presenceType').val() != '' &&  $('#form_absenceType').val() != '' ) {
+            alert("Absence et présence ne peuvent être remplis en même temps");
+            return false;
+        }
+        if($('#form_startDate_day').val() != '' && $('#form_andDate_day').val() != '' &&  $('#form_hours').val() != 0 ){
+            alert("Le nombre d'heures doit rester vide si plusieurs jours sont demandés");
+            return false;
+        }
+        return true;
+    }
+
 
 
 
@@ -77,7 +88,7 @@
                     firstname: $('#fos_user_registration_form_firstname').val(),
                     email: $('#fos_user_registration_form_email').val(),
                     plainPassword: $('#fos_user_registration_form_plainPassword_first').val(),
-                    managedBy: $('#fos_user_registration_form_manager').val()
+                    manager: $('#fos_user_registration_form_manager').val()
                 },
                 success: function (data) {
                     $('#modal-title').html(data.modalTitle);
@@ -131,7 +142,7 @@
                 firstname: $('#fos_user_profile_form_firstname').val(),
                 email: $('#fos_user_profile_form_email').val(),
                 plainPassword: $('#fos_user_profile_form_plainPassword_first').val(),
-                managedBy: $('#fos_user_profile_form_manager').val()
+                manager: $('#fos_user_profile_form_manager').val()
             },
             success: function (data) {
                 $('#modal-title').html(data.modalTitle);
@@ -267,7 +278,9 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                     validateForm();
                     if(validateForm()){
                         EditDay(dayId);
+                        return true;
                     }
+                    return false;
                 });
             }
         });
@@ -347,12 +360,4 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
         });
     }
 
-    // validation formulaire
 
-    function validateForm(){
-        if ($('#form_presenceType').val() != '' &&  $('#form_absenceType').val() != '' ) {
-            alert("Absence et présence ne peuvent être remplis en même temps");
-            return false;
-        }
-            return true;
-    }

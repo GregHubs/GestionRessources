@@ -80,7 +80,7 @@ class Day
     /**
      * @ORM\Column(type="integer")
      */
-    private $hours;
+    private $hours ='';
 
     /**
      * @ORM\Column(type="datetime", name="asking_date")

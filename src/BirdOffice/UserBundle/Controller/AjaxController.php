@@ -29,16 +29,16 @@ class AjaxController extends Controller
      * @return Response
      *
      */
-    public function ListAction()
+    public function ListAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        // On récupère la requête
-        $request = $this->get('request');
+        // Get current month (return 01, 02, ..)
+        $currentMonth = date_format(new \DateTime, "m");
+
         $template = array();
         // On vérifie qu'elle est de type POST
         if ('POST' == $request->getMethod()) {
-
             $managerId = $request->get('manager');
 
             $manager = $em->getRepository('UserBundle:User')->find($managerId);
@@ -141,6 +141,7 @@ class AjaxController extends Controller
         $user->setFirstName($request->get('firstname'));
         $user->setUsername($request->get('firstname'));
         $user->setPlainPassword($request->get('plainPassword'));
+        $user->setManager($request->get('manager'));
         //Set the admin role
         $user->addRole("ROLE_ADMIN");
 
@@ -207,6 +208,7 @@ class AjaxController extends Controller
         $user->setFirstName($request->get('firstname'));
         $user->setUsername($request->get('firstname'));
         $user->setPlainPassword($request->get('plainPassword'));
+        $user->setManager($request->get('manager'));
 
         $userManager->updateUser($user);
 
@@ -391,30 +393,33 @@ class AjaxController extends Controller
 
         $form = $this->createFormBuilder($day)
             ->add('absenceType', EntityType::class, array(
-                'class' => 'UserBundle:AbsenceType',
-                'choice_label' => 'name',
-                'required' => false,
+                'class'         => 'UserBundle:AbsenceType',
+                'choice_label'  => 'name',
+                'required'      => false,
 
             ))
             ->add('presenceType', EntityType::class, array(
-                'class' => 'UserBundle:PresenceType',
-                'choice_label' => 'name',
-                'required' => false,
+                'class'         => 'UserBundle:PresenceType',
+                'choice_label'  => 'name',
+                'required'      => false,
 
             ))
             ->add('startDate',DateType::class, array(
-                'input'  => 'datetime',
-                'widget' => 'choice',
-                'label' => 'Date de début'
+                'input'     => 'datetime',
+                'widget'    => 'choice',
+                'label'     => 'Date de début'
             ))
 
             ->add('endDate', DateType::class, array(
-                'input'  => 'datetime',
-                'widget' => 'choice',
-                'label' => 'Date de fin'
+                'input'     => 'datetime',
+                'widget'    => 'choice',
+                'label'     => 'Date de fin',
+                'required'  => false,
             ))
             ->add('description')
-            ->add('hours')
+            ->add('hours', 'integer', array(
+                'label'     => 'Nombre d\'heures',
+                'required'  => false))
             ->getForm();
 
         $modalTitle = 'Modification jour';

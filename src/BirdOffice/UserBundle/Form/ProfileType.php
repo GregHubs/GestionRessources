@@ -5,7 +5,7 @@ namespace BirdOffice\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
+use Doctrine\ORM\EntityRepository;
 
 class ProfileType extends AbstractType
 {
@@ -48,7 +48,14 @@ class ProfileType extends AbstractType
             ->add('manager', EntityType::class,
                 array(
                     'label' => 'Manager',
-                    'class' => 'UserBundle:User'
+                    'class' => 'UserBundle:User',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('u')
+                            ->select('u')
+                            ->where('u.roles LIKE :roles')
+                            ->setParameter('roles', "%ROLE_SUPER_ADMIN%")
+                            ;
+                    },
                 )
             )
         ;
