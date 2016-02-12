@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered text-center">
+<table class="table table-striped table-bordered text-center presence-container">
     <tr class="head-table">
         <th class="text-center none-mobile">Jour</th>
         <th class="text-center none-mobile">Durée</th>
@@ -13,7 +13,7 @@
         <td class="text-center none-mobile">{{ day.startDate|date("d/m/Y") }}</td>
         <td class="text-center none-mobile">{{ day.hours }} heures</td>
         <td class="text-center none-mobile">Absence : {{ day.absenceType.name|default('') }}</td>
-        <td class="text-center none-mobile">{{ day.description|default('') }}</td>
+        <td class="text-center none-mobile"><i>{{ day.description|default('') }}</i></td>
         <td class="text-center">
             <button type="button" data-day="{{ day.id }}" class="btn btn-primary detail-day" data-toggle="modal" data-target="#myModal">
                 En savoir plus
@@ -27,14 +27,14 @@
                 {% if day.isValidated == 0 %}
                     <p class="waiting">En attente</p>
                     <div class="checkbox" data-day="{{ day.id }}">
-                        <label class="choice-yes">
+                        <label class="choice-yes" for="check-yes">
                                 Valider
                         </label>
-                        <input class="validate-status"  {% if day.isValidated == 2 %}checked{% endif %} type="checkbox" value="2">
-                        <label class="choice-no">
+                        <input class="validate-status" id="check-yes" {% if day.isValidated == 2 %}checked{% endif %} type="checkbox" value="2">
+                        <label class="choice-no" for="check-no">
                                 Refuser
                         </label>
-                        <input class="validate-status" data-day="{{ day.id }}" {% if day.isValidated == 1 %}checked{% endif %} type="checkbox" value="1">
+                        <input class="validate-status" id="check-no" data-day="{{ day.id }}" {% if day.isValidated == 1 %}checked{% endif %} type="checkbox" value="1">
                     </div>
                     {% elseif day.isValidated == 1%}
                         <label class="choice-no center">Refusé</label>

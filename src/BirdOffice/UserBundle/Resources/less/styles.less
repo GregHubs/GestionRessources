@@ -35,8 +35,7 @@ label { font-weight: 400}
 
 td.actions i {
     margin-right: 5px;
-&:last-child {
-    margin-right:0  }
+    &:last-child { margin-right:0  }
 }
 
 .modal-header {
@@ -203,15 +202,16 @@ a { color: @blue-violet; font-weight: bold;
     }
 }
 
-.choice-yes, .choice-no { float: left;font-weight: bold!important; line-height: 20px }
+.choice-yes, .choice-no {font-weight: bold!important; line-height: 20px }
 
 .waiting { font-style: italic; font-weight: 600}
 
 .choice-yes {color: @flatgreen}
-
-.choice-no {color: @pink-flat}
-
-.choice-no.center, .choice-yes.center {float: none}
+.presence-container {
+    .choice-no {
+        color: @pink-flat
+    }
+}
 
 .datepick label { font-weight: bold}
 

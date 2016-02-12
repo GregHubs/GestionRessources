@@ -8,14 +8,14 @@
         </tr>
         {# table body #}
         {% for user in users %}
-            <tr {% if loop.index is odd %}class="color"{% endif %}>
+            <tr>
                 <td class="text-center none-mobile">{{ user.id }}</td>
                 <td class="text-center"><a href="{{ path('partnerDetail', {'id': user.id}) }}">{{ user.firstname }}</a></td>
                 <td class="text-center">{{ user.email }}</td>
                 <td class="actions text-center">
-                    <i data-user="{{ user.id }}" class="fa fa-trash-o icon-size trash-user"></i>
+                    <span data-user="{{ user.id }}" class="fa fa-trash-o icon-size trash-user"></span>
                     <i data-user="{{ user.id }}" class="fa fa-edit icon-size edit-user"></i>
-                    <a class="text-default none-mobile" href="">
+                    <span class="text-default none-mobile">
                         <i class="fa fa-search icon-size bouton">
                             <div class="info-bulle">
                                 <p class="center"><strong>Récapitulatif sur Décembre : </strong></p>
@@ -25,11 +25,13 @@
                                 </ul>
                             </div>
                          </i>
-                    </a>
+                    </span>
                 </td>
             </tr>
         {% endfor %}
     </table>
+
+{#
     <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -49,3 +51,4 @@
     </div>
 
 
+#}
