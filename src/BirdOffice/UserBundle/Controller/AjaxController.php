@@ -103,7 +103,12 @@ class AjaxController extends Controller
             'user' => $user
         ));
 
-        $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'modalTitle' => $modalTitle, 'modalBody' => $modalBody));
+        $return = json_encode(array(
+            'responseCode' => 200,
+            'notification' => 'success',
+            'modalTitle' => $modalTitle,
+            'modalBody' => $modalBody)
+        );
 
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
@@ -258,12 +263,11 @@ class AjaxController extends Controller
      * Nouvelle demande de jours
      * @param Request $request
      * @return Response
-     */
+
     public function AddNewDayAjaxAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $userId         = $request->get('user');
 
         $startDate      = $request->get('startDate');
         $endDate        = $request->get('endDate');
@@ -275,8 +279,8 @@ class AjaxController extends Controller
         $template = array();
 
         $day = new Day();
-
-        $user = $em->getRepository('UserBundle:User')->find($userId);
+     *
+     *
         $absence = $em->getRepository('UserBundle:AbsenceType')->find($absenceType);
         $presence = $em->getRepository('UserBundle:PresenceType')->find($presenceType);
 
@@ -306,7 +310,7 @@ class AjaxController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
-    }
+    } */
 
     /**
      * Modale affichant les détails d'une demande de jour
@@ -366,12 +370,13 @@ class AjaxController extends Controller
         $mailer = $this->get('bird_office.mailer');
         $mailer->sendAcceptationMail($day->getUser(), $day);
 
-        $template = array();
-        $json = json_encode($template);
-        $response = new Response($json, 200);
-        $response->headers->set('Content-Type', 'application/json');
+        $return = json_encode(array(
+                'responseCode' => 200,
+                'notification' => 'success',
+                'message' => 'Mail envoyé !'
+        ));
 
-        return $response;
+        return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     /**
@@ -381,11 +386,18 @@ class AjaxController extends Controller
      */
     public function ShowEditDayAction(Request $request)
     {
-        $em = $this->getDoctrine();
+        $em = $this->getDoctrine()->getManager();
 
-        $dayId = $request->get('dayId');
+        $dayId  = $request->get('dayId');
+        $userId = $request->get('userId');
 
-        $day = $em->getRepository('UserBundle:Day')->find($dayId);
+        $user   = $em->getRepository('UserBundle:User')->find($userId);
+
+        if($dayId) {
+            $day = $em->getRepository('UserBundle:Day')->find($dayId);
+        }else{
+            $day = new Day();
+        }
 
         $form = $this->createFormBuilder($day)
             ->add('absenceType', EntityType::class, array(
@@ -418,7 +430,58 @@ class AjaxController extends Controller
                 )))
             ->getForm();
 
-        $modalTitle = 'Modification jour';
+            if ('POST' == $request->getMethod()) {
+
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+
+                    $startDate = $request->get('startDate');
+                    $endDate = $request->get('endDate');
+                    $hours = $request->get('hours');
+                    $absenceType = $request->get('absenceType');
+                    $presenceType = $request->get('presenceType');
+                    $description = $request->get('description');
+
+                    $absence = $em->getRepository('UserBundle:AbsenceType')->find($absenceType);
+                    $presence = $em->getRepository('UserBundle:PresenceType')->find($presenceType);
+
+                    $day->setUser($user);
+                    $day->setStartDate(new \DateTime($startDate));
+                    $day->setEndDate(new \DateTime($endDate));
+                    $day->setHours($hours);
+                    $day->setAbsenceType($absence);
+                    $day->setPresenceType($presence);
+                    $day->setDescription($description);
+                    $day->setIsValidated(0);
+                    $day->setAskingDate(new \DateTime('now'));
+
+                    $em->persist($day);
+                    $em->flush();
+
+                    // Envoi de mail pour la demande d'absence
+                    if(!$user instanceof User){
+                        throw new \Exception;
+                    }
+
+                    $manager = $em->getRepository('UserBundle:User')->find($user->getManager());
+
+                    $admin = $em->getRepository('UserBundle:User')->find($manager);
+
+                    $mailer = $this->get('bird_office.mailer');
+                    $mailer->sendDemandToSuperAdmin($user, $admin, $day);
+
+                }
+            }
+
+        if($request->get('dayId')) {
+            $modalTitle = 'Modification jour';
+            $message = 'Jour modifié avec succès';
+
+        }else{
+            $modalTitle = 'Demande de jour';
+            $message = 'Jour ajouté avec succès';
+        }
 
         $modalBody = $this->renderView('UserBundle:Day:edit.html.twig', array(
             'form' => $form->createView(),
@@ -428,12 +491,12 @@ class AjaxController extends Controller
         $return = json_encode(array(
             'responseCode' => 200,
             'notification' => 'success',
+            'message' => $message,
             'modalTitle' => $modalTitle,
             'modalBody' => $modalBody
         ));
 
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
 
     /**
@@ -448,24 +511,26 @@ class AjaxController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $day            = $em->getRepository('UserBundle:Day')->find($request->get('dayId'));
+        if($request->get('dayId')){
+            $day = $em->getRepository('UserBundle:Day')->find($request->get('dayId'));
+        }else{
+            $day = new Day();
+        }
+
         $absenceType    = $em->getRepository('UserBundle:AbsenceType')->find($request->get('absenceType'));
         $presenceType   = $em->getRepository('UserBundle:PresenceType')->find($request->get('presenceType'));
 
-        if (!$day instanceof Day){
-            throw new \Exception;
-        }
+        $userId = $request->get('userId');
+        $user   = $em->getRepository('UserBundle:User')->find($userId);
 
-        if (!$absenceType instanceof AbsenceType){
-            throw new \Exception;
-        }
-
+        $day->setUser($user);
         $day->setAbsenceType($absenceType);
         $day->setPresenceType($presenceType);
         $day->setStartDate(new \DateTime($request->get('startDate')));
         $day->setEndDate(new \DateTime($request->get('endDate')));
         $day->setHours($request->get('hours'));
         $day->setDescription($request->get('description'));
+        $day->setIsValidated(0);
 
         $em->persist($day);
         $em->flush();

@@ -98,3 +98,7 @@ editDay:
     options:
         expose: true
 
+google:
+    path:   /google
+    defaults: { _controller: UserBundle:Default:Google }
+

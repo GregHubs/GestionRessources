@@ -105,4 +105,3 @@ fos_user:
 services:
     fos_user.doctrine_registry:
         alias: doctrine
-

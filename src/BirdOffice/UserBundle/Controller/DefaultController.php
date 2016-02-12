@@ -106,6 +106,23 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * Test Connection to Google API
+     */
+    public function GoogleAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('UserBundle:User')->find(15);
+
+
+        $managers = $em->getRepository('UserBundle:User')->getRole('ROLE_SUPER_ADMIN');
+
+        return $this->render('UserBundle:Default:index.html.twig',
+            array(
+                'managers' => $managers
+            )
+        );
+    }
 
 
 }

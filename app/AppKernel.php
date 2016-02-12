@@ -21,7 +21,6 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new JMS\TwigJsBundle\JMSTwigJsBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
