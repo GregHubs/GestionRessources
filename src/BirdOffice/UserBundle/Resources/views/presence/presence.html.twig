@@ -27,14 +27,14 @@
                 {% if day.isValidated == 0 %}
                     <p class="waiting">En attente</p>
                     <div class="checkbox" data-day="{{ day.id }}">
-                        <label class="choice-yes">
+                        <label class="choice-yes" for="check-yes">
                                 Valider
                         </label>
-                        <input class="validate-status"  {% if day.isValidated == 2 %}checked{% endif %} type="checkbox" value="2">
-                        <label class="choice-no">
+                        <input class="validate-status" id="check-yes" {% if day.isValidated == 2 %}checked{% endif %} type="checkbox" value="2">
+                        <label class="choice-no" for="check-no">
                                 Refuser
                         </label>
-                        <input class="validate-status" data-day="{{ day.id }}" {% if day.isValidated == 1 %}checked{% endif %} type="checkbox" value="1">
+                        <input class="validate-status" id="check-no" data-day="{{ day.id }}" {% if day.isValidated == 1 %}checked{% endif %} type="checkbox" value="1">
                     </div>
                     {% elseif day.isValidated == 1%}
                         <label class="choice-no center">Refusé</label>
