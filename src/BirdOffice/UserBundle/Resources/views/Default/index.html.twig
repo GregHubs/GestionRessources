@@ -26,7 +26,7 @@
                 <h1 class="center headline margin15">Liste des collaborateurs</h1>
                 <div class="space40"></div>
                 <div class="left">
-                    <select id="manager" class="form-control" id="select">
+                    <select title="Liste des collaborateurs" id="manager" class="form-control" id="select">
                         <option selected></option>
                         {% for manager in managers %}
                             <option  value="{{ manager.id }}">{{ manager.lastname }}</option>
