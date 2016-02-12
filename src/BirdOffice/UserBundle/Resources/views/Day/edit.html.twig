@@ -6,7 +6,7 @@
     {{ form_row(form.endDate) }}
     {{ form_row(form.description) }}
     {{ form_row(form.hours) }}
-
+    <span class="error-field-2">Le nombre d'heures doit rester vide si plusieurs jours sont demandés</span>
     <div>
         <input id="edit-day-ajax" type="submit" class="btn btn-primary right" value="Valider"/>
         <div class="clear"></div>

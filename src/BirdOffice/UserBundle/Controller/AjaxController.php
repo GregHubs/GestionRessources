@@ -8,6 +8,7 @@ use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
+use Proxies\__CG__\BirdOffice\UserBundle\Entity\AbsenceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 
@@ -355,7 +357,7 @@ class AjaxController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $dayId = $request->get('dayId');
+        $dayId = $request->get('dayId');var_dump($dayId);die;
         $status = $request->get('status');
 
         $day = $em->getRepository('UserBundle:Day')->find($dayId);
@@ -417,9 +419,9 @@ class AjaxController extends Controller
                 'required'  => false,
             ))
             ->add('description')
-            ->add('hours', 'integer', array(
-                'label'     => 'Nombre d\'heures',
-                'required'  => false))
+            ->add('hours', ChoiceType::class, array(
+                'choices'  => array('', '1', '2', '3', '4', '5', '6', '7', '8'
+                )))
             ->getForm();
 
         $modalTitle = 'Modification jour';
@@ -456,8 +458,11 @@ class AjaxController extends Controller
         $absenceType    = $em->getRepository('UserBundle:AbsenceType')->find($request->get('absenceType'));
         $presenceType   = $em->getRepository('UserBundle:PresenceType')->find($request->get('presenceType'));
 
-
         if (!$day instanceof Day){
+            throw new \Exception;
+        }
+
+        if (!$absenceType instanceof AbsenceType){
             throw new \Exception;
         }
 
@@ -467,7 +472,6 @@ class AjaxController extends Controller
         $day->setEndDate(new \DateTime($request->get('endDate')));
         $day->setHours($request->get('hours'));
         $day->setDescription($request->get('description'));
-
 
         $em->persist($day);
         $em->flush();

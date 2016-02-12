@@ -60,11 +60,12 @@
 
     function validateForm(){
         if ($('#form_presenceType').val() != '' &&  $('#form_absenceType').val() != '' ) {
-            alert("Absence et présence ne peuvent être remplis en même temps");
+            //alert("Absence et présence ne peuvent être remplis en même temps");
+            $('.error-field').css('display','block');
             return false;
         }
         if($('#form_startDate_day').val() != '' && $('#form_andDate_day').val() != '' &&  $('#form_hours').val() != 0 ){
-            alert("Le nombre d'heures doit rester vide si plusieurs jours sont demandés");
+            $('.error-field-2').css('display','block');
             return false;
         }
         return true;
@@ -122,7 +123,6 @@
                 $('#edit-partner-ajax').click(function(){
                     edit_partner(userId);
                    // return false;
-
                 });
             }
         });
@@ -179,22 +179,23 @@
             }
         })
     }
-$( document ).ready(function() {    // Affiche la liste des collaborateurs pour la HP super_admin
 
-    // date PICKER
-    $(".date-picker").datepicker().on("change", function () {
-        var id = $(this).attr("id");
-        var val = $("label[for='" + id + "']").text();
-        $("#msg").text(val + " changed");
-    });
+    $( document ).ready(function() {    // Affiche la liste des collaborateurs pour la HP super_admin
 
-    $(".datepicker-month").datepicker({
-        format: "mm-yyyy",
-        startView: "months",
-        viewMode: "months",
-        minViewMode: "months"
+        // date PICKER
+        $(".date-picker").datepicker().on("change", function () {
+            var id = $(this).attr("id");
+            var val = $("label[for='" + id + "']").text();
+            $("#msg").text(val + " changed");
         });
-});
+
+        $(".datepicker-month").datepicker({
+            format: "mm-yyyy",
+            startView: "months",
+            viewMode: "months",
+            minViewMode: "months"
+            });
+    });
 
 
   // Affiche la liste des collaborateurs pour la HP super_admin
@@ -227,37 +228,30 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
                 // VALIDATION DE LA DEMANDE
                 $(function () {
 
-                    $('.validate').change(function () {
-                        if ($(this).is(":checked")) {
-                            var status = 2;
-                                $('.day-validation').html('Validé');
-                        } else {
-                            status = 1;
-                            $('.day-validation').html('Non Validé');
-                        }
+                    $('.validate-status').change(function () {
+                        var status = $(this).val();
+                        var day = $(this).parent().data('day');
+                        ValidationDay(status, day);
+                    });
 
-                        ValidationDay();
-
-                        function ValidationDay() {
-                            $.ajax({
-                                type: "POST",
-                                url: Routing.generate('validationAjax'),
-                                data: {
-                                    dayId: $('.detail-day').attr('data-day'),
-                                    status: status
-                                },
-                                success: function () {
-                                }
-                            });
-                        }
-                    })
                 });
                 // FIN VALIDATION
             }
         });
     }
 
-
+    function ValidationDay(status, day) {
+        $.ajax({
+            type: "POST",
+            url: Routing.generate('validationAjax'),
+            data: {
+                dayId: day,
+                status: status
+            },
+            success: function () {
+            }
+        });
+    }
 
     // Affiche Modale édition jour
 
@@ -359,5 +353,4 @@ $( document ).ready(function() {    // Affiche la liste des collaborateurs pour 
             }
         });
     }
-
 
