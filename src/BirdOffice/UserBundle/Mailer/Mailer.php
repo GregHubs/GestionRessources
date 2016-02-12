@@ -65,4 +65,5 @@ class Mailer
 
         $this->sendMail($subject, $from, $to, $body);
     }
+
 }

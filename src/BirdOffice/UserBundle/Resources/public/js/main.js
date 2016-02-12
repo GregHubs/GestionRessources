@@ -227,13 +227,11 @@
 
                 // VALIDATION DE LA DEMANDE
                 $(function () {
-
                     $('.validate-status').change(function () {
                         var status = $(this).val();
                         var day = $(this).parent().data('day');
                         ValidationDay(status, day);
                     });
-
                 });
                 // FIN VALIDATION
             }

@@ -4,19 +4,10 @@ namespace BirdOffice\UserBundle\Controller;
 
 use BirdOffice\UserBundle\Entity\Day;
 use BirdOffice\UserBundle\Entity\User;
-use FOS\UserBundle\FOSUserEvents;
-use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Proxies\__CG__\BirdOffice\UserBundle\Entity\AbsenceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Model\UserInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -36,7 +27,7 @@ class AjaxController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // Get current month (return 01, 02, ..)
-        $currentMonth = date_format(new \DateTime, "m");
+       // $currentMonth = date_format(new \DateTime, "m");
 
         $template = array();
         // On vérifie qu'elle est de type POST
@@ -298,7 +289,7 @@ class AjaxController extends Controller
             $day->setAbsenceType($absence);
             $day->setPresenceType($presence);
             $day->setDescription($description);
-            $day->setIsValidated($day->getStatus(0));
+            $day->setIsValidated(0);
             $day->setAskingDate(new \DateTime('now'));
 
             $em->persist($day);
@@ -357,7 +348,7 @@ class AjaxController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $dayId = $request->get('dayId');var_dump($dayId);die;
+        $dayId = $request->get('dayId');
         $status = $request->get('status');
 
         $day = $em->getRepository('UserBundle:Day')->find($dayId);
@@ -371,6 +362,9 @@ class AjaxController extends Controller
 
         $em->persist($day);
         $em->flush();
+
+        $mailer = $this->get('bird_office.mailer');
+        $mailer->sendAcceptationMail($day->getUser(), $day);
 
         $template = array();
         $json = json_encode($template);

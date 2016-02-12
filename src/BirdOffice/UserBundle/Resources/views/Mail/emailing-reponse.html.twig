@@ -36,10 +36,10 @@
                         <tr>
                             <td valign="top" width="200"></td>
                             <td valign="top" align="center" width="200">
-                                {% if day.isValidated %}
-                                <font face="Arial" size="1" color="#2ecc71" style="font-size:13px;"><strong><i>Demande validée !</i></strong></font>
-                                {% else %}
-                                <font face="Arial" size="1" color="#e74c3c" style="font-size:13px;"><strong><i>Demande non validée !</i></strong></font>
+                                {% if day.isValidated == 2%}
+                                <font face="Arial" size="1" color="#2ecc71" style="font-size:13px;"><strong><i>Demande validée :)</i></strong></font>
+                                {% elseif day.isValidated == 1 %}
+                                <font face="Arial" size="1" color="#e74c3c" style="font-size:13px;"><strong><i>Demande refusée :(</i></strong></font>
                                 {% endif %}
                             </td>
                             <td valign="top" width="200"></td>
