@@ -8,6 +8,18 @@ imports:
 parameters:
     locale: fr
 
+    google_api:
+        application_name: BirdOfficeCalendar
+        oauth2_client_id: 161716049472-hp0tn3rpbdibs0iq47b51j3sjjf5c4ms.apps.googleusercontent.com
+        oauth2_client_secret: C2oSWXi4ziYwpBKNqeiavmJ2
+        oauth2_redirect_uri: http://www.gestion-ressource.dev
+        developer_key: AIzaSyBNQNj6orKkRKgEhCr4WTDl8KhnOw5HvIQ
+        site_name: calendar.bird-office.com
+        oauth2_client_scopes:
+            - https://www.googleapis.com/auth/calendar
+            - https://www.googleapis.com/auth/userinfo.email
+            - https://www.google.com/m8/feeds/
+
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }

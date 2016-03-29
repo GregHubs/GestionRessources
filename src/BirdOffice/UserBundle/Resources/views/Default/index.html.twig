@@ -14,7 +14,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <button id="add-partner" type="button" class="btn btn-default margin15 right">Ajouter un Collaborateur</button>
+                <button id="add-partner" type="button" class="btn btn-default margin15 right edit-add-user">Ajouter un Collaborateur</button>
             </div>
         </div>
     </div>
@@ -22,13 +22,10 @@
     <div id="searchContainer"></div>
     <div id="modal-edit"></div>
 
-
 <script>
-    $('#add-partner').click(function () {
-        show_add_modal();
-    });
 
-    $( document ).ready(function() {    // Affiche la liste des collaborateurs pour la HP super_admin
+    $( document ).ready(function() {
+    // Affiche la liste des collaborateurs pour la HP super_admin
         $(function () {
             $('#manager').change(function () {
                 ajaxCall();

@@ -10,14 +10,11 @@ function ajaxCall() {
         success: function (msg) {
             $('#searchContainer').html(msg);
 
-            $(".edit-user").unbind('click').click(function () {
-                ajax_edit_partner(
-                    $(this).attr('data-user')
-                );
+            $('.edit-add-user').unbind('click').click(function () {
+                show_add_modal($(this).attr('data-user'));
             });
 
-
-            $(".delete-user").click(function () {
+            $(".delete-user").unbind('click').click(function () {
                 ajax_delete_partner(
                     $(this).attr('data-user')
                 );
@@ -36,12 +33,13 @@ function ajaxCall() {
 
 // Show add modal
 
-function show_add_modal() {
+function show_add_modal(user) {
     var showAddModal = Routing.generate('showAddModal');
     $.ajax({
         type: "POST",
         url: showAddModal,
         data: {
+            user:user
         },
         success: function (data) {
             $('#modal-title').html(data.modalTitle);
@@ -50,6 +48,9 @@ function show_add_modal() {
 
             $('#add-partner-ajax').unbind('click').click(function(){
                 ajax_add_partner();
+                if(data.userId){
+                    ajax_edit_partner(data.userId)
+                }
                 //return false;
             });
         }
@@ -64,18 +65,14 @@ function validateForm(){
         $('.error-field').css('display','block');
         return false;
     }
-    if($('#form_startDate_day').val() != '' && $('#form_andDate_day').val() != '' &&  $('#form_hours').val() != 0 ){
+    if($('#form_startDate_day').val() != '' && $('#form_endDate_day').val() != '' &&  $('#form_hours').val() != 0 ){
         $('.error-field-2').css('display','block');
         return false;
     }
     return true;
 }
 
-
-
-
 // Modale ajout collaborateur
-
 
 function ajax_add_partner() {
     var addPartnerAjax = Routing.generate('addPartnerAjax');
@@ -202,7 +199,7 @@ function ajaxMonthCall(user, month) {
             $(".edit-day").unbind('click').click(function () {
                 ShowEditDay(
                     $(this).attr('data-day'),
-                    $(this).attr('data-user')
+                    $('#username').attr('data-user')
                 );
             });
             // VALIDATION DE LA DEMANDE
@@ -307,4 +304,3 @@ function detailDay(dayId) {
         }
     });
 }
-

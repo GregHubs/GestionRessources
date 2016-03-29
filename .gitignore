@@ -11,6 +11,5 @@
 /.idea/
 /web/app.php
 /vendor/
-/web/
 *.DS_Store
 

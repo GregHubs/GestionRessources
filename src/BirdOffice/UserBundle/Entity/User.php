@@ -59,6 +59,13 @@ class User extends BaseUser
      */
     private $manager;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="google_refresh_token", type="string", length=255, nullable=true)
+     */
+    private $googleRefreshToken;
+
 
     public function __construct()
     {
@@ -189,5 +196,29 @@ class User extends BaseUser
     public function getManager()
     {
         return $this->manager;
+    }
+
+    /**
+     * Set googleRefreshToken
+     *
+     * @param string $googleRefreshToken
+     *
+     * @return User
+     */
+    public function setGoogleRefreshToken($googleRefreshToken)
+    {
+        $this->googleRefreshToken = $googleRefreshToken;
+
+        return $this;
+    }
+
+    /**
+     * Get googleRefreshToken
+     *
+     * @return string
+     */
+    public function getGoogleRefreshToken()
+    {
+        return $this->googleRefreshToken;
     }
 }

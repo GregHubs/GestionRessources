@@ -4,15 +4,12 @@ namespace BirdOffice\UserBundle\Controller;
 
 use BirdOffice\UserBundle\Entity\Day;
 use BirdOffice\UserBundle\Entity\User;
-use Proxies\__CG__\BirdOffice\UserBundle\Entity\AbsenceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
-
 
 
 class AjaxController extends Controller
@@ -43,12 +40,10 @@ class AjaxController extends Controller
 
             $template = $this->renderView('UserBundle:Default:list.html.twig', array('users' => $users));
         }
-
         $json = json_encode($template);
         $response = new Response($json, 200);
         $response->headers->set('Content-Type', 'application/json');
         return $response;
-
     }
 
     /**
@@ -56,64 +51,45 @@ class AjaxController extends Controller
      * @return Response
      *
      */
-    public function ShowAddModalAction()
+    public function ShowAddModalAction(Request $request)
     {
-        $modalTitle = 'Ajout collaborateur';
-
-        $formFactory = $this->container->get('fos_user.registration.form.factory');
-
-        $form = $formFactory->createForm();
-
-        $modalBody = $this->render('FOSUserBundle:Registration:register.html.twig', array(
-                'form' => $form->createView())
-        )->getContent();
-
-        $return = json_encode(array(
-            'responseCode' => 200,
-            'notification' => 'success',
-            'modalTitle' => $modalTitle,
-            'modalBody' => $modalBody)
-        );
-
-        return new Response($return, 200, array('Content-Type' => 'application/json'));
-
-    }
-
-    /**
-     * Affiche la modale pour l'ajout d'un collaborateur depuis l'acceuil SUPER_ADMIN
-     * @return Response
-     *
-     */
-    public function ShowEditModalAction(Request $request)
-    {
-        $em = $this->getDoctrine();
-
+        $em = $this->getDoctrine()->getManager();
         $userId = $request->get('user');
 
-        $user = $em->getRepository('UserBundle:User')->find($userId);
+        if($userId){
+            $user = $em->getRepository('UserBundle:User')->find($userId);
+            $formFactory = $this->get('fos_user.profile.form.factory');
 
-        $formFactory = $this->get('fos_user.profile.form.factory');
+            $form = $formFactory->createForm();
+            $form->setData($user);
 
-        $form = $formFactory->createForm();
-        $form->setData($user);
+            $modalTitle = 'Modification fiche collaborateur';
+            $modalBody = $this->renderView('FOSUserBundle:Profile:edit.html.twig', array(
+                'form' => $form->createView(),
+                'user' => $user
+            ));
 
-        $modalTitle = 'Modification fiche collaborateur';
-        $modalBody = $this->renderView('FOSUserBundle:Profile:edit.html.twig', array(
-            'form' => $form->createView(),
-            'user' => $user
-        ));
+        } else {
+            $modalTitle = 'Ajout collaborateur';
 
+            $formFactory = $this->container->get('fos_user.registration.form.factory');
+
+            $form = $formFactory->createForm();
+
+            $modalBody = $this->render('FOSUserBundle:Registration:register.html.twig', array(
+                    'form' => $form->createView())
+            )->getContent();
+        }
         $return = json_encode(array(
-            'responseCode' => 200,
-            'notification' => 'success',
-            'modalTitle' => $modalTitle,
-            'modalBody' => $modalBody)
+            'responseCode'  => 200,
+            'notification'  => 'success',
+            'modalTitle'    => $modalTitle,
+            'modalBody'     => $modalBody,
+            'userId'        => $userId
+            )
         );
-
         return new Response($return, 200, array('Content-Type' => 'application/json'));
-
     }
-
 
     /**
      * Ajout d'un nouveau partenaire
@@ -140,6 +116,7 @@ class AjaxController extends Controller
         $user->setUsername($request->get('firstname'));
         $user->setPlainPassword($request->get('plainPassword'));
         $user->setManager($request->get('manager'));
+
         //Set the admin role
         $user->addRole("ROLE_ADMIN");
 
@@ -147,7 +124,11 @@ class AjaxController extends Controller
 
         $message = 'Utilisateur ajouté avec succès';
 
-        $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'message' => $message));
+        $return = json_encode(array(
+            'responseCode' => 200,
+            'notification' => 'success',
+            'message' => $message)
+        );
 
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
@@ -181,7 +162,12 @@ class AjaxController extends Controller
 
         $htmlContent = $this->render('UserBundle:Default:list.html.twig', array('users' => $users))->getContent();
 
-        $return = json_encode(array('responseCode' => 200, 'message' => $message, 'notification' => 'success', 'htmlContent' => $htmlContent));
+        $return = json_encode(array(
+            'responseCode' => 200,
+            'message' => $message,
+            'notification' => 'success',
+            'htmlContent' => $htmlContent)
+        );
 
         return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
@@ -212,7 +198,11 @@ class AjaxController extends Controller
 
         $message = 'Utilisateur modifié avec succès';
 
-        $return = json_encode(array('responseCode' => 200, 'notification' => 'success', 'message' => $message));
+        $return = json_encode(array(
+            'responseCode' => 200,
+            'notification' => 'success',
+            'message' => $message)
+        );
 
         return new Response($return, 200, array('Content-Type' => 'application/json'));
 
@@ -237,7 +227,6 @@ class AjaxController extends Controller
         if ('POST' == $request->getMethod()) {
 
             $monthId = $request->get('month');
-          //  var_dump($monthId);die;
 
             if ($monthId == 0) {
                 $args = array('user' => $user);
@@ -249,7 +238,6 @@ class AjaxController extends Controller
 
             $template = $this->renderView('UserBundle:Presence:presence.html.twig', array('user' => $user, 'days' => $days));
 
-
         }
 
         $json = json_encode($template);
@@ -258,59 +246,6 @@ class AjaxController extends Controller
 
         return $response;
     }
-
-    /**
-     * Nouvelle demande de jours
-     * @param Request $request
-     * @return Response
-
-    public function AddNewDayAjaxAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-
-        $startDate      = $request->get('startDate');
-        $endDate        = $request->get('endDate');
-        $hours          = $request->get('hours');
-        $absenceType    = $request->get('absenceType');
-        $presenceType   = $request->get('presenceType');
-        $description    = $request->get('description');
-
-        $template = array();
-
-        $day = new Day();
-     *
-     *
-        $absence = $em->getRepository('UserBundle:AbsenceType')->find($absenceType);
-        $presence = $em->getRepository('UserBundle:PresenceType')->find($presenceType);
-
-        if ('POST' == $request->getMethod()) {
-
-            $day->setUser($user);
-            $day->setStartDate(new \DateTime($startDate));
-            $day->setEndDate(new \DateTime($endDate));
-            $day->setHours($hours);
-            $day->setAbsenceType($absence);
-            $day->setPresenceType($presence);
-            $day->setDescription($description);
-            $day->setIsValidated(0);
-            $day->setAskingDate(new \DateTime('now'));
-
-            $em->persist($day);
-            $em->flush();
-        }
-
-        // Envoi de mail pour la demande d'absence
-        $admin = $em->getRepository('UserBundle:User')->find(15);
-        $mailer = $this->get('bird_office.mailer');
-        $mailer->sendDemandToSuperAdmin($user, $admin, $day);
-
-        $json = json_encode($template);
-        $response = new Response($json, 200);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
-    } */
 
     /**
      * Modale affichant les détails d'une demande de jour
@@ -393,6 +328,8 @@ class AjaxController extends Controller
 
         $user   = $em->getRepository('UserBundle:User')->find($userId);
 
+        $managers = $em->getRepository('UserBundle:User')->getRole('ROLE_SUPER_ADMIN');
+
         if($dayId) {
             $day = $em->getRepository('UserBundle:Day')->find($dayId);
         }else{
@@ -435,6 +372,7 @@ class AjaxController extends Controller
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
+                    $mailer = $this->get('bird_office.mailer');
 
                     $startDate = $request->get('startDate');
                     $endDate = $request->get('endDate');
@@ -453,23 +391,27 @@ class AjaxController extends Controller
                     $day->setAbsenceType($absence);
                     $day->setPresenceType($presence);
                     $day->setDescription($description);
-                    $day->setIsValidated(0);
                     $day->setAskingDate(new \DateTime('now'));
 
-                    $em->persist($day);
-                    $em->flush();
-
-                    // Envoi de mail pour la demande d'absence
                     if(!$user instanceof User){
                         throw new \Exception;
                     }
 
-                    $manager = $em->getRepository('UserBundle:User')->find($user->getManager());
+                    # Si l'utilisateur faisant la demande est un admin, celle-ci est validée directement
+                    if(in_array($managers, $user)){
+                        $day->setIsValidated(2);
+                        $mailer->sendAcceptationMail($user, $day);
+                    }else{
+                        $day->setIsValidated(0);
+                        // Envoi de mail pour la demande d'absence
+                        $manager = $em->getRepository('UserBundle:User')->find($user->getManager());
+                        $admin = $em->getRepository('UserBundle:User')->find($manager);
+                        $mailer->sendDemandToSuperAdmin($user, $admin, $day);
+                    }
+                    $em->persist($day);
+                    $em->flush();
 
-                    $admin = $em->getRepository('UserBundle:User')->find($manager);
 
-                    $mailer = $this->get('bird_office.mailer');
-                    $mailer->sendDemandToSuperAdmin($user, $admin, $day);
 
                 }
             }
@@ -522,6 +464,10 @@ class AjaxController extends Controller
 
         $userId = $request->get('userId');
         $user   = $em->getRepository('UserBundle:User')->find($userId);
+
+        $googleServiceManager = $this->get('google_service_manager');
+        $response = $googleServiceManager->connect($user);
+        dump($response);
 
         $day->setUser($user);
         $day->setAbsenceType($absenceType);

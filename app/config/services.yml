@@ -25,3 +25,12 @@ services:
         class: BirdOffice\UserBundle\Mailer\Mailer
         arguments:
             - "@service_container"
+    google_service_manager:
+        class: BirdOffice\UserBundle\Manager\GoogleServiceManager
+        arguments:
+            - %google_api%
+            - "@doctrine.orm.entity_manager"
+            - "@google_calendar_manager"
+    google_calendar_manager:
+        class:  BirdOffice\UserBundle\Manager\GoogleCalendarManager
+        arguments: [ "@doctrine.orm.entity_manager", "@bird_office.helper" ]
